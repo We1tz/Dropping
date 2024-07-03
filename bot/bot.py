@@ -37,7 +37,7 @@ async def command_start(message: types.Message):
         if e:
             await message.answer('Пользователь уже существует', reply_markup=builder.as_markup(resize_keyboard=True))
 
-
+#
 @dp.message(Command("dk"))
 async def delete_keyboard(message: types.Message):
     await message.answer('Ваша клавиатура удалена', reply_markup=types.ReplyKeyboardRemove())
