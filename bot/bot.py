@@ -15,11 +15,6 @@ bot = Bot(token=token)
 dp = Dispatcher()
 
 
-#keyboard = types.ReplyKeyboardMarkup(keyboard=start_keyboard,
-#                           resize_keyboard=True,
-#                           input_field_placeholder='Сюда что-то можно написать'
-#                          )
-
 
 @dp.message(Command("start"))
 async def command_start(message: types.Message):
