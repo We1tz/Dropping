@@ -13,3 +13,15 @@ def add_user(date):
     cursor.close()
     conn.close()
     print('Данные добавлены')
+
+
+def select_from_base():
+    conn = psycopg2.connect(dbname="base", user="postgres", password="root", host="127.0.0.1")
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM users")
+    data_result = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return data_result
