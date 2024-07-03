@@ -12,7 +12,6 @@ def add_user(date):
     conn.commit()
     cursor.close()
     conn.close()
-    print('Данные добавлены')
 
 
 def select_from_base():
