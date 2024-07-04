@@ -49,8 +49,7 @@ def register():
 
         if password == confirm_password:
             response = requests.post(current_url, json=data)
-            result = int(response.json()['result'])
-
+            result = int(response.json()['result']) #
             if result == 200:
                 flash('Регистрация прошла успешно')
                 return redirect(url_for('success_reg'))
