@@ -10,29 +10,32 @@ function RegisterTemplate() {
     const { store } = useContext(Context);
 
     const [errors, setErrors] = useState([]);
-    const validateValues = (login, password) => {
+    const validateValues = () => {
         setErrors([]);
         if (email.length < 4) {
-          setErrors([...errors,"Название почты слишком короткое"]);
+          setErrors(["Название почты слишком короткое"]);
+          
         }
+        if (username.length < 4) {
+            setErrors(["имя пользователя слишком короткое"]);
+          }
         if (password.length < 5) {
-            setErrors([...errors, "Минимальная длина пароля - 5 символов"]);
-        }
-        if(password.match(signs)){
-            setErrors([...errors,"Пароль должен содержать специальные знаки"]);
+            setErrors(["Минимальная длина пароля - 5 символов"]);
         }
 
-        if(!errors){
+        if(errors.length == 0){
             try{
-                store.registration(email, password, username);
+                console.log("sperm");
+                store.login(email, password);
             }
             catch(e){
-                setErrors([...errors,"неверный логин или пароль"]);
+                setErrors(["неверный логин или пароль"]);
             }
         }
         console.log(errors)
         return errors;
     };
+
 
     return (
         <div>

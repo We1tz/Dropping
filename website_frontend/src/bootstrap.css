@@ -12263,12 +12263,17 @@ label {
   padding-top: 100px;
 }
 
+.victorine-pic{
+  max-width: 100%;
+  max-height: 80%;
+}
+
 .section-article{
   position: relative;
   display: flex;
   flex-direction: column;
   align-content: center;
-  max-width: 50%;
+  max-width: 80%;
   min-height: 400px;
   padding-top: 50px;
 }

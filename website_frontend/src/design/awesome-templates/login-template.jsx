@@ -15,21 +15,21 @@ function LoginTemplate() {
     const validateValues = () => {
         setErrors([]);
         if (email.length < 4) {
-          setErrors([...errors,"Название почты слишком короткое"]);
+          setErrors(["Название почты слишком короткое"]);
         }
         if (password.length < 5) {
-            setErrors([...errors, "Минимальная длина пароля - 5 символов"]);
+            setErrors(["Минимальная длина пароля - 5 символов"]);
         }
         if(password.match(signs)){
-            setErrors([...errors,"Пароль должен содержать специальные знаки"]);
+            setErrors(["Пароль должен содержать специальные знаки"]);
         }
 
-        if(!errors){
+        if(errors.length == 0){
             try{
                 store.login(email, password);
             }
             catch(e){
-                setErrors([...errors,"неверный логин или пароль"]);
+                setErrors(["неверный логин или пароль"]);
             }
         }
         console.log(errors)
@@ -61,7 +61,7 @@ function LoginTemplate() {
                             placeholder='Пароль'
                         />
                         <p></p>
-                        <button type="button" class="btn btn-login-1 " onClick={() => {setErrors([]); validateValues()}}>
+                        <button type="button" class="btn btn-login-1 " onClick={() => { validateValues()}}>
                             Войти
                         </button>
                     </div>
