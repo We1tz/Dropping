@@ -2,9 +2,9 @@ import HomeFooter from "../awesome-components/footers/footer-home";
 import BubbleTransition from "../awesome-components/transitions/bubble-transition";
 import CurveTransition from "../awesome-components/transitions/curve-transition";
 import HomeTemplate from "../awesome-templates/home-template";
-import LoginTemplate from "../awesome-templates/login-template";
+import RegisterTemplate from "../awesome-templates/register-template";
 
-function LoginFormPage() {
+function RegisterFormPage() {
     return (
         <div className="text-white">
             <HomeTemplate>
@@ -13,7 +13,7 @@ function LoginFormPage() {
                         <img height="150" width="150" src="fox.png" alt="" />
                         <h1 className="bold">Foxproof</h1>
                         
-                        <LoginTemplate />
+                        <RegisterTemplate/>
                     </div>
                 </section>
             </HomeTemplate>
@@ -21,4 +21,4 @@ function LoginFormPage() {
     );
 }
 
-export default LoginFormPage;
+export default RegisterFormPage;
