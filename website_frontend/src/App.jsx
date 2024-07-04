@@ -14,6 +14,8 @@ import LoginFormPage from './design/pages/login-page.jsx';
 import ProfilePage from './design/pages/profile-page.jsx';
 import AdminPage from './design/pages/admin-page.jsx';
 import RatingPage from './design/pages/rating-page.jsx';
+import RegisterFormPage from './design/pages/register-page.jsx';
+import VictorinePage from './design/pages/victorine-page.jsx';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginFormPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/register" element={<RegisterFormPage/>} />
+          <Route path="/victorine" element={<VictorinePage/>} />
         </Routes>
       </BrowserRouter>
 
