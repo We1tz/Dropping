@@ -15,7 +15,6 @@ bot = Bot(token=token)
 dp = Dispatcher()
 
 
-
 @dp.message(Command("start"))
 async def command_start(message: types.Message):
     builder = ReplyKeyboardBuilder()
@@ -27,8 +26,7 @@ async def command_start(message: types.Message):
 
     user_id = message.from_user.id
     user_name = message.from_user.username
-    date = get_date()
-    user_data = (user_id, user_name, date, 'NaN', 'NaN')  # registration
+    user_data = (user_id, user_name, get_date(), 'NaN', 'NaN')  # registration
     try:
         add_user(user_data)
 
@@ -36,6 +34,7 @@ async def command_start(message: types.Message):
     except Exception as e:
         if e:
             await message.answer('Пользователь уже существует', reply_markup=builder.as_markup(resize_keyboard=True))
+
 
 #
 @dp.message(Command("dk"))

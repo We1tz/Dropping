@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
-from date import get_date
 import requests
-from db import add_user, check_user
 from key import app_secret_key
 import os
 
