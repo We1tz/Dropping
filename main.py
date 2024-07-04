@@ -10,15 +10,13 @@ class UserCredentials(BaseModel):
     username: str
     password: str
 
+
 #
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials):
-    res = check_user((user_credentials.username, user_credentials.password))
-    return {"result": res}
+    return {"result": check_user((user_credentials.username, user_credentials.password))}
 
 
 @app.post("/register")
 async def receive_data(user_credentials: UserCredentials):
-    res = add_user((user_credentials.username, user_credentials.password, 'NaN', 0, 0, 'user', get_date()))
-    print(res)
-    return {"result": res}
+    return {"result": add_user((user_credentials.username, user_credentials.password, 'NaN', 0, 0, 'user', get_date()))}
