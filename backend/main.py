@@ -13,7 +13,6 @@ def login():
         username = request.form['username']
         pw = request.form['password']
         if check_user((username, pw)) == 200:
-            flash('Успех!')
             return render_template('main.html')
         else:
             flash('Неверный логин или пароль')
