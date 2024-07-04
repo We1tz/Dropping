@@ -10,7 +10,7 @@ class UserCredentials(BaseModel):
     username: str
     password: str
 
-
+#
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials):
     user_name = user_credentials.username
