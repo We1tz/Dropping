@@ -5,10 +5,9 @@ from aiogram.filters.command import Command
 from config import token
 from get_current_date import get_date
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from database import add_user, select_from_base
+from database import add_user
 from top_information import top
 
-#from keyboards import start_keyboard
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=token)
