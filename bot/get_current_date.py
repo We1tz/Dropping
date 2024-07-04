@@ -2,11 +2,5 @@ import datetime
 
 
 def get_date():
-    date = datetime.datetime.now().date()
-    h = datetime.datetime.now().hour
-    m = datetime.datetime.now().minute
-    s = datetime.datetime.now().second
-    time = str(h) + ':' + str(m) + ':' + str(s)
-    current_date = str(date) + ' | ' + str(time)
+    current_date = str(datetime.datetime.now().date()) + ' | ' + str(str(datetime.datetime.now().hour) + ':' + str(datetime.datetime.now().minute) + ':' + str(datetime.datetime.now().second))
     return current_date
-

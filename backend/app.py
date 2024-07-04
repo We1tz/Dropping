@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 import requests
 from key import app_secret_key
 import os
+from key import url
 
 app = Flask(__name__)
 app.secret_key = app_secret_key
 
-url = 'http://127.0.0.1:8000'
+
 
 
 @app.route('/login', methods=['POST', 'GET'])
