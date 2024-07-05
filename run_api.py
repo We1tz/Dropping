@@ -8,7 +8,7 @@ def run_server():
 
 
 def signal_handler(sig, frame):
-    print("Server is shutting down...")
+    print("Выключение..")
     sys.exit(0)
 
 

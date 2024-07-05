@@ -20,6 +20,9 @@ function Navbar() {
                             <li>
                             <a data-testid="home-link" class="nav-link active" href="/victorine">Викторина</a>
                             </li>
+                            <li>
+                            <a data-testid="home-link" class="nav-link active" href="/graph">Аналитика</a>
+                            </li>
                         </ul>
                             <a data-testid="home-link" class="nav-link text-light" href="/register">Регистрация</a>
                     </div>

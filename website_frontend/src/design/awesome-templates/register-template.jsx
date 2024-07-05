@@ -18,14 +18,16 @@ function RegisterTemplate() {
         }
         if (username.length < 4) {
             setErrors(["имя пользователя слишком короткое"]);
-          }
+        }
         if (password.length < 5) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
+        }
+        if (!email.includes("@") || !email.includes(".")){
+            setErrors(["Неверно введена почта"]);
         }
 
         if(errors.length == 0){
             try{
-                console.log("sperm");
                 store.login(email, password);
             }
             catch(e){

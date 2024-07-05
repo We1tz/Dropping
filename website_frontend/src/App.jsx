@@ -16,6 +16,7 @@ import AdminPage from './design/pages/admin-page.jsx';
 import RatingPage from './design/pages/rating-page.jsx';
 import RegisterFormPage from './design/pages/register-page.jsx';
 import VictorinePage from './design/pages/victorine-page.jsx';
+import GraphPage from './design/pages/graphs-page.jsx';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/register" element={<RegisterFormPage/>} />
           <Route path="/victorine" element={<VictorinePage/>} />
+          <Route path="/graph" element={<GraphPage/>} />
         </Routes>
       </BrowserRouter>
 

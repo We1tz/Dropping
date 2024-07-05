@@ -26,6 +26,9 @@ export default class Store {
 
     async login(email, password) {
             const response = await AuthService.login(email, password);
+            if(response == "Not authorized"){
+                return response;
+            }
             console.log(response)
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
