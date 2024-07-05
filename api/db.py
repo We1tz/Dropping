@@ -3,6 +3,7 @@ import psycopg2
 conn = psycopg2.connect(dbname="users", user="postgres", password="123456", host="192.168.95.14")
 
 
+
 def add_user(data):
     with conn.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (data[0],))
