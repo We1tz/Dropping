@@ -46,6 +46,7 @@ function VictorineTemplate() {
 
     function HandleClick(yes){
         if(cnt==10){
+            //
             setOver(true);
             setDate(Date.now()-date);
         }
@@ -62,7 +63,9 @@ function VictorineTemplate() {
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            {over ? "": <>
+                            {over ? 
+                                <img className='victorine-pic' src="fox.png" alt="" />
+                            : <>
 
                                 {picnum <=6 ?
                                 <img className='victorine-pic' src={"Вакансии викторины/Вакансия"+ picnum + ".png"} alt="" />
@@ -88,7 +91,6 @@ function VictorineTemplate() {
                                     <div class="col-4">
                                     <input type="submit" onClick={()=>HandleClick(false)} value="НЕТ" class="btn btn-lg btn-square btn-warning float-right"/>
                                 </div>
-                                <h2>{date}</h2>
                             </div>
                             </div>
                             </>

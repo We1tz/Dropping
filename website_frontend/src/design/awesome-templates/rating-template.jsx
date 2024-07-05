@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CurveTransition from '../awesome-components/transitions/curve-transition';
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
 
 
 function RatingTemplate() {
+  const [data, setData] = useState([
+    {name:"jopa", time:"1245"},
+    {name:"jopa", time:"1245"},
+    {name:"jopa", time:"1245"},
+  ]);
+
+  useEffect(()=>{
+    console.log(data[0].time);
+  }, []);
     return (
         <div class="text-dark grad-article">
             
@@ -16,29 +25,21 @@ function RatingTemplate() {
     <tr>
       <th scope="col">Место</th>
       <th scope="col">Имя пользователя</th>
-      <th scope="col">Last</th>
+      <th scope="col">Баллы</th>
       <th scope="col">Время прохождения</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    {
+    data.map((i, index)=>{
+      return(      
+      <tr>
+        <th scope="row">{index+1}</th>
+        <td>{i.name}</td>
+        <td>Last</td>
+        <td>{i.time}</td>
+      </tr>)
+    })}
   </tbody>
 </table>
                     </div>

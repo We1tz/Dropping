@@ -23,10 +23,15 @@ function LoginTemplate() {
         if(password.match(signs)){
             setErrors(["Пароль должен содержать специальные знаки"]);
         }
+        if (!email.includes("@") || !email.includes(".")){
+            setErrors(["Неверно введена почта"]);
+        }
 
         if(errors.length == 0){
             try{
-                store.login(email, password);
+                if(store.login(email, password) == "Not authorized"){
+                    setErrors(["Неверно введена почта"]);
+                }
             }
             catch(e){
                 setErrors(["неверный логин или пароль"]);
