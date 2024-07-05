@@ -28,9 +28,9 @@ class UserCredentials(BaseModel):
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.datetime.utcnow() + expires_delta
+        expire = datetime.datetime.now(datetime.timezone.utc) + expires_delta
     else:
-        expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+        expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -38,7 +38,7 @@ def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
 
 def create_refresh_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+    expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -75,6 +75,8 @@ async def register(user_credentials: UserCredentials, response: Response):
     print(user_credentials)
     add_result = add_user(data)
 
+    print(add_result)
+
     if add_result == 200:
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
@@ -84,7 +86,7 @@ async def register(user_credentials: UserCredentials, response: Response):
             "access_token": access_token
         }
     else:
-        return {"result": add_result}
+        return {"result": add_result}#
 
 
 @app.get("/refresh")
