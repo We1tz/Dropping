@@ -86,7 +86,7 @@ async def register(user_credentials: UserCredentials, response: Response):
             "access_token": access_token
         }
     else:
-        return {"result": add_result}
+        return {"result": add_result}#
 
 
 @app.get("/refresh")
