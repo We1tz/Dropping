@@ -87,7 +87,7 @@ async def register(user_credentials: UserCredentials, response: Response):
         return {"result": add_result}
 
 
-@app.get("/protected")
+@app.get("/refresh")
 async def protected_route(request: Request):
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
