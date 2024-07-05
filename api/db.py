@@ -8,6 +8,7 @@ def add_user(data):
     with conn.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (data[0],))
         if cursor.fetchone()[0] > 0:
+            conn.commit()
             return 431
         else:
             cursor.execute(
