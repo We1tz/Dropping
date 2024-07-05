@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "your_secret_key"  
+SECRET_KEY = "HDle9hWuMPkmcBFbvUmLeszI7ewc7yBSUC-SmxuRbpU"  
 ALGORITHM = "HS256"
 
 
