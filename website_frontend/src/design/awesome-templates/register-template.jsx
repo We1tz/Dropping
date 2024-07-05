@@ -28,9 +28,10 @@ function RegisterTemplate() {
 
         if(errors.length == 0){
             try{
-                store.login(email, password);
+                store.registration(email, password);
             }
             catch(e){
+                console.log(e);
                 setErrors(["неверный логин или пароль"]);
             }
         }

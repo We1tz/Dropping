@@ -25,22 +25,27 @@ export default class Store {
     }
 
     async login(email, password) {
+        try {
             const response = await AuthService.login(email, password);
-            if(response == "Not authorized"){
-                return response;
-            }
             console.log(response)
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
             this.setUser(response.data.user);
+        } catch (e) {
+            console.log(e.response?.data?.message);
+        }
     }
 
-    async registration(email, password, username) {
-            const response = await AuthService.registration(email, password, username);
+    async registration(email, password) {
+        try {
+            const response = await AuthService.registration(email, password);
             console.log(response)
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
             this.setUser(response.data.user);
+        } catch (e) {
+            console.log(e.response?.data?.message);
+        }
     }
 
     async logout() {
