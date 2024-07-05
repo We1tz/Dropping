@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db import check_user, add_user
@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "2b5c2317ed40ea98188df590e14be0ac5935785f5e3f01b8721ad6b7f75e5f65"  # Используйте постоянный секретный ключ
+SECRET_KEY = "your_secret_key"  # Используйте постоянный секретный ключ
 ALGORITHM = "HS256"
 
 
@@ -44,14 +44,33 @@ def create_refresh_token(data: dict):
     return encoded_jwt
 
 
+def verify_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
 @app.post("/login")
-async def receive_data(user_credentials: UserCredentials):
-    print(user_credentials.username)
-    return {"result": check_user((user_credentials.username, user_credentials.password))}
+async def receive_data(user_credentials: UserCredentials, response: Response):
+    result = check_user((user_credentials.username, user_credentials.password))
+    if result:
+        access_token = create_access_token({"sub": user_credentials.username})
+        refresh_token = create_refresh_token({"sub": user_credentials.username})
+        response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
+        return {
+            "result": result,
+            "access_token": access_token
+        }
+    else:
+        return {"result": result}
 
 
 @app.post("/register")
-async def register(user_credentials: UserCredentials):
+async def register(user_credentials: UserCredentials, response: Response):
     data = (user_credentials.username, user_credentials.password, 'NaN', 0, 0, 'user', get_date())
     print(user_credentials)
     add_result = add_user(data)
@@ -59,13 +78,22 @@ async def register(user_credentials: UserCredentials):
     if add_result == 200:
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
+        response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": add_result,
-            "access_token": access_token,
-            "refresh_token": refresh_token
+            "access_token": access_token
         }
     else:
         return {"result": add_result}
+
+
+@app.get("/protected")
+async def protected_route(request: Request):
+    refresh_token = request.cookies.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="Токен не найден")
+    payload = verify_token(refresh_token)
+    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
 
 
 if __name__ == "__main__":
