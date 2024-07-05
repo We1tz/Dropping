@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "your_secret_key"  # Используйте постоянный секретный ключ
+SECRET_KEY = "your_secret_key"  
 ALGORITHM = "HS256"
 
 
