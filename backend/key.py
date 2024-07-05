@@ -1,2 +1,0 @@
-url = 'http://127.0.0.1:8000'
-app_secret_key = '-@ ]\xb9\x0c,z\x1eU\x93,``+\x9av\x9d\xe1\xc3\xbeCF\x19'
