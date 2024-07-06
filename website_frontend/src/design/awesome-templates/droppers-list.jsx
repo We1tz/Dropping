@@ -1,6 +1,6 @@
 import React from 'react'
-
-export default function DroppersList() {
+import { observer } from 'mobx-react-lite'
+export default observer(function DroppersList() {
   return (
     <div>
         <table class="table">
@@ -18,4 +18,4 @@ export default function DroppersList() {
 </table>
     </div>
   )
-}
+})

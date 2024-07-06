@@ -16,26 +16,29 @@ function LoginTemplate() {
         setErrors([]);
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
+          return
         }
         if (password.length < 5) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
+            return;
         }
         if(password.match(signs)){
             setErrors(["Пароль должен содержать специальные знаки"]);
+            return;
         }
         if (!email.includes("@") || !email.includes(".")){
             setErrors(["Неверно введена почта"]);
+            return;
         }
 
         if(errors.length == 0){
-            try{
-                if(store.login(email, password) == "Not authorized"){
-                    setErrors(["Неверно введена почта"]);
+            const g = store.login(email, password).then(function(res){
+                if(res == "nope"){
+                    console.log("ahegao");
+                    setErrors(["неверный логин или пароль"]);
+                    return;
                 }
-            }
-            catch(e){
-                setErrors(["неверный логин или пароль"]);
-            }
+            });
         }
         console.log(errors)
         return errors;

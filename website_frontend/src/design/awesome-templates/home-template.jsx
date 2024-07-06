@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../awesome-components/navbar-default.jsx';
-
+import { observer } from "mobx-react-lite";
 function HomeTemplate(props) {
     return ( 
         <div>
@@ -12,4 +12,4 @@ function HomeTemplate(props) {
     );
 }
 
-export default HomeTemplate;
+export default observer(HomeTemplate);

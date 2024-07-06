@@ -5,7 +5,7 @@ import Aboba from './aboba.jsx';
 import initialNodes from './testdata/nodes.js';
 import initialEdges from './testdata/edges.js';
 import DroppersList from './droppers-list.jsx';
-
+import { observer } from 'mobx-react-lite';
 function Flow() {
   
 
@@ -27,4 +27,4 @@ function Flow() {
 }
 
 
-export default Flow;
+export default observer(Flow);

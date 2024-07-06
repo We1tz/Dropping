@@ -30,9 +30,11 @@ export default class Store {
             console.log(response)
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
+            console.log(this.isAuth);
             this.setUser(response.data.user);
         } catch (e) {
             console.log(e.response?.data?.message);
+            return "nope";
         }
     }
 

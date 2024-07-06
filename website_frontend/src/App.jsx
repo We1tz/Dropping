@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import Home from './design/awesome-templates/home-template.jsx';
 import HomeFooter from './design/awesome-components/footers/footer-home.jsx';
 import MiniFooter from './design/awesome-components/footers/footer-mini.jsx';
 import CurveTransitionTemplate from './design/awesome-templates/curve-transition-template.jsx';
-
+import { Context } from './main.jsx';
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
-
-import "./bootstrap.css";
+import {observer} from "mobx-react-lite";
 import "./curves.scss";
 import HomePage from './design/pages/home-page.jsx';
 import LoginFormPage from './design/pages/login-page.jsx';
@@ -19,6 +18,16 @@ import VictorinePage from './design/pages/victorine-page.jsx';
 import GraphPage from './design/pages/graphs-page.jsx';
 
 function App() {
+  const {store }= useContext(Context);
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+        store.checkAuth()
+    }
+}, [])
+
+if (store.isLoading) {
+  return <div>Загрузка...</div>
+}
   return (
     <div align="center">
 
@@ -42,4 +51,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
