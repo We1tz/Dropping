@@ -1,7 +1,7 @@
 import hashlib
 import secrets
 import time
-import random
+
 
 
 def generate_token(username):
@@ -12,5 +12,3 @@ def generate_token(username):
 
     return token
 
-
-print(generate_token(random.uniform(2.5, 10.0)))

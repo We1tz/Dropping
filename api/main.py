@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db import check_user, add_user
 from get_current_date import get_date
+from create_token import generate_token
+import random
 import jwt
 import datetime
 
@@ -16,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "HDle9hWuMPkmcBFbvUmLeszI7ewc7yBSUC-SmxuRbpU"
+SECRET_KEY = f"{generate_token(random.uniform(2.5, 1000.0))}"
 ALGORITHM = "HS256"
 
 
