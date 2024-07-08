@@ -109,7 +109,7 @@ async def protected_route(request: Request):
 @app.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="refresh_token")
-    return {"message": "Successfully logged out"}
+    return {"message": "Successful"}
 
 
 if __name__ == "__main__":
