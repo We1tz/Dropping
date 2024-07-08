@@ -2,7 +2,7 @@ import React from 'react';
 import CurveTransition from '../awesome-components/transitions/curve-transition';
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
-
+import { observer } from "mobx-react-lite";
 
 function CurveTransitionTemplate() {
     return (
@@ -53,4 +53,4 @@ function CurveTransitionTemplate() {
     );
 }
 
-export default CurveTransitionTemplate;
+export default observer(CurveTransitionTemplate);

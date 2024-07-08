@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CurveTransition from '../awesome-components/transitions/curve-transition';
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
-
+import { observer } from 'mobx-react-lite';
 
 function RatingTemplate() {
   const [data, setData] = useState([
@@ -50,4 +50,4 @@ function RatingTemplate() {
     );
 }
 
-export default RatingTemplate;
+export default observer(RatingTemplate);

@@ -4,7 +4,8 @@ import 'reactflow/dist/style.css';
 import Aboba from './aboba.jsx';
 import initialNodes from './testdata/nodes.js';
 import initialEdges from './testdata/edges.js';
-
+import DroppersList from './droppers-list.jsx';
+import { observer } from 'mobx-react-lite';
 function Flow() {
   
 
@@ -13,10 +14,10 @@ function Flow() {
         <div className='constainer'>
             <div className='row'>
             <div class="col">
-                
+            <DroppersList/>
             </div>
             <div class="col"style={{height:700, width:500}} >
-            <Aboba/>
+              <Aboba/>
             </div>
             </div>
         </div>
@@ -25,12 +26,5 @@ function Flow() {
   );
 }
 
-function GraphTemplate(props) {
-    return (
-      <ReactFlowProvider>
-        <Flow/>
-      </ReactFlowProvider>
-    );
-  }
 
-export default GraphTemplate;
+export default observer(Flow);

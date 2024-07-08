@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CurveTransition from '../awesome-components/transitions/curve-transition';
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
+import { observer } from 'mobx-react-lite';
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -104,4 +105,4 @@ function VictorineTemplate() {
     );
 }
 
-export default VictorineTemplate;
+export default observer(VictorineTemplate);
