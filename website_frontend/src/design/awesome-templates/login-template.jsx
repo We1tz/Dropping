@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 
 function LoginTemplate() {
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
       const [errors, setErrors] = useState([]);
@@ -14,10 +14,12 @@ function LoginTemplate() {
 ""
     const validateValues = () => {
         setErrors([]);
+        /*
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
           return
         }
+          */
         if (password.length < 5) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
@@ -26,13 +28,14 @@ function LoginTemplate() {
             setErrors(["Пароль должен содержать специальные знаки"]);
             return;
         }
+        /*
         if (!email.includes("@") || !email.includes(".")){
             setErrors(["Неверно введена почта"]);
             return;
-        }
+        }*/
 
         if(errors.length == 0){
-            const g = store.login(email, password).then(function(res){
+            const g = store.login(username, password).then(function(res){
                 if(res == "nope"){
                     console.log("ahegao");
                     setErrors(["неверный логин или пароль"]);
@@ -55,10 +58,10 @@ function LoginTemplate() {
                     <input
                         align="center"
                             class="form-control round-input"
-                            onChange={e => setEmail(e.target.value)}
-                            value={email}
+                            onChange={e => setUsername(e.target.value)}
+                            value={username}
                             type="email"
-                            placeholder='Почта'
+                            placeholder='Имя пользователя'
                         />
                         <p></p>
                         <input
@@ -71,6 +74,11 @@ function LoginTemplate() {
                         <p></p>
                         <button type="button" class="btn btn-login-1 " onClick={() => { validateValues()}}>
                             Войти
+                        </button>
+                        <br />
+                        <p></p>
+                        <button type="button" class="btn btn-info btn-login-1 " onClick={() => { validateValues()}}>
+                            Войти через телеграмм <i class="fab fa-brands fa-telegram"></i>
                         </button>
                     </div>
                     <ul>

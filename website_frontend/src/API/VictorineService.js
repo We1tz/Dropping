@@ -1,11 +1,11 @@
 import $api from "../http";
 
 export default class VictorineService {
-    static async Sendres(res, type){
-        return $api.post('/sendvect', { res, type });
+    static async Sendres(username, res, type){
+        return $api.post('/sendvect', { username, res, type });
     }
 
-    static async Getres(email){
-        return $api.get('/getvect', { email });
+    static async Getres(lower, upper){
+        return $api.get('/getvect', { lower, upper });
     }
 }

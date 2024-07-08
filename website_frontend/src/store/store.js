@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import AuthService from "../API/AuthService";
 import axios from 'axios';
-import { API_URL } from "../http";
+import $api, { API_URL } from "../http";
 
 export default class Store {
     user = {};
@@ -24,10 +24,26 @@ export default class Store {
         this.isLoading = bool;
     }
 
+    async loginTG(){
+        try{
+            const responce =  $api.post('/loginTG')
+
+        }
+        catch(e){
+
+        }
+    }
+
     async login(email, password) {
         try {
             const response = await AuthService.login(email, password);
-            console.log(response)
+            console.log(response.data.result);
+            if(response.data.result == 431){
+                console.log("wrong");
+                throw new Error('неверный логин или пароль');
+                return 'nope';
+            }
+            console.log("you are in")
             localStorage.setItem('token', response.data.access_token);
             this.setAuth(true);
             console.log(this.isAuth);
@@ -41,10 +57,12 @@ export default class Store {
     async registration(email, password) {
         try {
             const response = await AuthService.registration(email, password);
-            console.log(response)
-            localStorage.setItem('token', response.data.access_token);
-            this.setAuth(true);
-            this.setUser(response.data.user);
+            if (response.data.result != 431){
+                console.log(response)
+                localStorage.setItem('token', response.data.access_token);
+                this.setAuth(true);
+                this.setUser(response.data.user);
+            }
         } catch (e) {
             console.log(e.response?.data?.message);
         }
@@ -52,9 +70,11 @@ export default class Store {
 
     async logout() {
         try {
-            const response = await AuthService.logout();
             localStorage.removeItem('token');
+            
             this.setAuth(false);
+            const response = await AuthService.logout();
+            
             this.setUser({});
         } catch (e) {
             console.log(e.response?.data?.message);

@@ -59,7 +59,7 @@ def verify_token(token: str):
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials, response: Response):
     result = check_user((user_credentials.username, user_credentials.password))
-    if result:
+    if result == 200:
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
@@ -86,15 +86,6 @@ async def register(user_credentials: UserCredentials, response: Response):
         }
     else:
         return {"result": add_result}
-
-
-@app.get("/refresh")
-async def protected_route(request: Request):
-    refresh_token = request.cookies.get("refresh_token")
-    if not refresh_token:
-        raise HTTPException(status_code=401, detail="Токен не найден")
-    payload = verify_token(refresh_token)
-    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
 
 
 @app.get("/refresh")

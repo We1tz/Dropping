@@ -12,10 +12,12 @@ function RegisterTemplate() {
     const [errors, setErrors] = useState([]);
     const validateValues = () => {
         setErrors([]);
+        /*
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
           return;
         }
+          */
         if (username.length < 4) {
             setErrors(["имя пользователя слишком короткое"]);
             return;
@@ -24,10 +26,11 @@ function RegisterTemplate() {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
         }
+        /*
         if (!email.includes("@") || !email.includes(".")){
             setErrors(["Неверно введена почта"]);
             return;
-        }
+        }*/
 
         try{
             store.registration(email, password);
@@ -60,15 +63,17 @@ function RegisterTemplate() {
                             placeholder='Имя пользователя'
                         />
                         <p></p>
-                    <input
+                        {/*
+                        <input
                         align="center"
                             class="form-control round-input"
                             onChange={e => setEmail(e.target.value)}
                             value={email}
                             type="text"
-                            placeholder='Почта'
+                            placeholder='Имя пользователя'
                         />
-                        <p></p>
+                        */ }
+                    
                         <input
                             class="form-control round-input"
                             onChange={e => setPassword(e.target.value)}

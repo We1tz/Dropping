@@ -3,7 +3,8 @@ import CurveTransition from '../awesome-components/transitions/curve-transition'
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
 import { observer } from 'mobx-react-lite';
-
+import VictorineService from '../../API/VictorineService';
+import Store from '../../store/store';
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -45,11 +46,12 @@ function VictorineTemplate() {
         22: false,
     }
 
-    function HandleClick(yes){
+    async function HandleClick(yes){
         if(cnt==10){
             //
             setOver(true);
             setDate(Date.now()-date);
+            await VictorineService.Sendres(Store.user.username, rightans, date);
         }
         if(yes == answers[picnum]){
             setRightans(rightans+1);
