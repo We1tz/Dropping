@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "your_secret_key"  # Используйте постоянный секретный ключ
+SECRET_KEY = "HDle9hWuMPkmcBFbvUmLeszI7ewc7yBSUC-SmxuRbpU"
 ALGORITHM = "HS256"
 
 
@@ -86,7 +86,7 @@ async def register(user_credentials: UserCredentials, response: Response):
             "access_token": access_token
         }
     else:
-        return {"result": add_result}#
+        return {"result": add_result}
 
 
 @app.get("/refresh")
@@ -98,7 +98,20 @@ async def protected_route(request: Request):
     return {"message": "Вы уже авторизованы", "user": payload["sub"]}
 
 
+@app.get("/refresh")
+async def protected_route(request: Request):
+    refresh_token = request.cookies.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="Токен не найден")
+    payload = verify_token(refresh_token)
+    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
+
+@app.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="refresh_token")
+    return {"message": "Successfully logged out"}
+
+
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)
