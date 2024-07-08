@@ -3,18 +3,28 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from config import token
-from get_current_date import get_date
+from api.get_current_date import get_date
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, KeyboardButton, WebAppInfo, InlineKeyboardButton, \
     InlineKeyboardMarkup
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.state import StatesGroup, State
+from aiogram.types import ContentType
+
 from database import add_user
 from top_information import top
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=token)
-dp = Dispatcher()
+storage = MemoryStorage()
+dp = Dispatcher(storage=storage)
 
 inline_button = InlineKeyboardButton(text="Перейти", callback_data='open_webapp')
 inline_kb = InlineKeyboardMarkup(inline_keyboard=[[inline_button]])
+
+
+class VacancyForm(StatesGroup):
+    waiting_for_vacancy = State()
 
 
 @dp.message(Command("start"))
@@ -37,7 +47,23 @@ async def command_start(message: types.Message):
             await message.answer('Пользователь уже существует', reply_markup=builder.as_markup(resize_keyboard=True))
 
 
-#
+@dp.message(Command("checkvac"))
+async def check_vacancy(message: types.Message, state: FSMContext):
+    await message.answer('Чтобы отправить вакансию, пришлите её текст или фото')
+    await state.set_state(VacancyForm.waiting_for_vacancy.state)
+
+
+@dp.message(VacancyForm.waiting_for_vacancy)
+async def process_vacancy(message: types.Message, state: FSMContext):
+    if message.content_type == ContentType.TEXT:
+        await message.answer('Вы отправили текстовую вакансию')
+    elif message.content_type == ContentType.PHOTO:
+        await message.answer('Вы отправили вакансию в виде фото')
+    else:
+        await message.answer('Пожалуйста, отправьте вакансию в виде текста или фото')
+
+    await state.clear()
+
 @dp.message(Command("dk"))
 async def delete_keyboard(message: types.Message):
     await message.answer('Ваша клавиатура удалена', reply_markup=types.ReplyKeyboardRemove())
