@@ -2,7 +2,7 @@ from fastapi import FastAPI, Response, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db import check_user, add_user
-from bot.get_current_date import get_date
+from get_current_date import get_date
 import jwt
 import datetime
 

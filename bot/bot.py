@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from config import token
-from get_current_date import get_date
+from api.get_current_date import get_date
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from database import add_user
 from top_information import top
