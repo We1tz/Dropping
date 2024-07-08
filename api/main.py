@@ -72,10 +72,7 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
 @app.post("/register")
 async def register(user_credentials: UserCredentials, response: Response):
     data = (user_credentials.username, user_credentials.password, 'NaN', 0, 0, 'user', get_date())
-    print(user_credentials)
     add_result = add_user(data)
-
-    print(add_result)
 
     if add_result == 200:
         access_token = create_access_token({"sub": user_credentials.username})
