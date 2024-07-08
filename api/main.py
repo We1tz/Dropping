@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from db import check_user, add_user
+from db import check_user, add_user, update_score
 from get_current_date import get_date
 from create_token import generate_token
 import random
@@ -25,6 +25,11 @@ ALGORITHM = "HS256"
 class UserCredentials(BaseModel):
     username: str
     password: str
+
+
+class TestResults(BaseModel):
+    score: int
+    time: str
 
 
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
@@ -59,7 +64,7 @@ def verify_token(token: str):
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials, response: Response):
     result = check_user((user_credentials.username, user_credentials.password))
-    if result:
+    if result == 200:
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
@@ -97,13 +102,15 @@ async def protected_route(request: Request):
     return {"message": "Вы уже авторизованы", "user": payload["sub"]}
 
 
-@app.get("/refresh")
-async def protected_route(request: Request):
+@app.post("/sendvect")
+async def send_test_results(request: Request, test_results: TestResults):
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
         raise HTTPException(status_code=401, detail="Токен не найден")
     payload = verify_token(refresh_token)
-    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
+    username = payload["sub"]
+    return update_score(username, test_results.score, test_results.time)
+
 
 
 @app.post("/logout")
