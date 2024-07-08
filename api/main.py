@@ -106,6 +106,7 @@ async def protected_route(request: Request):
     payload = verify_token(refresh_token)
     return {"message": "Вы уже авторизованы", "user": payload["sub"]}
 
+
 @app.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="refresh_token")
@@ -114,4 +115,5 @@ async def logout(response: Response):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
