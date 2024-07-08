@@ -112,7 +112,6 @@ async def send_test_results(request: Request, test_results: TestResults):
     return update_score((username, test_results.score, test_results.time))
 
 
-
 @app.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="refresh_token")
