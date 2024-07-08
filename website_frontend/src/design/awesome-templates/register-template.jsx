@@ -1,8 +1,11 @@
 import React, { FC, useContext, useState } from 'react';
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from 'react-router-dom';
 
 function RegisterTemplate() {
+
+    const redirect = useNavigate();
 
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
@@ -34,6 +37,7 @@ function RegisterTemplate() {
 
         try{
             store.registration(email, password);
+            redirect('/');
         }
         catch(e){
             console.log(e);

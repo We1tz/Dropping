@@ -1,9 +1,11 @@
 import React, { FC, useContext, useState } from 'react';
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from 'react-router-dom';
 
 function LoginTemplate() {
 
+    const redirect = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -41,6 +43,7 @@ function LoginTemplate() {
                     setErrors(["неверный логин или пароль"]);
                     return;
                 }
+                redirect('/');
             });
         }
         console.log(errors)
