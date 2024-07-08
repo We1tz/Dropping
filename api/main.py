@@ -70,6 +70,7 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": result,
+            "username": user_credentials.username,
             "access_token": access_token
         }
     else:
@@ -87,6 +88,7 @@ async def register(user_credentials: UserCredentials, response: Response):
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": add_result,
+            "username": user_credentials.username,
             "access_token": access_token
         }
     else:
