@@ -109,7 +109,7 @@ async def send_test_results(request: Request, test_results: TestResults):
         raise HTTPException(status_code=401, detail="Токен не найден")
     payload = verify_token(refresh_token)
     username = payload["sub"]
-    return update_score(username, test_results.score, test_results.time)
+    return update_score((username, test_results.score, test_results.time))
 
 
 
