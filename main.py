@@ -142,7 +142,7 @@ async def register(user_credentials: UserCredentials, response: Response):
                 "access_token": access_token #
             }
         else:
-            return {"result": add_result}
+            return {"result": 431}
     except Exception as e:
         app_logger.error(f"Error during registration: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
