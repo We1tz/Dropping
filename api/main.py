@@ -27,9 +27,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", f"{secret_key}")
 redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, password=f'{REDIS_PASSWORD}', decode_responses=True)
 
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)
+log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)  #1
 log_handler.setFormatter(log_formatter)
-
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
 
