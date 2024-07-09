@@ -1,5 +1,6 @@
 import psycopg2
 import bcrypt
+from rating import get_rating
 
 conn = psycopg2.connect(dbname="users", user="postgres", password="123456", host="192.168.95.14")
 
@@ -23,8 +24,8 @@ def add_user(data):
         else:
             hashed_password = hash_password(data[1])
             cursor.execute(
-                "INSERT INTO userssite (login, password, telegram, points, attempts, roles, last_login) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                (data[0], hashed_password, data[2], data[3], data[4], data[5], data[6]))
+                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login) VALUES (%s, %s, %s, %s, %s, %s)",
+                (data[0], hashed_password, data[2], data[3], data[5], data[5]))
             conn.commit()
             return 200
 
@@ -40,15 +41,19 @@ def check_user(username: str):
             return 431
 
 
-def update_score(data):
+def update_score(username, score, time):
     with conn.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (data[0],))
+        rating = get_rating(score, time)
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (username,))
         if cursor.fetchone()[0] > 0:
             cursor.execute(
-                "UPDATE userssite SET points = %s, attempts = %s WHERE login = %s",
-                (data[1], data[2], data[0])
+                "UPDATE userssite SET rating = %s WHERE login = %s",
+                (rating, username)
             )
             conn.commit()
-            return 200
+            return {
+                "result": 200,
+                "rating": rating
+            }
         else:
             return 404

@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", f"{secret_key}")
 redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, password=f'{REDIS_PASSWORD}', decode_responses=True)
 
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)  
+log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)
 log_handler.setFormatter(log_formatter)
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
@@ -56,8 +56,8 @@ class UserCredentials(BaseModel):
 
 
 class TestResults(BaseModel):
-    score: int
-    time: str
+    res: int
+    type: int
 
 
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
@@ -127,6 +127,7 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": True,
+            "username": user_credentials.username,
             "access_token": access_token
         }
     else:
@@ -138,7 +139,7 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
 async def register(user_credentials: UserCredentials, response: Response):
     try:
         hashed_password = hash_password(user_credentials.password)
-        data = (user_credentials.username, hashed_password, 'NaN', 0, 0, 'user', get_date())
+        data = (user_credentials.username, hashed_password, 'NaN', 0, 'user', get_date())
         add_result = add_user(data)
 
         if add_result == 200:
@@ -147,7 +148,8 @@ async def register(user_credentials: UserCredentials, response: Response):
             response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
             return {
                 "result": add_result,
-                "access_token": access_token  #
+                "username": user_credentials.username,
+                "access_token": access_token
             }
         else:
             return {"result": 431}
@@ -172,7 +174,10 @@ async def send_test_results(request: Request, test_results: TestResults):
         raise HTTPException(status_code=401, detail="Токен не найден")
     payload = verify_token(refresh_token)
     username = payload["sub"]
-    return update_score((username, test_results.score, test_results.time))
+    score = test_results.res
+    time = test_results.type
+
+    return update_score(username, score, time)
 
 
 @app.post("/logout")
