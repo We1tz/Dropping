@@ -15,6 +15,26 @@ function RegisterTemplate() {
     const [errors, setErrors] = useState([]);
     const validateValues = () => {
         setErrors([]);
+        const lowerCaseLetters = /[a-z]/g;
+        const upperCaseLetters = /[A-Z]/g;
+        const symbols = /[^A-Za-z0-9]/g;
+        const numbers = /[0-9]/g;
+        if(!password.match(symbols)){
+            setErrors(["Пароль должен содержать специальные знаки"]);
+            return;
+        }
+        if(!password.match(numbers)){
+            setErrors(["Пароль должен содержать цифры"]);
+            return;
+        }
+        if(!password.match(upperCaseLetters)){
+            setErrors(["Пароль должен содержать заглавные латинские буквы"]);
+            return;
+        }
+        if(!password.match(lowerCaseLetters)){
+            setErrors(["Пароль должен содержать строчные латинские буквы"]);
+            return;
+        }
         /*
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
@@ -36,12 +56,18 @@ function RegisterTemplate() {
         }*/
 
         try{
-            store.registration(username, password);
+            const g = store.registration(username, password).then(function(res){
+                if(res == "nope"){
+                    console.log("ahegao");
+                    setErrors(["Пользователь с таким именем уже зарегистрирован"]);
+                    return;
+                }
+            })
             redirect('/');
         }
         catch(e){
             console.log(e);
-            setErrors(["неверный логин или пароль"]);
+            setErrors(["Пользователь с таким именем уже зарегистрирован"]);
         }
         console.log(errors)
         return errors;
@@ -86,10 +112,10 @@ function RegisterTemplate() {
                             placeholder='Пароль'
                         />
                         <p></p>
-                        Уже есть аккаунт? <a className="link-dark" href="/login">Войти</a>
+                        Уже есть аккаунт? <a className="link-light" href="/login">Войти</a>
                         <br />
                         <br />
-                        <button type="button" class="btn btn-login-1 " onClick={() => validateValues()}>
+                        <button type="button" class="btn btn-login-1 text-dark" onClick={() => validateValues()}>
                             Зарегистрироваться
                         </button>
                     </div>

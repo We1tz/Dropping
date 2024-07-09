@@ -9,7 +9,7 @@ function RegisterFormPage() {
         <div className="text-white">
             <HomeTemplate>
                 <section class="section-transition section-fullwindow">
-                    <div className="login-jumbotron">
+                    <div className="login-jumbotron text-light">
                         <img height="150" width="150" src="fox-logo.png" alt="" />
                         <h1 className="bold">Foxproof</h1>
                         
