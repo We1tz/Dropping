@@ -155,7 +155,7 @@
   margin-bottom: 1rem;
   font-weight: bold; 
   width: 400px;
-  background: linear-gradient(#FFF8F4, #FFB78E) fixed;
+  background: linear-gradient(#088cf2, #0a0705) fixed;
   border-radius: 10px;
 }
 
@@ -239,7 +239,7 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background: linear-gradient(#f3a74a, #e4cba1) fixed;
+  background: linear-gradient(#056a75, #1f1f1f) fixed;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   overflow-x: hidden;

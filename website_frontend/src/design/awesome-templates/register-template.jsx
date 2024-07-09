@@ -36,7 +36,7 @@ function RegisterTemplate() {
         }*/
 
         try{
-            store.registration(email, password);
+            store.registration(username, password);
             redirect('/');
         }
         catch(e){

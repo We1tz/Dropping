@@ -9,7 +9,7 @@ import VictorineService from '../../API/VictorineService';
 let amm = 10;
 function RatingTemplate() {
 
-  const [data, setData] = useState(Getres(0, amm));
+  const [data, setData] = useState(VictorineService.Getres(0, amm));
   async function showmore(){
     setData([...data, await VictorineService.Getres(amm, amm+10)]);
     amm = amm + 10;
