@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 
 function CurveTransitionTemplate() {
     return (
-        <div class="text-dark grad-article">
+        <div class="text-light grad-article">
             
             <section class=" section-article section-fullwindow">
                 <h1 className='display-4 text-sm-start'>Дропинг: Ловушки для неопытных соискателей</h1>

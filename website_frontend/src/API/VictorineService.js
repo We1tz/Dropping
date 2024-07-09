@@ -1,8 +1,10 @@
 import $api from "../http";
 
 export default class VictorineService {
-    static async Sendres(username, res, type){
-        return $api.post('/sendvect', { username, res, type });
+    static async Sendres(username, score, t){
+        const time = t.toString();
+        console.log({ score, time });
+        return $api.post('/sendvect', { score, time });
     }
 
     static async Getres(lower, upper){

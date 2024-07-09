@@ -12,10 +12,13 @@ function LoginTemplate() {
       const [errors, setErrors] = useState([]);
     const { store } = useContext(Context);
 
-    const signs = "!@#$%^&*()_+=";
 ""
     const validateValues = () => {
         setErrors([]);
+        var lowerCaseLetters = /[a-z]/g;
+        var upperCaseLetters = /[A-Z]/g;
+        const symbols = /[^A-Za-z0-9]/g;
+        const numbers = /[0-9]/g;
         /*
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
@@ -26,8 +29,20 @@ function LoginTemplate() {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
         }
-        if(password.match(signs)){
+        if(!password.match(symbols)){
             setErrors(["Пароль должен содержать специальные знаки"]);
+            return;
+        }
+        if(!password.match(numbers)){
+            setErrors(["Пароль должен содержать цифры"]);
+            return;
+        }
+        if(!password.match(upperCaseLetters)){
+            setErrors(["Пароль должен содержать заглавные буквы"]);
+            return;
+        }
+        if(!password.match(lowerCaseLetters)){
+            setErrors(["Пароль должен содержать строчные буквы"]);
             return;
         }
         /*
@@ -75,7 +90,7 @@ function LoginTemplate() {
                             placeholder='Пароль'
                         />
                         <p></p>
-                        <button type="button" class="btn btn-login-1 " onClick={() => { validateValues()}}>
+                        <button type="button" class="btn btn-login-1 text-dark" onClick={() => { validateValues()}}>
                             Войти
                         </button>
                         <br />

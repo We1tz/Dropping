@@ -40,7 +40,6 @@ export default class Store {
             console.log(response.data.result);
             if(response.data.result == 431){
                 console.log("wrong");
-                throw new Error('неверный логин или пароль');
                 return 'nope';
             }
             console.log("you are in")
@@ -62,7 +61,9 @@ export default class Store {
                 localStorage.setItem('token', response.data.access_token);
                 this.setAuth(true);
                 this.setUser(response.data.user);
+                return
             }
+            return 'nope';
         } catch (e) {
             console.log(e.response?.data?.message);
         }

@@ -134,7 +134,7 @@
 .jumbotron {
   padding: 2rem 1rem;
   margin-bottom: 2rem;
-  background-color: #e9ecef;
+  background-color: #03203d;
   border-radius: .3rem;
 }
 
@@ -160,7 +160,7 @@
 }
 
 .grad-article{
-  background: linear-gradient(#FFB68E, #FFF7F2)fixed;
+  background: linear-gradient(#1241c3, #041333)fixed;
 }
 
 [data-bs-theme=dark] {
@@ -3186,7 +3186,7 @@ textarea.form-control-lg {
 
 .btn-login-1{
   --bs-btn-color: #fff;
-  --bs-btn-bg: #FF8D08;
+  --bs-btn-bg: #26d8ef;
 }
 
 .btn-warning {
@@ -12285,7 +12285,7 @@ label {
 .round-input{
     margin: auto;
     border-radius: 2em;
-    background-color: #997F71;
+    background-color: #64a2d9;
 }
 
 .btn{
