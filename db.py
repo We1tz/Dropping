@@ -33,4 +33,4 @@ def check_user(username: str):
         if result:
             return {"username": username, "password_hash": result[0]}
         else:
-            return None
+            return 431
