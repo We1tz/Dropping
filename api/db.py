@@ -57,3 +57,20 @@ def update_score(username, score, time):
             }
         else:
             return 404
+
+
+def get_users_scores():
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT login, rating FROM userssite ORDER BY rating DESC")
+            results = cursor.fetchall()
+            users_scores = [{"username": row[0], "score": row[1]} for row in results]
+            return users_scores
+    except Exception as e:
+        print(f"Error: {e}")
+        return []
+
+
+
+
+

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, validator
-from db import check_user, add_user, hash_password, verify_password, update_score
+from db import check_user, add_user, hash_password, verify_password, update_score, get_users_scores
 from get_current_date import get_date
 import jwt
 import datetime
@@ -178,6 +178,12 @@ async def send_test_results(request: Request, test_results: TestResults):
     time = test_results.type
 
     return update_score(username, score, time)
+
+
+@app.get("/getvect")
+async def send_test_results():
+    result = get_users_scores()
+    return result
 
 
 @app.post("/logout")
