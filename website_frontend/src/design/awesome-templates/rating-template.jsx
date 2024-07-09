@@ -9,11 +9,11 @@ import VictorineService from '../../API/VictorineService';
 let amm = 10;
 function RatingTemplate() {
 
-  const [data, setData] = useState(VictorineService.Getres(0, amm));
-  async function showmore(){
-    setData([...data, await VictorineService.Getres(amm, amm+10)]);
-    amm = amm + 10;
-  };
+  const [data, setData] = useState(VictorineService.Getres());
+  useEffect(()=>{
+    const a = data.then(function(res){return res});
+    console.log(a)
+  }, [data])
     return (
         <div class="text-dark grad-article">
             
@@ -26,20 +26,18 @@ function RatingTemplate() {
       <th scope="col">Место</th>
       <th scope="col">Имя пользователя</th>
       <th scope="col">Баллы</th>
-      <th scope="col">Время прохождения</th>
     </tr>
   </thead>
   <tbody>
-    {
-    SlicedData.map((i, index)=>{
+    {/*
+    data.map((i, index)=>{
       return(      
       <tr key={index}>
         <th scope="row">{index+1}</th>
-        <td >{i.name}</td>
+        <td >{i.username}</td>
         <td>{i.score}</td>
-        <td>{i.time}</td>
       </tr>)
-    })}
+    }) */}
   </tbody>
 </table>
 {
