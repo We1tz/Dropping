@@ -3,6 +3,9 @@ import CurveTransition from '../awesome-components/transitions/curve-transition'
 import BubbleTransition from '../awesome-components/transitions/bubble-transition';
 import WaveTransition from '../awesome-components/transitions/wave-transition';
 import { observer } from 'mobx-react-lite';
+import VictorineService from '../../API/VictorineService';
+import { useContext } from 'react';
+import {Context} from "../../main";
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -12,6 +15,8 @@ function getRandomInt(min, max) {
 
 
 function VictorineTemplate() {
+
+    const {store} = useContext(Context);
 
     const [picnum, setPicNum] = useState(getRandomInt(1, 6)); 
     const [rightans, setRightans] = useState(0);
@@ -45,11 +50,12 @@ function VictorineTemplate() {
         22: false,
     }
 
-    function HandleClick(yes){
+    async function HandleClick(yes){
         if(cnt==10){
             //
             setOver(true);
             setDate(Date.now()-date);
+            await VictorineService.Sendres(store.user.username, rightans, date);
         }
         if(yes == answers[picnum]){
             setRightans(rightans+1);
