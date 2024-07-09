@@ -25,7 +25,7 @@ def add_user(data):
             hashed_password = hash_password(data[1])
             cursor.execute(
                 "INSERT INTO userssite (login, password, telegram, rating, roles, last_login) VALUES (%s, %s, %s, %s, %s, %s)",
-                (data[0], hashed_password, data[2], data[3], data[5], data[5]))
+                (data[0], hashed_password, data[2], data[3], data[5], data[6]))
             conn.commit()
             return 200
 
