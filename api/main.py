@@ -183,7 +183,7 @@ async def send_test_results(request: Request, test_results: TestResults):
 @app.get("/getvect")
 async def send_test_results():
     result = get_users_scores()
-    return result
+    return result  #
 
 
 @app.post("/logout")
