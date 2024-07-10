@@ -9,16 +9,18 @@ import VictorineService from '../../API/VictorineService';
 let amm = 10;
 function RatingTemplate() {
 
-  const [data, setData] = useState(VictorineService.Getres());
+  const [data, setData] = useState([]);
   useEffect(()=>{
-    const a = data.then(function(res){return res});
-    console.log(a)
-  }, [data])
+    const a = VictorineService.Getres().then(function(res){
+      setData(res.data);
+      console.log(res.data);
+    });
+  }, []);
     return (
         <div class="text-dark grad-article">
             
             <section class=" section-article section-fullwindow">
-                <h1 className='display-4 text-sm-start'>Рейтинг</h1>
+                <h1 className='display-4 text-sm-start text-light'>Рейтинг</h1>
                     <div class="container">
                     <table class="table">
   <thead>
@@ -29,7 +31,7 @@ function RatingTemplate() {
     </tr>
   </thead>
   <tbody>
-    {/*
+    {
     data.map((i, index)=>{
       return(      
       <tr key={index}>
@@ -37,7 +39,7 @@ function RatingTemplate() {
         <td >{i.username}</td>
         <td>{i.score}</td>
       </tr>)
-    }) */}
+    }) }
   </tbody>
 </table>
 {
