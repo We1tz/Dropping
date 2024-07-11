@@ -1,5 +1,4 @@
 .env
 venv/
-config.py
 /test_backend/node_modules
 .idea
