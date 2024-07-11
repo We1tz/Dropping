@@ -1,6 +1,7 @@
 import psycopg2
 import bcrypt
 from rating import get_rating
+from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
 
 conn = psycopg2.connect(dbname='main',
     user='we1tz',
@@ -8,7 +9,7 @@ conn = psycopg2.connect(dbname='main',
     host='193.187.96.199',
     port='5432'
 )
-conn = psycopg2.connect(dbname="main", user="we1tz", password="awU4NjJeq", host="193.187.96.199")
+conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
 
 def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
@@ -22,6 +23,7 @@ def verify_password(password: str, hashed_password: str) -> bool:
 
 #
 def add_user(data):
+
     login = data[0]
     password = hash_password(data[1])
     email = data[2]
