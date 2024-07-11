@@ -1,14 +1,15 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, validator
-from db import check_user, add_user, hash_password, verify_password, update_score, get_users_scores
+from db import check_user, add_user, hash_password, verify_password, update_score, get_users_scores, restore_password
 from get_current_date import get_date
 import jwt
 import datetime
+from generator import generate_password, generate_pin
 import redis
 import os
-import pandas
+from mail_send import send_password_mail
 import logging
+from pydantic import BaseModel, Field, validator
 from logging.handlers import RotatingFileHandler
 from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, \
     ALGORITHM, allow_origin
@@ -35,7 +36,7 @@ console_handler.setFormatter(log_formatter)
 
 app_logger = logging.getLogger()
 app_logger.setLevel(logging.INFO)
-app_logger.addHandle    r(log_handler)
+app_logger.addHandler(log_handler)
 app_logger.addHandler(console_handler)
 
 
@@ -60,6 +61,10 @@ class UserCredentials(BaseModel):
 class TestResults(BaseModel):
     res: int
     type: int
+
+
+class Restore(BaseModel):
+    email: str
 
 
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
@@ -183,6 +188,18 @@ async def send_test_results(request: Request, test_results: TestResults):
     return update_score(username, score, time)
 
 
+@app.post("/restore")
+async def restore(response: Response, restore: Restore):
+    new_password = generate_password()
+    res = restore_password((restore.email, hash_password(new_password)))
+    if res == 200:
+        send_password_mail((restore.email, new_password))
+        response.delete_cookie(key="refresh_token")
+        return 'Пароль изменен'
+    else:
+        return 404
+
+
 @app.get("/getvect")
 async def send_test_results():
     result = get_users_scores()
@@ -192,10 +209,9 @@ async def send_test_results():
 @app.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="refresh_token")
-    return {"message": "Successful"}
+    return {"message": "Успешно"}
 
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)

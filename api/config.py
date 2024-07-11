@@ -2,7 +2,6 @@
 
 ALL_HOST = '193.187.96.199'
 
-
 REDIS_HOST = f"{ALL_HOST}"
 REDIS_PORT = 6379
 REDIS_PASSWORD = 'rk8zD5B%wxUYVdsW2&E'
@@ -28,3 +27,9 @@ DB_USER = conn_params['user']
 DB_PASSWORD = conn_params['password']
 DB_HOST = conn_params['host']
 DB_PORT = conn_params['port']
+
+smtp_server = 'smtp.antidropping.ru'
+smtp_port = 587
+smtp_username = 'admin2281337@antidropping.ru'
+smtp_password = 'r$U3q#V7&fW3x%'
+from_email = 'admin2281337@antidropping.ru'

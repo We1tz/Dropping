@@ -3,13 +3,8 @@ import bcrypt
 from rating import get_rating
 from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
 
-conn = psycopg2.connect(dbname='main',
-    user='we1tz',
-    password='awU4NjJeq',
-    host='193.187.96.199',
-    port='5432'
-)
 conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
+
 
 def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
@@ -21,7 +16,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
-#
 def add_user(data):
     login = data[0]
     password = hash_password(data[1])
@@ -39,7 +33,8 @@ def add_user(data):
         else:
 
             cursor.execute(
-                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email) VALUES (%s, %s, "
+                "%s, %s, %s, %s, %s)",
                 (login, password, telegram, rating, role, last_login, email))
             conn.commit()
             return 200
@@ -85,3 +80,21 @@ def get_users_scores():
     except Exception as e:
         print(f"Error: {e}")
         return []
+
+
+def restore_password(data):
+
+    email = data[0]
+    password = data[1]
+
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s", (email,))
+        if cursor.fetchone()[0] > 0:
+            cursor.execute(
+                "UPDATE userssite SET password = %s WHERE login = %s",
+                (password, email)
+            )
+            conn.commit()
+            return 200
+        else:
+            return 404
