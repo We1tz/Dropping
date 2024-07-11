@@ -7,6 +7,7 @@ import jwt
 import datetime
 import redis
 import os
+import pandas
 import logging
 from logging.handlers import RotatingFileHandler
 from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, \
@@ -41,6 +42,7 @@ app_logger.addHandler(console_handler)
 class UserCredentials(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=8, max_length=100)
+    email: str
 
     @validator("password")
     def password_complexity(cls, value):
@@ -139,7 +141,8 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
 async def register(user_credentials: UserCredentials, response: Response):
     try:
         hashed_password = hash_password(user_credentials.password)
-        data = (user_credentials.username, hashed_password, 'NaN', 0, 'user', get_date())
+        email = user_credentials.email
+        data = (user_credentials.username, hashed_password, email, 'not', 0, 'user', get_date())
         add_result = add_user(data)
 
         if add_result == 200:
