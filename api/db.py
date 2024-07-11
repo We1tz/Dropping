@@ -14,9 +14,9 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
+
 #
 def add_user(data):
-
     login = data[0]
     password = hash_password(data[1])
     email = data[2]
