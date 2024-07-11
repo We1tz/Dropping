@@ -17,7 +17,7 @@ import RegisterFormPage from './design/pages/register-page.jsx';
 import VictorinePage from './design/pages/victorine-page.jsx';
 import RestorePage from './design/pages/restore-page.jsx';
 import GraphPage from './design/pages/graphs-page.jsx';
-import stringify from 'virtual-dom-stringify';
+import NewpassPage from './design/pages/newpass-page.jsx';
 
 function App() {
   const {store }= useContext(Context);
@@ -46,6 +46,7 @@ if (store.isLoading) {
           <Route path="/register" element={<RegisterFormPage/>} />
           <Route path="/victorine" element={<VictorinePage/>} />
           <Route path="/graph" element={<GraphPage/>} />
+          <Route path="/newpass" elemant={<NewpassPage/>} />
         </Routes>
       </BrowserRouter>
 

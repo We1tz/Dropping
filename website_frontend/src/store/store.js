@@ -34,9 +34,9 @@ export default class Store {
         }
     }
 
-    async login(email, username, password) {
+    async login(username, password) {
         try {
-            const response = await AuthService.login(email, username, password);
+            const response = await AuthService.login(username, password);
             console.log(response.data.result);
             if(response.data.result == 431){
                 console.log("wrong");

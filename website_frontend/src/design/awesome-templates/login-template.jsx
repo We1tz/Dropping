@@ -7,7 +7,6 @@ function LoginTemplate() {
 
     const redirect = useNavigate();
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
 
       const [errors, setErrors] = useState([]);
@@ -16,6 +15,7 @@ function LoginTemplate() {
 ""
     const validateValues = () => {
         setErrors([]);
+        console.log("jopa");
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         const symbols = /[^A-Za-z0-9]/g;
@@ -46,18 +46,9 @@ function LoginTemplate() {
             setErrors(["Пароль должен содержать строчные буквы"]);
             return;
         }
-        if (email.length < 4) {
-            setErrors(["Название почты слишком короткое"]);
-            return;
-        }
-        
-        if (!email.includes("@") || !email.includes(".")){
-            setErrors(["Неверно введена почта"]);
-            return;
-        }
-
+        console.log("jopa2");
         if(errors.length == 0){
-            const g = store.login(email, username, password).then(function(res){
+            const g = store.login(username, password).then(function(res){
                 if(res == "nope"){
                     console.log("ahegao");
                     setErrors(["неверный логин или пароль"]);
@@ -78,6 +69,7 @@ function LoginTemplate() {
                         
                     
                     <div className='gap-3'>
+                    {/*
                     <input
                         align="center"
                             class="form-control round-input"
@@ -87,7 +79,7 @@ function LoginTemplate() {
                             placeholder='Почта'
                         />
                         <p></p>
-
+                        */}
                     <input
                         align="center"
                             class="form-control round-input"
@@ -118,7 +110,7 @@ function LoginTemplate() {
                         </button>
                     </div>
                     <ul>
-                        {errors.map(i => {i})}
+                        {errors.map(i => <li>{i}</li>)}
                     </ul>
                     </div>
             </form>
