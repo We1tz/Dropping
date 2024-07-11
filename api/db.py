@@ -2,7 +2,7 @@ import psycopg2
 import bcrypt
 from rating import get_rating
 
-conn = psycopg2.connect(dbname="users", user="postgres", password="123456", host="192.168.95.14")
+conn = psycopg2.connect(dbname="main", user="we1tz", password="awU4NjJeq", host="193.187.96.199")
 
 
 def hash_password(password: str) -> str:
@@ -16,16 +16,25 @@ def verify_password(password: str, hashed_password: str) -> bool:
 
 
 def add_user(data):
+
+    login = data[0]
+    password = hash_password(data[1])
+    email = data[2]
+    telegram = data[3]
+    rating = data[4]
+    role = data[5]
+    last_login = data[6]
+
     with conn.cursor() as cursor:
         cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (data[0],))
         if cursor.fetchone()[0] > 0:
             conn.commit()
             return 433
         else:
-            hashed_password = hash_password(data[1])
+
             cursor.execute(
-                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login) VALUES (%s, %s, %s, %s, %s, %s)",
-                (data[0], hashed_password, data[2], data[3], data[5], data[6]))
+                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (login, password, telegram, rating, role, last_login, email))
             conn.commit()
             return 200
 
@@ -65,12 +74,8 @@ def get_users_scores():
             cursor.execute("SELECT login, rating FROM userssite ORDER BY rating DESC")
             results = cursor.fetchall()
             users_scores = [{"username": row[0], "score": row[1]} for row in results]
+            conn.commit()
             return users_scores
     except Exception as e:
         print(f"Error: {e}")
         return []
-
-
-
-
-
