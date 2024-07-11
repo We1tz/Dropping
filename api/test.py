@@ -8,8 +8,11 @@ data_list = df.to_dict(orient='records')
 
 conn = psycopg2.connect(**conn_params)
 cursor = conn.cursor()
+counter = 0
 
 for record in data_list:
+    counter += 1
+    lens = len(data_list)
     date = record['date']
     amt = record['amt']
     acc_in = record['id_acc_in']
@@ -18,6 +21,6 @@ for record in data_list:
         INSERT INTO transactions (date, amt, id_acc_in, id_acc_out)
         VALUES (%s, %s, %s, %s)
     """, (date, amt, acc_in, acc_out))
-    print('DONE')
+    print('DONE', f'{counter}/{lens}')
     conn.commit()
 conn.commit()
