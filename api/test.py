@@ -1,17 +1,10 @@
 import pandas as pd
 import psycopg2
+from config import conn_params
 
 csv_file_path = 'датасет.csv'
 df = pd.read_csv(csv_file_path, sep=';')
 data_list = df.to_dict(orient='records')
-
-conn_params = {
-    'dbname': 'main',
-    'user': 'we1tz',
-    'password': 'awU4NjJeq',
-    'host': '193.187.96.199',
-    'port': '5432'
-}
 
 conn = psycopg2.connect(**conn_params)
 cursor = conn.cursor()

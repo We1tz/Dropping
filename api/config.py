@@ -1,7 +1,11 @@
 # Redis connection
-REDIS_HOST = "192.168.95.14"
+
+ALL_HOST = '193.187.96.199'
+
+
+REDIS_HOST = f"{ALL_HOST}"
 REDIS_PORT = 6379
-REDIS_PASSWORD = '228_cbcbcb_1337'
+REDIS_PASSWORD = 'rk8zD5B%wxUYVdsW2&E'
 
 # FASTAPI
 secret_key = 'HDle9hWuMPkmcBFbvUmLeszI7ewc7yBSUC-SmxuRbpU'
@@ -11,4 +15,16 @@ allow_origin = 'http://localhost:3000'
 MAX_FAILED_ATTEMPTS = 5
 BLOCK_TIME_SECONDS = 10  # 10 sec
 
+conn_params = {
+    'dbname': 'main',
+    'user': 'we1tz',
+    'password': 'awU4NjJeq',
+    'host': f'{ALL_HOST}',
+    'port': '5432'
+}
 
+DB_NAME = conn_params['dbname']
+DB_USER = conn_params['user']
+DB_PASSWORD = conn_params['password']
+DB_HOST = conn_params['host']
+DB_PORT = conn_params['port']
