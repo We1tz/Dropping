@@ -1,24 +1,20 @@
-import HomeFooter from "../awesome-components/footers/footer-home";
-import BubbleTransition from "../awesome-components/transitions/bubble-transition";
-import CurveTransition from "../awesome-components/transitions/curve-transition";
+import React from 'react'
 import HomeTemplate from "../awesome-templates/home-template";
-import LoginTemplate from "../awesome-templates/login-template";
+import RestoreTemplate from '../awesome-templates/restore-template';
 
-function LoginFormPage() {
-    return (
-        <div className="text-white ">
+export default function RestorePage() {
+  return (
+    <div className="text-white ">
             <HomeTemplate>
                 <section class="section-transition grad-article section-fullwindow">
                     <div className="login-jumbotron text-light">
                         <img height="150" width="150" src="fox-logo.png" alt="" />
                         <h1 className="bold">Foxproof</h1>
                         
-                        <LoginTemplate />
+                        <RestoreTemplate />
                     </div>
                 </section>
             </HomeTemplate>
         </div>
-    );
+  )
 }
-
-export default LoginFormPage;

@@ -2,7 +2,12 @@ import psycopg2
 import bcrypt
 from rating import get_rating
 
-conn = psycopg2.connect(dbname="users", user="postgres", password="123456", host="192.168.95.14")
+conn = psycopg2.connect(dbname='main',
+    user='we1tz',
+    password='awU4NjJeq',
+    host='193.187.96.199',
+    port='5432'
+)
 
 
 def hash_password(password: str) -> str:

@@ -34,9 +34,9 @@ export default class Store {
         }
     }
 
-    async login(email, password) {
+    async login(email, username, password) {
         try {
-            const response = await AuthService.login(email, password);
+            const response = await AuthService.login(email, username, password);
             console.log(response.data.result);
             if(response.data.result == 431){
                 console.log("wrong");
@@ -53,9 +53,9 @@ export default class Store {
         }
     }
 
-    async registration(email, password) {
+    async registration(email,username, password) {
         try {
-            const response = await AuthService.registration(email, password);
+            const response = await AuthService.registration(email, username, password);
             if (response.data.result != 431){
                 console.log(response)
                 localStorage.setItem('token', response.data.access_token);
@@ -79,6 +79,21 @@ export default class Store {
             this.setUser({});
         } catch (e) {
             console.log(e.response?.data?.message);
+        }
+    }
+
+    async restore(email) {
+        try {
+            const response = await AuthService.restore(email);
+            console.log(response.data.result);
+            if(response.data.result == 431){
+                console.log("wrong");
+                return 'nope';
+            }
+            console.log("you are in");
+        } catch (e) {
+            console.log(e.response?.data?.message);
+            return e;
         }
     }
 

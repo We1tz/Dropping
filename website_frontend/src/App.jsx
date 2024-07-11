@@ -15,7 +15,9 @@ import AdminPage from './design/pages/admin-page.jsx';
 import RatingPage from './design/pages/rating-page.jsx';
 import RegisterFormPage from './design/pages/register-page.jsx';
 import VictorinePage from './design/pages/victorine-page.jsx';
+import RestorePage from './design/pages/restore-page.jsx';
 import GraphPage from './design/pages/graphs-page.jsx';
+import stringify from 'virtual-dom-stringify';
 
 function App() {
   const {store }= useContext(Context);
@@ -30,7 +32,6 @@ if (store.isLoading) {
 }
   return (
     <div align="center">
-
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" />
       <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 
@@ -40,6 +41,7 @@ if (store.isLoading) {
           <Route path="/rating" element={<RatingPage/>} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginFormPage />} />
+          <Route path="/restorepass" element={<RestorePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/register" element={<RegisterFormPage/>} />
           <Route path="/victorine" element={<VictorinePage/>} />
@@ -50,5 +52,6 @@ if (store.isLoading) {
     </div>
   );
 }
+
 
 export default observer(App);

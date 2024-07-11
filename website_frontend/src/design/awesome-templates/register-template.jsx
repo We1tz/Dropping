@@ -35,25 +35,22 @@ function RegisterTemplate() {
             setErrors(["Пароль должен содержать строчные латинские буквы"]);
             return;
         }
-        /*
         if (email.length < 4) {
           setErrors(["Название почты слишком короткое"]);
           return;
         }
-          */
         if (username.length < 4) {
             setErrors(["имя пользователя слишком короткое"]);
             return;
         }
-        if (password.length < 5) {
+        if (password.length < 8) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
         }
-        /*
         if (!email.includes("@") || !email.includes(".")){
             setErrors(["Неверно введена почта"]);
             return;
-        }*/
+        }
 
         try{
             const g = store.registration(username, password).then(function(res){
@@ -84,6 +81,15 @@ function RegisterTemplate() {
                     <p></p>
                     
                     <div className='gap-3'>
+                    <input
+                        align="center"
+                            class="form-control round-input"
+                            onChange={e => setEmail(e.target.value)}
+                            value={email}
+                            type="email"
+                            placeholder='Почта'
+                        />
+                        <p></p>
                     <input
                         align="center"
                             class="form-control round-input"

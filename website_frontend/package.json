@@ -30,6 +30,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-saga": "^1.2.3",
     "redux-thunk": "^2.4.2",
+    "virtual-dom-stringify": "^3.0.1",
     "vitest": "^0.34.6",
     "web-vitals": "^1.0.1"
   },

@@ -7,6 +7,7 @@ function LoginTemplate() {
 
     const redirect = useNavigate();
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
 
       const [errors, setErrors] = useState([]);
@@ -25,7 +26,7 @@ function LoginTemplate() {
           return
         }
           */
-        if (password.length < 5) {
+        if (password.length < 8) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
         }
@@ -45,14 +46,18 @@ function LoginTemplate() {
             setErrors(["Пароль должен содержать строчные буквы"]);
             return;
         }
-        /*
+        if (email.length < 4) {
+            setErrors(["Название почты слишком короткое"]);
+            return;
+        }
+        
         if (!email.includes("@") || !email.includes(".")){
             setErrors(["Неверно введена почта"]);
             return;
-        }*/
+        }
 
         if(errors.length == 0){
-            const g = store.login(username, password).then(function(res){
+            const g = store.login(email, username, password).then(function(res){
                 if(res == "nope"){
                     console.log("ahegao");
                     setErrors(["неверный логин или пароль"]);
@@ -76,9 +81,19 @@ function LoginTemplate() {
                     <input
                         align="center"
                             class="form-control round-input"
+                            onChange={e => setEmail(e.target.value)}
+                            value={email}
+                            type="email"
+                            placeholder='Почта'
+                        />
+                        <p></p>
+
+                    <input
+                        align="center"
+                            class="form-control round-input"
                             onChange={e => setUsername(e.target.value)}
                             value={username}
-                            type="email"
+                            type="text"
                             placeholder='Имя пользователя'
                         />
                         <p></p>
@@ -90,6 +105,9 @@ function LoginTemplate() {
                             placeholder='Пароль'
                         />
                         <p></p>
+                        <a className="link-light text-start" href="/restorepass">Забыли пароль?</a>
+                        <br />
+                        <br />
                         <button type="button" class="btn btn-login-1 text-dark" onClick={() => { validateValues()}}>
                             Войти
                         </button>
@@ -100,12 +118,13 @@ function LoginTemplate() {
                         </button>
                     </div>
                     <ul>
-                        {errors.map(i => <li>{i}</li>)}
+                        {errors.map(i => {i})}
                     </ul>
                     </div>
             </form>
         </div>
     );
 }
+
 
 export default observer(LoginTemplate);
