@@ -18,7 +18,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
 
 #
 def add_user(data):
-
     login = data[0]
     password = hash_password(data[1])
     email = data[2]

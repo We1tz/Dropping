@@ -142,7 +142,7 @@ async def register(user_credentials: UserCredentials, response: Response):
     try:
         hashed_password = hash_password(user_credentials.password)
         email = user_credentials.email
-        data = (user_credentials.username, hashed_password, email, 'not', 0, 'user', get_date())
+        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
         add_result = add_user(data)
 
         if add_result == 200:
