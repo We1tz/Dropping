@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import check_user, add_user, hash_password, verify_password, update_score, get_users_scores, restore_password
+from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password
 from get_current_date import get_date
 import jwt
 import datetime
-from generator import generate_password, generate_pin
+from api.generator import generate_password
 import redis
 import os
 from mail_send import send_password_mail
