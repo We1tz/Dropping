@@ -13,7 +13,7 @@ def transactions_model():
                 rows = cursor.fetchall()
                 df = pd.DataFrame(rows, columns=['date', 'amt', 'id_acc_in', 'id_acc_out'])
             return df
-
+#
 
     data = fetch_data(conn_params)
     preprocessor = DataPreprocess(data)
