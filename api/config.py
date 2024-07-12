@@ -14,7 +14,7 @@ ALGORITHM = "HS256"
 allow_origin = 'http://localhost:3000'
 
 MAX_FAILED_ATTEMPTS = 5
-BLOCK_TIME_SECONDS = 10  # 10 sec
+BLOCK_TIME_SECONDS = 10  # 10 se
 
 conn_params = {
     'dbname': 'main',
