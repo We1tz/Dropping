@@ -43,7 +43,6 @@ app_logger.addHandler(console_handler)
 class UserCredentials(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=8, max_length=100)
-    email: str
 
     @validator("password")
     def password_complexity(cls, value):
@@ -122,19 +121,13 @@ def reset_failed_attempts(username: str):
 
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials, response: Response):
-    if is_user_blocked(user_credentials.username):
-        raise HTTPException(status_code=403,
-                            detail="Аккаунт временно заблокирован из-за нескольких неудачных попыток входа в систему")
-
-    result = check_user(user_credentials.username)
-    if result and verify_password(user_credentials.password, result["password_hash"]):
+    if check_user((user_credentials.username, user_credentials.password)) == 200:
         reset_failed_attempts(user_credentials.username)
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": True,
-            "username": user_credentials.username,
             "access_token": access_token
         }
     else:
@@ -214,4 +207,5 @@ async def logout(response: Response):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)

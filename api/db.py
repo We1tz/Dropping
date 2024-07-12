@@ -40,15 +40,21 @@ def add_user(data):
             return 200
 
 
-def check_user(username: str):
+def check_user(data):
+
+    password = data[1]
+    username = data[0]
+
     with conn.cursor() as cursor:
         cursor.execute("SELECT password FROM userssite WHERE login = %s", (username,))
         result = cursor.fetchone()
         conn.commit()
-        if result:
-            return {"username": username, "password_hash": result[0]}
+        if verify_password(password, result[0]):
+            return 200
         else:
             return 431
+
+
 
 
 def update_score(username, score, time):
