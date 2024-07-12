@@ -1,16 +1,16 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, validator
-from db import check_user, add_user, hash_password, verify_password, update_score, get_users_scores
-from get_current_date import get_date
+from api.db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password
+from api.get_current_date import get_date
 import jwt
 import datetime
 import redis
 import os
-import pandas
+from api.mail_send import send_password_mail
 import logging
-from logging.handlers import RotatingFileHandler
-from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, \
+from pydantic import BaseModel, Field, validator
+from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
+    console_handler, log_handler, \
     ALGORITHM, allow_origin
 
 app = FastAPI()
@@ -27,12 +27,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", f"{secret_key}")
 
 redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, password=f'{REDIS_PASSWORD}', decode_responses=True)
 
-log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)
 log_handler.setFormatter(log_formatter)
-console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
-
 app_logger = logging.getLogger()
 app_logger.setLevel(logging.INFO)
 app_logger.addHandler(log_handler)
@@ -42,7 +38,6 @@ app_logger.addHandler(console_handler)
 class UserCredentials(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=8, max_length=100)
-    email: str
 
     @validator("password")
     def password_complexity(cls, value):
@@ -60,6 +55,10 @@ class UserCredentials(BaseModel):
 class TestResults(BaseModel):
     res: int
     type: int
+
+
+class Restore(BaseModel):
+    email: str
 
 
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
@@ -117,19 +116,13 @@ def reset_failed_attempts(username: str):
 
 @app.post("/login")
 async def receive_data(user_credentials: UserCredentials, response: Response):
-    if is_user_blocked(user_credentials.username):
-        raise HTTPException(status_code=403,
-                            detail="Аккаунт временно заблокирован из-за нескольких неудачных попыток входа в систему")
-
-    result = check_user(user_credentials.username)
-    if result and verify_password(user_credentials.password, result["password_hash"]):
+    if check_user((user_credentials.username, user_credentials.password)) == 200:
         reset_failed_attempts(user_credentials.username)
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
         response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
         return {
             "result": True,
-            "username": user_credentials.username,
             "access_token": access_token
         }
     else:
@@ -142,15 +135,16 @@ async def register(user_credentials: UserCredentials, response: Response):
     try:
         hashed_password = hash_password(user_credentials.password)
         email = user_credentials.email
-        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
-        add_result = add_user(data)
 
-        if add_result == 200:
+        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
+        result = add_user(data)
+
+        if result == 200:
             access_token = create_access_token({"sub": user_credentials.username})
             refresh_token = create_refresh_token({"sub": user_credentials.username})
             response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
             return {
-                "result": add_result,
+                "result": result,
                 "username": user_credentials.username,
                 "access_token": access_token
             }
@@ -166,8 +160,7 @@ async def protected_route(request: Request):
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
         raise HTTPException(status_code=401, detail="Токен не найден")
-    payload = verify_token(refresh_token)
-    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
+    return {"message": "Вы уже авторизованы", "user": verify_token(refresh_token)["sub"]}
 
 
 @app.post("/sendvect")
@@ -183,6 +176,26 @@ async def send_test_results(request: Request, test_results: TestResults):
     return update_score(username, score, time)
 
 
+@app.post("/restore")
+async def restore(response: Response, restore: Restore):
+    new_password = generate_password()
+    result = restore_password((restore.email, hash_password(new_password)))
+    if result == 200:
+        send_password_mail((restore.email, new_password))
+        response.delete_cookie(key="refresh_token")
+        return 'Пароль изменен'
+    else:
+        return 404
+
+
+@app.get("/transactions")
+async def transactions(response: Response):
+    result = transaction_model()
+    return {'result': 200,
+            'model': result}
+
+
+
 @app.get("/getvect")
 async def send_test_results():
     result = get_users_scores()
@@ -192,7 +205,7 @@ async def send_test_results():
 @app.post("/logout")
 async def logout(response: Response):
     response.delete_cookie(key="refresh_token")
-    return {"message": "Successful"}
+    return {"message": "Успешно"}
 
 
 if __name__ == "__main__":
