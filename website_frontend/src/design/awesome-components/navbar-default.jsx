@@ -25,6 +25,9 @@ function Navbar() {
                             <li>
                             <a data-testid="home-link" className="nav-link active" href="/rating">Рейтинг</a>
                             </li>
+                            <li>
+                            <a data-testid="home-link" className="nav-link active" href="/admin">Администрация</a>
+                            </li>
                             {
                                 store.isAuth?
                                 <>
@@ -34,6 +37,7 @@ function Navbar() {
                         <li>
                         <a data-testid="home-link" className="nav-link active" href="/graph">Аналитика</a>
                         </li>
+                        
                                 </>
                                     :
                                     ""

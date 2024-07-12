@@ -49,7 +49,7 @@ export default class Store {
             this.setUser(response.data.user);
         } catch (e) {
             console.log(e.response?.data?.message);
-            return e;
+            return 'nope';
         }
     }
 
@@ -66,6 +66,7 @@ export default class Store {
             return 'nope';
         } catch (e) {
             console.log(e.response?.data?.message);
+            return 'nope';
         }
     }
 

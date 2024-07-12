@@ -8,8 +8,7 @@ function RestoreTemplate() {
     const [email, setEmail] = useState("")
     const [errors, setErrors] = useState([]);
     const { store } = useContext(Context);
-
-""
+    const redirect = useNavigate();
     const validateValues = () => {
         setErrors([]);
         if (email.length < 4) {
@@ -29,6 +28,7 @@ function RestoreTemplate() {
                     setErrors(["неверный логин или пароль"]);
                     return;
                 }
+                redirect('/login');
             });
         }
         console.log(errors)
@@ -57,7 +57,7 @@ function RestoreTemplate() {
                         </button>
                     </div>
                     <ul>
-                        {errors.map(i => {i})}
+                        {errors.map(i => <li>{i}</li>)}
                     </ul>
                     </div>
             </form>

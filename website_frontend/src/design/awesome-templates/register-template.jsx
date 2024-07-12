@@ -54,13 +54,16 @@ function RegisterTemplate() {
 
         try{
             const g = store.registration(email, username, password).then(function(res){
+                console.log(res);
                 if(res == "nope"){
                     console.log("ahegao");
                     setErrors(["Пользователь с таким именем уже зарегистрирован"]);
                     return;
                 }
             })
-            redirect('/');
+            if(store.isAuth){
+                redirect('/');
+            }
         }
         catch(e){
             console.log(e);

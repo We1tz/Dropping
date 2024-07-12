@@ -35,7 +35,7 @@ console_handler.setFormatter(log_formatter)
 
 app_logger = logging.getLogger()
 app_logger.setLevel(logging.INFO)
-app_logger.addHandle    r(log_handler)
+app_logger.addHandler(log_handler)
 app_logger.addHandler(console_handler)
 
 

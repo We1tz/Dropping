@@ -25,6 +25,7 @@ function VictorineTemplate() {
     const [date, setDate] = useState(Date.now());
     
     const [cnt, setcnt] = useState(1);
+
     const answers = {
         1: true,
         2: true,
