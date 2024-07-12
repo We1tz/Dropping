@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from config import token
 from api.get_current_date import get_date
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, KeyboardButton, WebAppInfo, InlineKeyboardButton, \
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, WebAppInfo, InlineKeyboardButton, \
     InlineKeyboardMarkup
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage

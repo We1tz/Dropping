@@ -1,13 +1,12 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password
-from get_current_date import get_date
+from api.db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password
+from api.get_current_date import get_date
 import jwt
 import datetime
-from api.generator import generate_password
 import redis
 import os
-from mail_send import send_password_mail
+from api.mail_send import send_password_mail
 import logging
 from pydantic import BaseModel, Field, validator
 from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
@@ -187,6 +186,14 @@ async def restore(response: Response, restore: Restore):
         return 'Пароль изменен'
     else:
         return 404
+
+
+@app.get("/transactions")
+async def transactions(response: Response):
+    result = transaction_model()
+    return {'result': 200,
+            'model': result}
+
 
 
 @app.get("/getvect")

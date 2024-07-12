@@ -19,7 +19,7 @@ BLOCK_TIME_SECONDS = 10  # 10 sec
 conn_params = {
     'dbname': 'main',
     'user': 'we1tz',
-    'password': 'awU4NjJeq',
+    'password': 'a&wU$4NjJeq',
     'host': f'{ALL_HOST}',
     'port': '5432'
 }
