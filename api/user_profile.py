@@ -23,16 +23,19 @@ def top_agressive_users():
 
         cursor.execute("SELECT * FROM predictions WHERE id = %s", (transaction_id,))
         drop_info = str(float(cursor.fetchone()[1]) * 100) + '%'
-        print(
-            f'\t Транзакция: {transaction_id} \n время транзации: {date_transation}, \n сумма транзации: {ammount}, \n ID аккаунта с которого совершена транзакция: {account_id}, \n ID куда отправлено {account_id_out}, вероятность дропа: {drop_info} \n')
+
+        return {
+            "id": transaction_id,
+            "date": date_transation,
+            "ammount": ammount,
+            "account_id": account_id,
+            "account_out": account_id_out
+        }
 
 
-def get_information_about_profile(account_id):
+def get_information_about_profile_spend(account_id):
     cursor.execute("SELECT * FROM transactions WHERE id_acc_in = %s", (account_id,))
     result = cursor.fetchall()
-
-
-
 
     summ_transfer = 0  # вывод в результат, после присваивания
     transfers = []
@@ -47,10 +50,50 @@ def get_information_about_profile(account_id):
                           "ammount": result[i][2],
                           "out_account": result[i][-1],
                           "danger": danger
-        })
+                          })
 
-    print('Переводы пользователя: \n', transfers)
-    print('Общий расход:', summ_transfer)
+    summ_danger = 0
+    count = 0
 
-top_agressive_users()
-get_information_about_profile("2f1f34d3d9d891f6c6c7b9a3be39ac6d1f0955f900ab9b1f35ba98c1cbf10d8d")
+    for d in transfers:
+        count += 1
+        summ_danger += float(d['danger'])
+
+    sred_danger = float(summ_danger / count)
+
+    return {'transfers': transfers,
+            'all_sum_transfers': summ_transfer,
+            'sred_danger': sred_danger
+            }
+
+
+def get_information_about_profile(account_id):
+    # переводы пользователю
+    cursor.execute("SELECT * FROM transactions WHERE id_acc_out = %s", (account_id,))
+    result = cursor.fetchall()
+    transfers = []
+    summ_refill = 0
+
+    for n in range(len(result)):
+        id_transaction = result[n][0]
+        date_transaction = result[n][1]
+        ammount = int(result[n][2])
+        out_acc = result[n][3]
+
+        cursor.execute("SELECT * FROM predictions WHERE id = %s", (id_transaction,))
+        danger = cursor.fetchone()[1]
+
+        transfers.append({"date": date_transaction,
+                          "ammount": ammount,
+                          "out_account": out_acc,
+                          "danger": danger
+                          })
+
+        summ_refill += ammount
+
+    return {'transfers': transfers,
+            'all_sum_transfers': summ_refill
+            }
+
+
+print(get_information_about_profile_spend('6955aaef36d8bc7d451bc97a03b4897de761c878365510357d8f0ca6d06e62e9'))

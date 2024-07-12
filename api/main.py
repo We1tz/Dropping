@@ -6,6 +6,7 @@ import jwt
 import datetime
 from generator import generate_password
 import redis
+from user_profile import top_agressive_users, get_information_about_profile, get_information_about_profile_spend
 import os
 from api.mail_send import send_password_mail
 import logging
@@ -60,6 +61,9 @@ class TestResults(BaseModel):
 
 class Restore(BaseModel):
     email: str
+
+class TransactionUser(BaseModel):
+    identifier: str
 
 
 def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
@@ -196,6 +200,28 @@ async def restore(response: Response, restore: Restore):
      #       'model': result}
 
 
+@app.get("/agressiveusers")
+async def argessive_users():
+    all_result = []
+    for i in range(0, 6):
+        result = top_agressive_users()
+        all_result.append(result)
+
+    return {
+            'result': 200,
+            'information': all_result
+    }
+
+@app.post("/getaboutprofile")
+async def get_info_about_profile(transuser: TransactionUser):
+    ident = transuser.identifier
+    result = get_information_about_profile(ident)
+    result2 = get_information_about_profile_spend(ident)
+
+    if not result['transfers']:
+        return result2
+    else:
+        return result
 
 @app.get("/getvect")
 async def send_test_results():
@@ -211,5 +237,4 @@ async def logout(response: Response):
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)
