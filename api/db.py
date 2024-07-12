@@ -1,19 +1,9 @@
 import psycopg2
-import bcrypt
 from rating import get_rating
 from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
+from hash import verify_password, hash_password
 
 conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
-
-
-def hash_password(password: str) -> str:
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed_password.decode('utf-8')
-
-
-def verify_password(password: str, hashed_password: str) -> bool:
-    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
 def add_user(data):
@@ -41,7 +31,6 @@ def add_user(data):
 
 
 def check_user(data):
-
     password = data[1]
     username = data[0]
 
@@ -53,8 +42,6 @@ def check_user(data):
             return 200
         else:
             return 431
-
-
 
 
 def update_score(username, score, time):
@@ -89,7 +76,6 @@ def get_users_scores():
 
 
 def restore_password(data):
-
     email = data[0]
     password = data[1]
 

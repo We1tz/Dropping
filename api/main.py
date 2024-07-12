@@ -10,8 +10,8 @@ import os
 from mail_send import send_password_mail
 import logging
 from pydantic import BaseModel, Field, validator
-from logging.handlers import RotatingFileHandler
-from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, \
+from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
+    console_handler, log_handler, \
     ALGORITHM, allow_origin
 
 app = FastAPI()
@@ -28,12 +28,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", f"{secret_key}")
 
 redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, password=f'{REDIS_PASSWORD}', decode_responses=True)
 
-log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-log_handler = RotatingFileHandler("app.log", maxBytes=1000000, backupCount=5)
 log_handler.setFormatter(log_formatter)
-console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
-
 app_logger = logging.getLogger()
 app_logger.setLevel(logging.INFO)
 app_logger.addHandler(log_handler)
@@ -140,15 +136,16 @@ async def register(user_credentials: UserCredentials, response: Response):
     try:
         hashed_password = hash_password(user_credentials.password)
         email = user_credentials.email
-        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
-        add_result = add_user(data)
 
-        if add_result == 200:
+        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
+        result = add_user(data)
+
+        if result == 200:
             access_token = create_access_token({"sub": user_credentials.username})
             refresh_token = create_refresh_token({"sub": user_credentials.username})
             response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
             return {
-                "result": add_result,
+                "result": result,
                 "username": user_credentials.username,
                 "access_token": access_token
             }
@@ -164,8 +161,7 @@ async def protected_route(request: Request):
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
         raise HTTPException(status_code=401, detail="Токен не найден")
-    payload = verify_token(refresh_token)
-    return {"message": "Вы уже авторизованы", "user": payload["sub"]}
+    return {"message": "Вы уже авторизованы", "user": verify_token(refresh_token)["sub"]}
 
 
 @app.post("/sendvect")
@@ -184,8 +180,8 @@ async def send_test_results(request: Request, test_results: TestResults):
 @app.post("/restore")
 async def restore(response: Response, restore: Restore):
     new_password = generate_password()
-    res = restore_password((restore.email, hash_password(new_password)))
-    if res == 200:
+    result = restore_password((restore.email, hash_password(new_password)))
+    if result == 200:
         send_password_mail((restore.email, new_password))
         response.delete_cookie(key="refresh_token")
         return 'Пароль изменен'
