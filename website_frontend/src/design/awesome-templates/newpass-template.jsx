@@ -25,7 +25,7 @@ function NewpassTemplate() {
         }
 
         if(errors.length == 0){
-            const g = store.restore(email).then(function(res){
+            const g = store.approve(email).then(function(res){
                 if(res == "nope"){
                     console.log("ahegao");
                     setErrors(["неверный логин или пароль"]);
