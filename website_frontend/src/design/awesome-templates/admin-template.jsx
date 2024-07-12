@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite';
 import DroppersList from './droppers-list';
 import Aboba from './aboba';
@@ -108,6 +108,12 @@ const renderActiveShape = (props) => {
 
 function AdminTemplate() {
 
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    
+  }, []);
+
   const [state, setState] = useState({
     activeIndex: 0,
   });
@@ -138,8 +144,8 @@ function AdminTemplate() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#9242ed" activeBar={<Rectangle fill="pink" stroke="#9242ed" />} />
-              <Bar dataKey="uv" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+              <Bar dataKey="pv" fill="#5a64ed" activeBar={<Rectangle fill="#cf4cd4" stroke="black" />} />
+              <Bar dataKey="uv" fill="#ed5f42" activeBar={<Rectangle fill="#d4a04c" stroke="black" />} />
             </BarChart>
             <PieChart width={400} height={400}>
           <Pie
@@ -168,6 +174,15 @@ function AdminTemplate() {
     </tr>
   </thead>
   <tbody>
+    {
+    data.map((i, index)=>{
+      return(      
+      <tr key={index}>
+        <th scope="row">{index+1}</th>
+        <td >{i.username}</td>
+        <td>{i.score}</td>
+      </tr>)
+    }) }
   </tbody>
 </table>
             </div>

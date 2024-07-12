@@ -83,9 +83,24 @@ export default class Store {
         }
     }
 
-    async restore(email) {
+    async restore(code) {
         try {
-            const response = await AuthService.restore(email);
+            const response = await AuthService.restore(code);
+            console.log(response.data.result);
+            if(response.data.result == 431){
+                console.log("wrong");
+                return 'nope';
+            }
+            console.log("you are in");
+        } catch (e) {
+            console.log(e.response?.data?.message);
+            return e;
+        }
+    }
+
+    async approve(email) {
+        try {
+            const response = await AuthService.approve(email);
             console.log(response.data.result);
             if(response.data.result == 431){
                 console.log("wrong");
