@@ -8,3 +8,10 @@
 2024-07-11 11:06:33,159 [ERROR] Error during registration: tuple index out of range
 2024-07-11 11:58:49,938 [ERROR] Error during registration: tuple index out of range
 2024-07-11 12:12:02,963 [ERROR] Error during registration: tuple index out of range
+2024-07-11 15:55:24,657 [ERROR] Error during registration: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
