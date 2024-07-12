@@ -4,6 +4,7 @@ from api.db import check_user, add_user, hash_password, update_score, get_users_
 from api.get_current_date import get_date
 import jwt
 import datetime
+from generator import generate_password
 import redis
 import os
 from api.mail_send import send_password_mail
@@ -188,11 +189,11 @@ async def restore(response: Response, restore: Restore):
         return 404
 
 
-@app.get("/transactions")
-async def transactions(response: Response):
-    result = transaction_model()
-    return {'result': 200,
-            'model': result}
+#@app.get("/transactions")
+#async def transactions(response: Response):
+  #  result = transaction_model()
+   # return {'result': 200,
+     #       'model': result}
 
 
 

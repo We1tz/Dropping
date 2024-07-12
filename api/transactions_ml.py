@@ -24,3 +24,4 @@ def transactions_model():
     prediction_probabilities = model.predict_proba(preprocessed_data)
 
     return prediction_probabilities
+
