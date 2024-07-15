@@ -6,7 +6,8 @@ symbols = '!@#$%^&'
 numbers = '0123456789'
 
 def generate_pin():
-    pass
+    code = ''.join(random.choice(numbers) for _ in range(4))
+    return code
 
 
 def generate_password():

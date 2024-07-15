@@ -4,11 +4,11 @@ from db import check_user, add_user, hash_password, update_score, get_users_scor
 from get_current_date import get_date
 import jwt
 import datetime
-from generator import generate_password
+from generator import generate_password, generate_pin
 import redis
 from user_profile import top_agressive_users, get_information_about_profile, get_information_about_profile_spend
 import os
-from mail_send import send_password_mail
+from mail_send import send_password_mail, send_register_mail
 import logging
 from pydantic import BaseModel, Field, validator
 from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
@@ -55,6 +55,10 @@ class UserCredentials(BaseModel):
         return value
 
 
+class CodeMail(BaseModel):
+    code_mail : str
+
+
 class TestResults(BaseModel):
     res: int
     type: int
@@ -62,6 +66,7 @@ class TestResults(BaseModel):
 
 class Restore(BaseModel):
     email: str
+
 
 class TransactionUser(BaseModel):
     identifier: str
@@ -141,7 +146,9 @@ async def register(user_credentials: UserCredentials, response: Response):
     try:
 
         email = user_credentials.email
+        code = generate_pin()
 
+        send_register_mail((email, code))
 
         hashed_password = hash_password(user_credentials.password)
 
@@ -199,9 +206,9 @@ async def restore(response: Response, restore: Restore):
 
 #@app.get("/transactions")
 #async def transactions(response: Response):
-  #  result = transaction_model()
-   # return {'result': 200,
-     #       'model': result}
+#  result = transaction_model()
+# return {'result': 200,
+#       'model': result}
 
 
 @app.get("/agressiveusers")
@@ -212,9 +219,10 @@ async def argessive_users():
         all_result.append(result)
 
     return {
-            'result': 200,
-            'information': all_result
+        'result': 200,
+        'information': all_result
     }
+
 
 @app.post("/getaboutprofile")
 async def get_info_about_profile(transuser: TransactionUser):
@@ -226,6 +234,7 @@ async def get_info_about_profile(transuser: TransactionUser):
         return result2
     else:
         return result
+
 
 @app.get("/getvect")
 async def send_test_results():
@@ -241,4 +250,5 @@ async def logout(response: Response):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
