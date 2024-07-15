@@ -72,7 +72,7 @@ def get_information_about_profile_spend(account_id):
 
 
 def get_information_about_profile(account_id):
-    # переводы пользовател1
+    # переводы пользователю
     global sred_danger
     cursor.execute("SELECT * FROM transactions WHERE id_acc_out = %s", (account_id,))
     result = cursor.fetchall()
