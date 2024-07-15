@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password
+from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password, update_email_valid
 from get_current_date import get_date
 import jwt
+from fastapi.responses import RedirectResponse
 import datetime
 from generator import generate_password, generate_pin
 import redis
@@ -37,7 +38,7 @@ app_logger.addHandler(log_handler)
 app_logger.addHandler(console_handler)
 
 
-class UserCredentials(BaseModel):
+class UserCredentialsRegister(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=8, max_length=100)
     email: str
@@ -55,8 +56,9 @@ class UserCredentials(BaseModel):
         return value
 
 
-class CodeMail(BaseModel):
-    code_mail : str
+class UserCredentialsLogin(BaseModel):
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=8, max_length=100)
 
 
 class TestResults(BaseModel):
@@ -81,6 +83,14 @@ def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def generate_confirmation_url(email: str):
+    expiration = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=24)
+    payload = {"sub": email, "exp": expiration}
+    confirmation_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    confirmation_url = f"http://localhost:8000/confirm?token={confirmation_token}"
+    return confirmation_url
 
 
 def create_refresh_token(data: dict):
@@ -126,8 +136,10 @@ def reset_failed_attempts(username: str):
 
 
 @app.post("/login")
-async def receive_data(user_credentials: UserCredentials, response: Response):
-    if check_user((user_credentials.username, user_credentials.password)) == 200:
+async def receive_data(user_credentials: UserCredentialsLogin, response: Response):
+    data = (user_credentials.username, user_credentials.password)
+    status = check_user(data=data)
+    if status == 200:
         reset_failed_attempts(user_credentials.username)
         access_token = create_access_token({"sub": user_credentials.username})
         refresh_token = create_refresh_token({"sub": user_credentials.username})
@@ -137,37 +149,46 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
             "access_token": access_token
         }
     else:
-        record_failed_attempt(user_credentials.username)
-        return {"result": False}
+        if status == 201:
+            return {'information:' 'valid your mail'}
+        else:
+            record_failed_attempt(user_credentials.username)
+            return {"result": 431}
 
 
 @app.post("/register")
-async def register(user_credentials: UserCredentials, response: Response):
+async def register(user_credentials: UserCredentialsRegister):
     try:
-
         email = user_credentials.email
-        code = generate_pin()
-
-        send_register_mail((email, code))
+        send_register_mail((email, generate_confirmation_url(user_credentials.username)))
 
         hashed_password = hash_password(user_credentials.password)
-
-        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
-        result = add_user(data)
-
-        if result == 200:
-            access_token = create_access_token({"sub": user_credentials.username})
-            refresh_token = create_refresh_token({"sub": user_credentials.username})
-            response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
-            return {
-                "result": result,
-                "username": user_credentials.username,
-                "access_token": access_token
-            }
-        else:
-            return {"result": 431}
+        data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date(), 'False')
+        add_user(data)
     except Exception as e:
         app_logger.error(f"Error during registration: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.get("/confirm")
+async def confirm_registration(token: str, response: Response, ):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=400, detail="Invalid token")
+        if username:
+            if update_email_valid(username) == 200:
+                access_token = create_access_token({"sub": username})
+                refresh_token = create_refresh_token({"sub": username})
+                response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
+                return RedirectResponse(url="zalupa", status_code=301)
+            else:
+                return Exception
+        else:
+            raise HTTPException(status_code=400, detail="Ошибка подтверждения регистрации")
+    except Exception as e:
+        app_logger.error(f"Error during confirmation: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
@@ -177,6 +198,13 @@ async def protected_route(request: Request):
     if not refresh_token:
         raise HTTPException(status_code=401, detail="Токен не найден")
     return {"message": "Вы уже авторизованы", "user": verify_token(refresh_token)["sub"]}
+
+
+@app.post("/approve")
+async def approve(request: Request):
+    refresh_token = request.cookies.get("refresh_token")
+    payload = verify_token(refresh_token)
+    username = payload["sub"]
 
 
 @app.post("/sendvect")

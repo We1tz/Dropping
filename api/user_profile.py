@@ -67,7 +67,7 @@ def get_information_about_profile_spend(account_id):
 
     return {'transfers': transfers,
             'all_sum_transfers': summ_transfer,
-            'sred_danger': sred_danger
+            'midlle_danger': sred_danger
             }
 
 
@@ -111,7 +111,7 @@ def get_information_about_profile(account_id):
 
     return {'transfers': transfers,
             'all_sum_transfers': summ_refill,
-            'midlle_dangger': sred_danger
+            'midlle_danger': sred_danger
             }
 
 

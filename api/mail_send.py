@@ -4,9 +4,7 @@ from email.mime.text import MIMEText
 from config import smtp_server, smtp_port, smtp_username, smtp_password, from_email
 
 
-
 def send_password_mail(data):
-
     email = data[0]
     code = data[1]
 
@@ -44,11 +42,13 @@ def send_register_mail(data):
 
     subject = 'Foxproof | Письмо для регистрации на сайте'
 
+    confirmation_url = data[1]
+
     body = (f"""Здравствуйте, это Ваше письмо для подтверждения регистрации на сайте.
-    
-        Ваш код для регистрации: {data[1]}
-        
-        С уважением FoxProof""")
+
+        Перейдите по следующей ссылке для подтверждения регистрации: {confirmation_url}
+
+        С уважением, FoxProof""")
 
     msg = MIMEMultipart()
     msg['From'] = from_email

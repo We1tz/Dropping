@@ -23,27 +23,36 @@ def add_user(data):
         else:
 
             cursor.execute(
-                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email) VALUES (%s, %s, "
-                "%s, %s, %s, %s, %s)",
-                (login, password, telegram, rating, role, last_login, email))
+                "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email, emailvalid) VALUES (%s, %s, "
+                "%s, %s, %s, %s, %s, %s)",
+                (login, password, telegram, rating, role, last_login, email, 'False'))
             conn.commit()
             return 200
 
 
 def check_user(data):
-    password = data[1]
-    username = data[0]
+
+    login = str(data[0]).split()[0]
+    password = hash_password(data[1])
+    print(login)
+    print(password)
 
     with conn.cursor() as cursor:
-        cursor.execute("SELECT password FROM userssite WHERE login = %s", (username,))
+        cursor.execute("SELECT password FROM userssite WHERE login = %s", (login,))
         result = cursor.fetchone()
+        print(result)
         conn.commit()
-        if verify_password(password, result[0]):
-            return 200
-        else:
-            return 431
 
+    if verify_password(password, result[0]):
+        cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (login, ))
+        status_valid = cursor.fetchall()
+        print(status_valid)
+        conn.commit()
+        return 201
+    else:
+        return 431
 
+check_user(('Weitz', '123456Az!'))
 def update_score(username, score, time):
     with conn.cursor() as cursor:
         rating = get_rating(score, time)
@@ -85,6 +94,20 @@ def restore_password(data):
             cursor.execute(
                 "UPDATE userssite SET password = %s WHERE login = %s",
                 (password, email)
+            )
+            conn.commit()
+            return 200
+        else:
+            return 404
+
+
+def update_email_valid(username):
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (username,))
+        if cursor.fetchone()[0] > 0:
+            cursor.execute(
+                "UPDATE userssite SET emailvalid = %s WHERE login = %s",
+                ('True', username)
             )
             conn.commit()
             return 200
