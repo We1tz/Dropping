@@ -48,6 +48,7 @@ if (store.isLoading) {
           <Route path="/victorine" element={<VictorinePage/>} />
           <Route path="/graph" element={<GraphPage/>} />
           <Route path="/newpass" elemant={<NewpassPage/>} />
+          <Route exact path="/SusUserPage/:id" elemant={<NewpassPage/>} />
           <Route path='*' element={<NFPage/>}/>
         </Routes>
       </BrowserRouter>

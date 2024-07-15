@@ -7,4 +7,8 @@ export default class AnalitService {
     static async GetSuspisious(id){
         return $api.get('/getsusp', id);
     }
+
+    static async AgressiveUsers(){
+        return $api.get('/agressiveusers');
+    }
 }
