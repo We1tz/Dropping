@@ -19,6 +19,7 @@ import RestorePage from './design/pages/restore-page.jsx';
 import GraphPage from './design/pages/graphs-page.jsx';
 import NewpassPage from './design/pages/newpass-page.jsx';
 import NFPage from './design/pages/nf-page.jsx';
+import SusUserPage from './design/pages/sususer-page.jsx';
 
 function App() {
   const {store }= useContext(Context);
@@ -47,8 +48,8 @@ if (store.isLoading) {
           <Route path="/register" element={<RegisterFormPage/>} />
           <Route path="/victorine" element={<VictorinePage/>} />
           <Route path="/graph" element={<GraphPage/>} />
-          <Route path="/newpass" elemant={<NewpassPage/>} />
-          <Route exact path="/SusUserPage/:id" elemant={<NewpassPage/>} />
+          <Route path="/newpass" element={<NewpassPage/>} />
+          <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
           <Route path='*' element={<NFPage/>}/>
         </Routes>
       </BrowserRouter>
