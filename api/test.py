@@ -1,26 +1,18 @@
-import pandas as pd
-import psycopg2
-from config import conn_params
+import bcrypt
 
-csv_file_path = 'датасет.csv'
-df = pd.read_csv(csv_file_path, sep=';')
-data_list = df.to_dict(orient='records')
+g = '12345678Az!'
 
-conn = psycopg2.connect(**conn_params)
-cursor = conn.cursor()
-counter = 0
 
-for record in data_list:
-    counter += 1
-    lens = len(data_list)
-    date = record['date']
-    amt = record['amt']
-    acc_in = record['id_acc_in']
-    acc_out = record['id_acc_out']
-    cursor.execute("""
-        INSERT INTO transactions (date, amt, id_acc_in, id_acc_out)
-        VALUES (%s, %s, %s, %s)
-    """, (date, amt, acc_in, acc_out))
-    print('DONE', f'{counter}/{lens}')
-    conn.commit()
-conn.commit()
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
+
+
+def verify_password(input_password, hashed_password):
+    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
+s = hash_password(g)
+k = hash_password(g)
+print(verify_password(s, k))

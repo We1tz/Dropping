@@ -31,28 +31,29 @@ def add_user(data):
 
 
 def check_user(data):
-
     login = str(data[0]).split()[0]
-    password = hash_password(data[1])
+    password = data[1]
     print(login)
     print(password)
 
     with conn.cursor() as cursor:
         cursor.execute("SELECT password FROM userssite WHERE login = %s", (login,))
         result = cursor.fetchone()
-        print(result)
         conn.commit()
 
-    if verify_password(password, result[0]):
-        cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (login, ))
-        status_valid = cursor.fetchall()
-        print(status_valid)
+    print(verify_password(hash_password(password), result[0]))
+
+    if verify_password(hash_password(password), result[0]):
+        cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (login,))
+        print(cursor.fetchone())
         conn.commit()
         return 201
     else:
         return 431
 
-check_user(('Weitz', '123456Az!'))
+
+
+
 def update_score(username, score, time):
     with conn.cursor() as cursor:
         rating = get_rating(score, time)
