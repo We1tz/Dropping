@@ -109,3 +109,13 @@ def update_email_valid(username):
             return 200
         else:
             return 404
+
+
+def check_true_email_verif(username):
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (username,))
+        status = cursor.fetchone()
+        if status == 'True':
+            return 200
+        else:
+            return 431

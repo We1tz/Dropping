@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password, update_email_valid
+from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password, update_email_valid, check_true_email_verif
 from get_current_date import get_date
 import jwt
 from fastapi.responses import RedirectResponse
@@ -18,9 +18,17 @@ from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIM
 
 app = FastAPI()
 
+
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "https://antidropping.ru",
+]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f"{allow_origin}"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -206,6 +214,16 @@ async def approve(request: Request):
     refresh_token = request.cookies.get("refresh_token")
     payload = verify_token(refresh_token)
     username = payload["sub"]
+    if check_true_email_verif(username) == 200:
+        return {
+            'result': 200,
+            'refresh_token': refresh_token,
+            'username': username
+        }
+    else:
+        return 431
+
+
 
 
 @app.post("/sendvect")
