@@ -150,6 +150,7 @@ async def receive_data(user_credentials: UserCredentialsLogin, response: Respons
         }
     else:
         if status == 201:
+            reset_failed_attempts(user_credentials.username)
             return {'information:' 'valid your mail'}
         else:
             record_failed_attempt(user_credentials.username)

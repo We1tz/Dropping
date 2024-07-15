@@ -8,7 +8,7 @@ conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_P
 
 def add_user(data):
     login = data[0]
-    password = hash_password(data[1])
+    password = data[1]
     email = data[2]
     telegram = data[3]
     rating = data[4]
@@ -31,27 +31,22 @@ def add_user(data):
 
 
 def check_user(data):
-    login = str(data[0]).split()[0]
     password = data[1]
-    print(login)
-    print(password)
+    username = data[0]
 
     with conn.cursor() as cursor:
-        cursor.execute("SELECT password FROM userssite WHERE login = %s", (login,))
+        cursor.execute("SELECT password FROM userssite WHERE login=%s", (username,))
         result = cursor.fetchone()
         conn.commit()
-
-    print(verify_password(hash_password(password), result[0]))
-
-    if verify_password(hash_password(password), result[0]):
-        cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (login,))
-        print(cursor.fetchone())
-        conn.commit()
-        return 201
-    else:
-        return 431
-
-
+        if verify_password(password, result[0]):
+            cursor.execute("SELECT emailvalid FROM userssite WHERE login = %s", (username,))
+            res = cursor.fetchone()
+            if res[0] == 'True':
+                return 200
+            else:
+                return 201
+        else:
+            return 431
 
 
 def update_score(username, score, time):
