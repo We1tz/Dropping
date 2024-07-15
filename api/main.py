@@ -40,6 +40,7 @@ app_logger.addHandler(console_handler)
 class UserCredentials(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=8, max_length=100)
+    email: str
 
     @validator("password")
     def password_complexity(cls, value):
