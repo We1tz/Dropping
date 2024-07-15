@@ -6,9 +6,8 @@ import { observer } from 'mobx-react-lite';
 import axios from 'axios';
 import VictorineService from '../../API/VictorineService';
 
-let amm = 10;
 function RatingTemplate() {
-
+  const [amm, setAmm] = useState(10);
   const [data, setData] = useState([]);
   useEffect(()=>{
     const a = VictorineService.Getres().then(function(res){
@@ -16,6 +15,10 @@ function RatingTemplate() {
       console.log(res.data);
     });
   }, []);
+
+  const showmore = ()=>{
+    setAmm(amm+10);
+  }
     return (
         <div class="text-dark grad-article">
             
@@ -32,7 +35,7 @@ function RatingTemplate() {
   </thead>
   <tbody>
     {
-    data.map((i, index)=>{
+    data.slice(0, amm).map((i, index)=>{
       return(      
       <tr key={index}>
         <th scope="row">{index+1}</th>
