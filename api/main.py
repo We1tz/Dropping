@@ -182,7 +182,7 @@ async def confirm_registration(token: str, response: Response, ):
                 access_token = create_access_token({"sub": username})
                 refresh_token = create_refresh_token({"sub": username})
                 response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
-                return RedirectResponse(url="zalupa", status_code=301)
+                return RedirectResponse(url="localhost", status_code=301)
             else:
                 return Exception
         else:
