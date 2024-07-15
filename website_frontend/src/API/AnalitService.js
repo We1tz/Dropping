@@ -13,6 +13,6 @@ export default class AnalitService {
     }
 
     static async getaboutprofile(identifier){
-        return $api.get('/aboutprofile', {identifier});
+        return $api.post('/getaboutprofile', {identifier: identifier.toString()});
     } 
 }

@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import React from 'react'
+import { useEffect, useState } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Sector   } from 'recharts';
-
-
+import AnalitService from '../../API/AnalitService';
+/*
 const data = [
     {
       name: 'Page A',
@@ -47,15 +46,7 @@ const data = [
       amt: 2100,
     },
   ];
-  
-  const data_pie = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-  ];
-  
-  
+*/
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
     const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
@@ -68,6 +59,9 @@ const data = [
     const ex = mx + (cos >= 0 ? 1 : -1) * 22;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
+
+      
+  
   
     return (
       <g>
@@ -103,8 +97,21 @@ const data = [
   };
 
 export default function SusUserTemplate(props) {
+    const [amm, setAmm] = useState(10);
     const [data, setData] = useState([]);
-    
+    const [srdang, setSrdang] = useState();
+
+    useEffect(() => {
+        const a = AnalitService.getaboutprofile(props.id).then(function(res){
+            setData(res.data.transfers);
+            setSrdang(res.data.sred_danger);
+            console.log(res.data);
+          });
+    }, []);
+    const showmore = ()=>{
+        setAmm(amm+10);
+    };
+
   const [state, setState] = useState({
     activeIndex: 0,
   });
@@ -115,14 +122,21 @@ export default function SusUserTemplate(props) {
     });
   };
   
+  const data_pie = [
+    { name: '% опасности', value: srdang },
+    { name: '% безопасности', value: 1-srdang },
+  ];
 
   return (
     <>
-        <div class="col bg-dark">
+    <div >
+        <div className="row">
+            <div className='col'>
+            <div class="bg-dark">
             <BarChart
               width={500}
               height={300}
-              data={data}
+              data={0}
               margin={{
                 top: 5,
                 right: 30,
@@ -153,6 +167,43 @@ export default function SusUserTemplate(props) {
           />
         </PieChart>
             </div>
+            </div>
+            <div className='col'>
+            <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Сумма</th>
+        <th scope="col">Коэфф. опасности</th>
+        <th scope="col">Время перевода</th>
+        <th scope="col">Получатель</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      data.length > 0 ? 
+      data.slice(0, amm).map((i, index)=>{
+      return(      
+      <tr key={index}>
+        <td >{i.ammount}</td>
+        <td>{i.danger*100}% </td>
+        <td>{i.date}</td>
+        <td><a href = {'/SusUserPage/' + i.out_account.toString()} /*Не пишите комментарии, эта жопа может принять их за код :D p.s. ГОООООЛ*/ >{i.out_account.substring(0, 10)}...</a></td>
+
+      </tr>)
+    }): <h1 className='text-white'>Загрузка...</h1>}
+  </tbody>
+</table>
+
+{
+  amm < data.length ? 
+  <><button type="button" className="btn btn-primary" onClick={() => {showmore()}}>Показать еще</button></>
+  :
+  "" 
+}
+            </div>
+        </div>
+    </div>
+        
     </>
   )
 }

@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import "./curves.scss";
+import "./bootstrap.css"
 import HomePage from './design/pages/home-page.jsx';
 import LoginFormPage from './design/pages/login-page.jsx';
 import ProfilePage from './design/pages/profile-page.jsx';
