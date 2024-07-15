@@ -102,7 +102,7 @@ const data = [
     );
   };
 
-export default function SusUserTemplate() {
+export default function SusUserTemplate(props) {
     const [data, setData] = useState([]);
     
   const [state, setState] = useState({
@@ -114,6 +114,7 @@ export default function SusUserTemplate() {
       activeIndex: index,
     });
   };
+  
 
   return (
     <>

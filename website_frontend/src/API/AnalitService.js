@@ -11,4 +11,8 @@ export default class AnalitService {
     static async AgressiveUsers(){
         return $api.get('/agressiveusers');
     }
+
+    static async getaboutprofile(identifier){
+        return $api.get('/aboutprofile', {identifier});
+    } 
 }

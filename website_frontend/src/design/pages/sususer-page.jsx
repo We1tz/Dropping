@@ -6,15 +6,27 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import React from "react";
 import { useState } from "react";
+import AnalitService from "../../API/AnalitService";
 function SusUserPage() {
     const { id } = useParams();
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+        const a = await AnalitService.AgressiveUsers().then(r => {console.log(r.data.information); setData(r.data.information)});
+        return a
+    }; // запросить данные с сервера по id пользователя
     useEffect(() => {
         console.log(id);
-    }, [])
+        fetchData();
+    }, []);
     return ( 
         <>
             <HomeTemplate>
-                <SusUserTemplate/>
+                {data.length > 0 ?
+                    <SusUserTemplate req = {data}/>
+                :
+                    <h1 className="">Загрузка...</h1>
+                }
+                
             </HomeTemplate>
             <HomeFooter />
         </> 
