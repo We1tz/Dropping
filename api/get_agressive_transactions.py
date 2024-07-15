@@ -5,7 +5,7 @@ import random
 conn = psycopg2.connect(**conn_params)
 cursor = conn.cursor()
 
-
+#
 def get_transaction_agressive():
     cursor.execute("""
         SELECT * FROM predictions
