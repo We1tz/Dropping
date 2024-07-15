@@ -15,3 +15,14 @@ server closed the connection unexpectedly
 	This probably means the server terminated abnormally
 	before or while processing the request.
 
+2024-07-15 08:53:27,121 [ERROR] Error during registration: 'UserCredentials' object has no attribute 'email'
+2024-07-15 08:53:41,491 [ERROR] Error during registration: 'UserCredentials' object has no attribute 'email'
+2024-07-15 08:53:42,875 [ERROR] Error during registration: 'UserCredentials' object has no attribute 'email'
+2024-07-15 08:57:36,093 [ERROR] Error during registration: 'UserCredentials' object has no attribute 'email'
+2024-07-15 08:57:37,590 [ERROR] Error during registration: 'UserCredentials' object has no attribute 'email'
+2024-07-15 09:52:06,068 [ERROR] Error during registration: connection already closed
+2024-07-15 09:52:19,832 [ERROR] Error during registration: connection already closed
+2024-07-15 09:52:21,028 [ERROR] Error during registration: connection already closed
+2024-07-15 09:52:23,127 [ERROR] Error during registration: connection already closed
+2024-07-15 09:52:24,012 [ERROR] Error during registration: connection already closed
+2024-07-15 09:52:24,709 [ERROR] Error during registration: connection already closed
