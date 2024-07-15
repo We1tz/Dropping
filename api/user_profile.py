@@ -59,7 +59,10 @@ def get_information_about_profile_spend(account_id):
         count += 1
         summ_danger += float(d['danger'])
 
-    sred_danger = float(summ_danger / count)
+    if count == 0:
+        sred_danger = float(summ_danger / 1)
+    else:
+        sred_danger = float(summ_danger / count)
 
     return {'transfers': transfers,
             'all_sum_transfers': summ_transfer,
@@ -91,8 +94,22 @@ def get_information_about_profile(account_id):
 
         summ_refill += ammount
 
+
+        count = 0
+        summ_danger = 0
+
+        for d in transfers:
+            count += 1
+            summ_danger += float(d['danger'])
+
+        if count == 0:
+            sred_danger = float(summ_danger / 1)
+        else:
+            sred_danger = float(summ_danger / count)
+
     return {'transfers': transfers,
-            'all_sum_transfers': summ_refill
+            'all_sum_transfers': summ_refill,
+            'midlle_dangger': sred_danger
             }
 
 
