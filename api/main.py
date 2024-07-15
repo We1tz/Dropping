@@ -139,8 +139,11 @@ async def receive_data(user_credentials: UserCredentials, response: Response):
 @app.post("/register")
 async def register(user_credentials: UserCredentials, response: Response):
     try:
-        hashed_password = hash_password(user_credentials.password)
+
         email = user_credentials.email
+
+
+        hashed_password = hash_password(user_credentials.password)
 
         data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date())
         result = add_user(data)

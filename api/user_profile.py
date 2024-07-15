@@ -5,6 +5,7 @@ from get_agressive_transactions import get_transaction_agressive
 conn = psycopg2.connect(**conn_params)
 cursor = conn.cursor()
 
+sred_danger = 0
 
 def top_agressive_users():
     agr_users = []
@@ -72,6 +73,7 @@ def get_information_about_profile_spend(account_id):
 
 def get_information_about_profile(account_id):
     # переводы пользователю
+    global sred_danger
     cursor.execute("SELECT * FROM transactions WHERE id_acc_out = %s", (account_id,))
     result = cursor.fetchall()
     transfers = []
@@ -80,7 +82,7 @@ def get_information_about_profile(account_id):
     for n in range(len(result)):
         id_transaction = result[n][0]
         date_transaction = result[n][1]
-        ammount = int(result[n][2])
+        ammount = float(result[n][2])
         out_acc = result[n][3]
 
         cursor.execute("SELECT * FROM predictions WHERE id = %s", (id_transaction,))
