@@ -1,3 +1,4 @@
+import pandas as pd
 import pymorphy3
 from nltk.corpus import stopwords
 import re
@@ -6,7 +7,8 @@ from selenium import webdriver
 import string
 
 
-class Parser:
+class Parser():
+
     def dataset_clear(vac):
         emoji_pattern = re.compile("["
                                    u"\U0001F600-\U0001F64F"  # emoticons
