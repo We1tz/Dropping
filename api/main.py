@@ -19,15 +19,11 @@ from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIM
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8000",
-    "https://antidropping.ru",
-]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[f"{allow_origin}"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
