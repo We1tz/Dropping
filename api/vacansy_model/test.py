@@ -15,7 +15,7 @@ def check_text_vacancy(text):
 def check_url_vacancy(url):
     x = pipline.preprocess_html(url)
     return model.predict(x)
-
+#
 
 def check_photo_vacancy(photo_path):
     x = pipline.preprocess_img(photo_path)
