@@ -1,26 +1,45 @@
 import asyncio
 import logging
+import string
+import re
+
+from aiogram import F
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
-from config import token
-from api.get_current_date import get_date
+from get_date import get_date
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, WebAppInfo, InlineKeyboardButton, \
     InlineKeyboardMarkup
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import ContentType
-
+from text import hello
 from database import add_user
 from top_information import top
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token=token)
+bot = Bot(token='7144862454:AAFSItqaBKmo629nhkzOmDlJ92LbkaXnhE8')
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
-inline_button = InlineKeyboardButton(text="Перейти", callback_data='open_webapp')
-inline_kb = InlineKeyboardMarkup(inline_keyboard=[[inline_button]])
+
+def is_correct_name(name):
+    alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" + string.ascii_lowercase
+    if len(name) < 3:
+        return False
+    for i in range(len(name)):
+        if name[i].lower() in alf:
+            return True
+    return False
+
+
+def is_url(text):
+    pattern = r'^(http|https):\/\/([\w.-]+)(\.[\w.-]+)+([\/\w\.-]*)*\/?$'
+    return bool(re.match(pattern, text))
+
+
+class NameForm(StatesGroup):
+    waiting_for_name = State()
 
 
 class VacancyForm(StatesGroup):
@@ -28,72 +47,92 @@ class VacancyForm(StatesGroup):
 
 
 @dp.message(Command("start"))
-async def command_start(message: types.Message):
-    builder = ReplyKeyboardBuilder()
-    builder.row(
-        types.KeyboardButton(text='Узнать больше'),
-        types.KeyboardButton(text="Викторина")
-    )
-    builder.row(types.KeyboardButton(text="Рейтинг игроков"))
-
-    user_id = message.from_user.id
-    user_name = message.from_user.username
-    user_data = (user_id, user_name, 'user', get_date())  # registration
-    try:
-        add_user(user_data)
-        await message.answer("Здравствуйте!", reply_markup=builder.as_markup(resize_keyboard=True))
-    except Exception as e:
-        if e:
-            await message.answer('Пользователь уже существует', reply_markup=builder.as_markup(resize_keyboard=True))
+async def command_start(message: types.Message, state: FSMContext):
+    await message.answer(hello, reply_markup=types.ReplyKeyboardRemove())
+    await state.set_state(NameForm.waiting_for_name.state)
 
 
-@dp.message(Command("checkvac"))
+@dp.message(NameForm.waiting_for_name)
+async def process_name(message: types.Message, state: FSMContext):
+    if not is_correct_name(message.text):
+        await message.answer("Введите имя корректно!")
+    else:
+        user_id = message.from_user.id
+        user_name = re.sub(r"\s+", "", message.text, flags=re.UNICODE)
+        user_data = (user_id, user_name, 'user', get_date())
+        try:
+            add_user(user_data)
+        except Exception as e:
+            pass
+        builder = ReplyKeyboardBuilder()
+        builder.row(types.KeyboardButton(text="Проверка вакансий"))
+        builder.row(types.KeyboardButton(text="Викторина"))
+        await message.answer('Выберите одну из функций', reply_markup=builder.as_markup(resize_keyboard=True))
+        await state.clear()
+
+
+@dp.message(F.text == "Проверка вакансий")
 async def check_vacancy(message: types.Message, state: FSMContext):
-    await message.answer('Чтобы отправить вакансию, пришлите её текст или фото')
+    await message.answer('Чтобы отправить вакансию, пришлите её текст, фото или ссылку')
     await state.set_state(VacancyForm.waiting_for_vacancy.state)
 
 
 @dp.message(VacancyForm.waiting_for_vacancy)
 async def process_vacancy(message: types.Message, state: FSMContext):
-    if message.content_type == ContentType.TEXT:
-        await message.answer('Вы отправили текстовую вакансию')
-    elif message.content_type == ContentType.PHOTO:
-        await message.answer('Вы отправили вакансию в виде фото')
+    if message.content_type == ContentType.TEXT or message.content_type == ContentType.PHOTO or is_url(message.text):
+        await message.answer('Подожди, идёт проверка вакансии...')
+        builder = ReplyKeyboardBuilder()
+        builder.row(types.KeyboardButton(text="Викторина"))
+        builder.row(types.KeyboardButton(text="Полезная информация"))
     else:
-        await message.answer('Пожалуйста, отправьте вакансию в виде текста или фото')
+        await message.answer('Пожалуйста, отправьте вакансию в виде текста, фото или ссылки')
 
     await state.clear()
 
-@dp.message(Command("dk"))
-async def delete_keyboard(message: types.Message):
-    await message.answer('Ваша клавиатура удалена', reply_markup=types.ReplyKeyboardRemove())
 
-
-@dp.message(Command("top"))
-async def delete_keyboard(message: types.Message):
-    await message.answer('Рейтинг пользователей, которые прошли викторину')
-    top_information = top()
-    c = 0
-
-    for p in top_information:
-        c += 1
-        if c <= 3:
-            await message.answer(f'На данный момент {c} место занимает пользователь @{p[0]} с рейтингом {p[1]}')
-        else:
-            break
-
-
-@dp.message(Command("quiz"))
-async def send_quiz_link(message: types.Message):
-    await message.answer('Вы можете пройти викторину по кнопке ниже', reply_markup=inline_kb)
-
-
+@dp.message(F.text == "Викторина")
 @dp.callback_query(lambda callback_query: callback_query.data == 'open_webapp')
 async def handle_button1(callback_query: types.CallbackQuery):
     webapp_button = InlineKeyboardButton(text="Пройти викторину",
                                          web_app=WebAppInfo(url='https://7861-85-174-195-151.ngrok-free.app/login'))
     webapp_kb = InlineKeyboardMarkup(inline_keyboard=[[webapp_button]])
     await bot.send_message(callback_query.from_user.id, 'Нажмите на кнопку ниже, чтобы пройти викторину',
+                           reply_markup=webapp_kb)
+    await callback_query.answer()
+    builder = ReplyKeyboardBuilder()
+    builder.row(types.KeyboardButton(text="Рейтинг"))
+    builder.row(types.KeyboardButton(text="Полезная информация"))
+
+
+@dp.message(Command("dk"))
+async def delete_keyboard(message: types.Message):
+    await message.answer('Ваша клавиатура удалена', reply_markup=types.ReplyKeyboardRemove())
+
+
+@dp.message(F.text == "Рейтинг")
+async def users_top(message: types.Message):
+    await message.answer('Рейтинг пользователей, которые прошли викторину')
+    top_information = top()
+    top_text = ""
+    c = 0
+
+    for p in top_information:
+        c += 1
+        if c <= 3:
+            top_text += f'{c} место занимает пользователь @{p[0]} с рейтингом {p[1]}\n'
+        else:
+            top_text += f"Вы занимаете {c} место с рейтингом {p[1]}"
+            await message.answer(top_text)
+            break
+
+
+@dp.message(F.text == "Полезная информация")
+@dp.callback_query(lambda callback_query: callback_query.data == 'open_webapp')
+async def handle_button1(callback_query: types.CallbackQuery):
+    webapp_button = InlineKeyboardButton(text="Перейти",
+                                         web_app=WebAppInfo(url='https://antidropping.ru'))
+    webapp_kb = InlineKeyboardMarkup(inline_keyboard=[[webapp_button]])
+    await bot.send_message(callback_query.from_user.id, 'Нажмите на кнопку ниже, чтобы перейти на сайт с полезной информацией',
                            reply_markup=webapp_kb)
     await callback_query.answer()
 

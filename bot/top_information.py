@@ -8,6 +8,3 @@ def top():
         uinf.append([user[1], int(user[3]), int(user[4])])
     sorted_data = sorted(uinf, key=lambda x: x[1], reverse=True)
     return sorted_data
-
-
-

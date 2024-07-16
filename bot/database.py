@@ -1,14 +1,21 @@
 # port 5432
 
 import psycopg2
+from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
+
+conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
 
 
 def add_user(date):
-    conn = psycopg2.connect(dbname="users", user="postgres", password="123456", host="192.168.95.14")
+
+    id = date[0]
+    tg = date[1]
+    role = date[2]
+    register = date[3]
+
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO userstg (id, telegram, roles, register) VALUES (%s, %s, %s, %s)",
-        date)
+        "INSERT INTO userstg (id, telegram, roles, register) VALUES (%s, %s, %s, %s)",(id, tg, role, register))
     conn.commit()
     cursor.close()
     conn.close()
