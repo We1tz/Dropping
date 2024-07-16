@@ -104,7 +104,7 @@ export default function SusUserTemplate(props) {
     useEffect(() => {
         const a = AnalitService.getaboutprofile(props.id).then(function(res){
             setData(res.data.transfers);
-            setSrdang(res.data.midlle_dangger);
+            setSrdang(res.data.midlle_danger);
             console.log(res.data);
           });
     }, []);
