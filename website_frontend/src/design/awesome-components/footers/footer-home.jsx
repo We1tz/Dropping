@@ -12,7 +12,7 @@ function HomeFooter() {
                         <span>Наши социальные сети:</span>
                     </div>
                     <div>
-                        <a href="" class="text-white me-4">
+                        <a href="https://t.me/antidropping_bot" class="text-white me-4">
                             <i class="fab fa-brands fa-telegram"></i>
                         </a>
                     </div>
