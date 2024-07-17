@@ -25,7 +25,7 @@ function AdminTemplate() {
   return (
     <div className='constainer grad-article'>
       <section className='section-article section-fullwindow'>
-      <table class="table">
+      <table class="table table-dark">
     <thead>
         <tr>
         <th scope="col">Вердикт</th>

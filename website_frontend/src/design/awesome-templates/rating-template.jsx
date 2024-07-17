@@ -25,7 +25,7 @@ function RatingTemplate() {
             <section class=" section-article section-fullwindow">
                 <h1 className='display-4 text-sm-start text-light'>Рейтинг</h1>
                     <div class="container">
-                    <table class="table">
+                    <table class="table table-dark">
   <thead>
     <tr>
       <th scope="col">Место</th>

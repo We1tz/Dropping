@@ -169,7 +169,7 @@ export default function SusUserTemplate(props) {
             </div>
             </div>
             <div className='col'>
-            <table class="table">
+            <table class="table table-dark">
     <thead>
         <tr>
         <th scope="col">Сумма</th>
