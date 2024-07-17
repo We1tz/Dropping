@@ -2,7 +2,7 @@ import psycopg2
 import pandas as pd
 import joblib
 from api.config import conn_params
-from api.process_data import DataPreprocess
+from api.modules.process_data import DataPreprocess
 
 
 def transactions_model():

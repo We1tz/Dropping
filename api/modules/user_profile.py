@@ -1,6 +1,6 @@
-from config import conn_params
+from api.config import conn_params
 import psycopg2
-from get_agressive_transactions import get_transaction_agressive
+from api.modules.get_agressive_transactions import get_transaction_agressive
 
 conn = psycopg2.connect(**conn_params)
 cursor = conn.cursor()

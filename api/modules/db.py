@@ -1,7 +1,7 @@
 import psycopg2
-from rating import get_rating
-from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
-from hash import verify_password, hash_password
+from api.modules.rating import get_rating
+from api.config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
+from api.modules.hash import verify_password, hash_password
 
 conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
 

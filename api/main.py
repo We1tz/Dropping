@@ -1,19 +1,19 @@
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import check_user, add_user, hash_password, update_score, get_users_scores, restore_password, \
+from api.modules.db  import check_user, add_user, hash_password, update_score, get_users_scores, restore_password, \
     update_email_valid, check_true_email_verif
-from get_current_date import get_date
+from api.modules.get_current_date import get_date
 import jwt
 from fastapi.responses import RedirectResponse
 import datetime
-from generator import generate_password, generate_pin
+from api.modules.generator import generate_password
 import redis
-from user_profile import top_agressive_users, get_information_about_profile, get_information_about_profile_spend
+from api.modules.user_profile import top_agressive_users, get_information_about_profile, get_information_about_profile_spend
 import os
-from mail_send import send_password_mail, send_register_mail
+from api.modules.mail_send import send_password_mail, send_register_mail
 import logging
 from pydantic import BaseModel, Field, validator
-from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
+from api.config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIME_SECONDS, log_formatter, \
     console_handler, log_handler, \
     ALGORITHM, allow_origin
 

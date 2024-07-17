@@ -1,4 +1,4 @@
-from config import conn_params
+from api.config import conn_params
 import psycopg2
 import random
 
