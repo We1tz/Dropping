@@ -102,11 +102,16 @@ export default function SusUserTemplate(props) {
     const [data, setData] = useState([]);
     const [srdang, setSrdang] = useState();
 
+    const [diagdata, setDiagdagta] = useState([]);
     useEffect(() => {
         const a = AnalitService.getaboutprofile(props.id).then(function(res){
             setData(res.data.transfers);
             setSrdang(res.data.midlle_danger);
             console.log(res.data);
+
+            for(let i = 0; i < res.data.transfers.length; i++){
+              setDiagdagta([...diagdata, res.data.transfers[i].ammount]);
+            }
           });
     }, []);
     const showmore = ()=>{
@@ -137,7 +142,7 @@ export default function SusUserTemplate(props) {
             <BarChart
               width={500}
               height={300}
-              data={0}
+              data={diagdata.slice(0, amm)}
               margin={{
                 top: 5,
                 right: 30,
