@@ -3277,6 +3277,10 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #d9230f;
   --bs-gradient: none;
 }
+.span-3{
+  height: 500px !important;
+  overflow-y: scroll;
+}
 
 .btn-outline-secondary {
   --bs-btn-color: #fff;

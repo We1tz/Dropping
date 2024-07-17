@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Sector   } from 'recharts';
 import AnalitService from '../../API/AnalitService';
+import { color } from 'd3';
 /*
 const data = [
     {
@@ -123,7 +124,7 @@ export default function SusUserTemplate(props) {
   };
   
   const data_pie = [
-    { name: '% опасности', value: srdang },
+    { name: '% опасности', value: srdang, fill:"red" },
     { name: '% безопасности', value: 1-srdang },
   ];
 
@@ -168,7 +169,7 @@ export default function SusUserTemplate(props) {
         </PieChart>
             </div>
             </div>
-            <div className='col'>
+            <div className='col span-3'>
             <table class="table table-dark">
     <thead>
         <tr>
@@ -181,7 +182,7 @@ export default function SusUserTemplate(props) {
   <tbody>
     {
       data.length > 0 ? 
-      data.slice(0, amm).map((i, index)=>{
+      data.map((i, index)=>{
       return(      
       <tr key={index}>
         <td >{i.ammount}</td>
@@ -194,12 +195,12 @@ export default function SusUserTemplate(props) {
   </tbody>
 </table>
 
-{
+{/*
   amm < data.length ? 
   <><button type="button" className="btn btn-primary" onClick={() => {showmore()}}>Показать еще</button></>
   :
   "" 
-}
+*/}
             </div>
         </div>
     </div>
