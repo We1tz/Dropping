@@ -1,0 +1,79 @@
+2024-07-10 11:30:48,029 [ERROR] Error during registration: tuple index out of range
+2024-07-10 11:31:24,146 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:04:50,873 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:05:14,797 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:05:16,304 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:06:05,204 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:06:25,209 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:06:33,159 [ERROR] Error during registration: tuple index out of range
+2024-07-11 11:58:49,938 [ERROR] Error during registration: tuple index out of range
+2024-07-11 12:12:02,963 [ERROR] Error during registration: tuple index out of range
+2024-07-11 15:55:24,657 [ERROR] Error during registration: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+2024-07-15 09:49:43,749 [ERROR] Error during registration: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+2024-07-15 09:49:51,932 [ERROR] Error during registration: connection already closed
+2024-07-15 09:50:03,558 [ERROR] Error during registration: connection already closed
+2024-07-15 09:51:02,527 [ERROR] Error during registration: connection already closed
+2024-07-15 10:21:29,715 [ERROR] Error during registration: module 'datetime' has no attribute 'utcnow'
+2024-07-15 10:21:51,831 [ERROR] Error during registration: module 'datetime' has no attribute 'utcnow'
+2024-07-15 10:24:49,462 [ERROR] Error during registration: module 'datetime' has no attribute 'utcnow'
+2024-07-15 10:24:54,400 [ERROR] Error during registration: module 'datetime' has no attribute 'utcnow'
+2024-07-15 10:25:24,355 [ERROR] Error during registration: Object of type timedelta is not JSON serializable
+2024-07-15 10:27:23,653 [ERROR] Error during confirmation: 400: Ошибка подтверждения регистрации
+2024-07-15 11:08:15,447 [ERROR] Error during registration: tuple index out of range
+2024-07-15 11:13:09,118 [ERROR] Error during confirmation: column "username" does not exist
+LINE 1: SELECT COUNT(*) FROM userssite WHERE username = 'sduhdhdhdhd...
+                                             ^
+
+2024-07-15 12:07:47,127 [ERROR] Error during registration: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+2024-07-15 12:07:53,287 [ERROR] Error during registration: connection already closed
+2024-07-15 12:08:03,524 [ERROR] Error during registration: connection already closed
+2024-07-15 12:08:16,735 [ERROR] Error during registration: connection already closed
+2024-07-15 12:41:20,474 [ERROR] Error during registration: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+2024-07-15 16:50:52,218 [ERROR] Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2024-07-15 16:50:52,235 [ERROR] Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2024-07-15 16:51:40,286 [ERROR] Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\Sirius\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
