@@ -92,7 +92,7 @@ def generate_confirmation_url(email: str):
     expiration = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=24)
     payload = {"sub": email, "exp": expiration}
     confirmation_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    confirmation_url = f"http://localhost:8000/confirm?token={confirmation_token}"
+    confirmation_url = f"http://antidropping.ru/confirm?token={confirmation_token}"
     return confirmation_url
 
 
@@ -280,6 +280,7 @@ async def get_info_about_profile(transuser: TransactionUser):
 async def send_test_results():
     result = get_users_scores()
     return result
+
 
 
 @app.post("/logout")

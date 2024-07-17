@@ -6,22 +6,36 @@ import re
 from aiogram import F
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
-from get_date import get_date
+from modules.get_date import get_date
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'vacansy_model'))
+from vacansy_model.load import check_photo_vacancy, check_url_vacancy, check_text_vacancy
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, WebAppInfo, InlineKeyboardButton, \
     InlineKeyboardMarkup
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import ContentType
-from text import hello
-from database import add_user
-from top_information import top
+from modules.text import hello, drop_vacancy, good_vacancy
+from modules.database import add_user, select_from_base
 
+allow_site = ['avito', 'hh', 'superjob', 'zarplata']
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token='7144862454:AAFSItqaBKmo629nhkzOmDlJ92LbkaXnhE8')
+token = '7131076437:AAF1yqCwAZRi3W5851NZ23CWNc4anULmj2g'
+bot = Bot(token=token)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
+
+def top():
+    data = select_from_base()
+    uinf = []
+    for user in data:
+        uinf.append([user[1], int(user[3]), int(user[4])])
+    sorted_data = sorted(uinf, key=lambda x: x[1], reverse=True)
+    return sorted_data
 
 def is_correct_name(name):
     alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" + string.ascii_lowercase
@@ -80,7 +94,44 @@ async def check_vacancy(message: types.Message, state: FSMContext):
 @dp.message(VacancyForm.waiting_for_vacancy)
 async def process_vacancy(message: types.Message, state: FSMContext):
     if message.content_type == ContentType.TEXT or message.content_type == ContentType.PHOTO or is_url(message.text):
-        await message.answer('Подожди, идёт проверка вакансии...')
+        if message.content_type == ContentType.TEXT:
+            if is_url(message.text):
+                if message.text in allow_site:
+                    if check_url_vacancy(message.text) == 0:
+                        await message.answer(good_vacancy)
+                    else:
+                        await message.answer(drop_vacancy)
+                else:
+                    await message.answer(f'Пока принимаем вакансии тольно с сайтов {allow_site[0]}.ru, {allow_site[1]}.ru, {allow_site[2]}.ru, {allow_site[3]}.ru')
+            else:
+                if check_text_vacancy(message.text) == 0:
+                    await message.answer(good_vacancy)
+                else:
+                    await message.answer(drop_vacancy)
+
+        elif message.content_type == ContentType.PHOTO:
+            await bot.download(
+                message.photo[-1],
+                destination=f"photo/{message.photo[-1].file_id}.jpg"
+            )
+            await message.answer('Подожди, идёт проверка вакансии...')
+            current_dir = os.path.dirname(__file__)
+            photo_dir = os.path.join(current_dir, 'photo')
+            file_path = os.path.join(photo_dir, f"{message.photo[-1].file_id}.jpg")
+            if check_photo_vacancy(file_path) == 0:
+                await message.answer(good_vacancy)
+            else:
+                await message.answer(drop_vacancy)
+
+            try:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                print(f"Файл {file_path} успешно удален.")
+            except FileNotFoundError:
+                print(f"Файл {file_path} не найден.")
+            except Exception as e:
+                print(f"Произошла ошибка при удалении файла {file_path}: {e}")
+
         builder = ReplyKeyboardBuilder()
         builder.row(types.KeyboardButton(text="Викторина"))
         builder.row(types.KeyboardButton(text="Полезная информация"))
@@ -94,10 +145,11 @@ async def process_vacancy(message: types.Message, state: FSMContext):
 @dp.callback_query(lambda callback_query: callback_query.data == 'open_webapp')
 async def handle_button1(callback_query: types.CallbackQuery):
     webapp_button = InlineKeyboardButton(text="Пройти викторину",
-                                         web_app=WebAppInfo(url='https://7861-85-174-195-151.ngrok-free.app/login'))
+                                         web_app=WebAppInfo(url=''))
     webapp_kb = InlineKeyboardMarkup(inline_keyboard=[[webapp_button]])
     await bot.send_message(callback_query.from_user.id, 'Нажмите на кнопку ниже, чтобы пройти викторину',
                            reply_markup=webapp_kb)
+
     await callback_query.answer()
     builder = ReplyKeyboardBuilder()
     builder.row(types.KeyboardButton(text="Рейтинг"))
@@ -132,7 +184,8 @@ async def handle_button1(callback_query: types.CallbackQuery):
     webapp_button = InlineKeyboardButton(text="Перейти",
                                          web_app=WebAppInfo(url='https://antidropping.ru'))
     webapp_kb = InlineKeyboardMarkup(inline_keyboard=[[webapp_button]])
-    await bot.send_message(callback_query.from_user.id, 'Нажмите на кнопку ниже, чтобы перейти на сайт с полезной информацией',
+    await bot.send_message(callback_query.from_user.id,
+                           'Нажмите на кнопку ниже, чтобы перейти на сайт с полезной информацией',
                            reply_markup=webapp_kb)
     await callback_query.answer()
 
