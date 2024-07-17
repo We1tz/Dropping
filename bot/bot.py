@@ -151,7 +151,7 @@ async def handle_button1(callback_query: types.CallbackQuery):
                            reply_markup=webapp_kb)
 
     await callback_query.answer()
-    builder = ReplyKeyboardBuilder()
+    builder = ReplyKeyboardBuilder()#
     builder.row(types.KeyboardButton(text="Рейтинг"))
     builder.row(types.KeyboardButton(text="Полезная информация"))
 
