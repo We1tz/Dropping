@@ -57,7 +57,7 @@ function RegisterTemplate() {
                 console.log(res);
                 if(res == "nope"){
                     console.log("ahegao");
-                    setErrors(["Пользователь с таким именем уже зарегистрирован"]);
+                    setErrors(["Подтвердите почту"]);
                     return;
                 }
             })
@@ -67,7 +67,7 @@ function RegisterTemplate() {
         }
         catch(e){
             console.log(e);
-            setErrors(["Пользователь с таким именем уже зарегистрирован"]);
+            setErrors(["Подтвердите почту"]);
         }
         console.log(errors)
         return errors;
