@@ -19,8 +19,6 @@ from config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK_TIM
 
 app = FastAPI()
 
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[f"{allow_origin}"],
@@ -118,19 +116,26 @@ def get_failed_attempts_key(username: str) -> str:
     return f"failed_attempts:{username}"
 
 
-def is_user_blocked(username):
-    key = f"failed_attempts:{username}"
-    failed_attempts = redis_client.get(key)
-    if failed_attempts is None:
-        return False
-    return int(failed_attempts) >= 3
+def is_user_ip_blocked(ip, username):
+    username_key = f"failed_attempts:{username}"
+    ip_key = f"failed_attempts:ip:{ip}"
+    username_attempts = redis_client.get(username_key)
+    ip_attempts = redis_client.get(ip_key)
+
+    if username_attempts is not None and int(username_attempts) >= 3:
+        return True
+
+    if ip_attempts is not None and int(ip_attempts) >= 3:
+        return True
+
+    return False
 
 
-def record_failed_attempt(username: str):
-    key = get_failed_attempts_key(username)
-    failed_attempts = redis_client.incr(key)
-    if int(failed_attempts) == 1:
-        redis_client.expire(key, BLOCK_TIME_SECONDS)
+def record_failed_attempt(ip, username):
+    username_key = f"failed_attempts:{username}"
+    redis_client.incr(username_key)
+    ip_key = f"failed_attempts:ip:{ip}"
+    redis_client.incr(ip_key)
 
 
 def reset_failed_attempts(username: str):
@@ -139,7 +144,8 @@ def reset_failed_attempts(username: str):
 
 
 @app.post("/login")
-async def receive_data(user_credentials: UserCredentialsLogin, response: Response):
+async def receive_data(user_credentials: UserCredentialsLogin, response: Response, request: Request):
+    ip = request.client.host
     data = (user_credentials.username, user_credentials.password)
     status = check_user(data=data)
     if status == 200:
@@ -152,6 +158,7 @@ async def receive_data(user_credentials: UserCredentialsLogin, response: Respons
             "access_token": access_token
         }
     else:
+        is_user_ip_blocked(ip, user_credentials.username)
         if status == 201:
             reset_failed_attempts(user_credentials.username)
             return {'information:' 'valid your mail'}
@@ -161,7 +168,8 @@ async def receive_data(user_credentials: UserCredentialsLogin, response: Respons
 
 
 @app.post("/register")
-async def register(user_credentials: UserCredentialsRegister):
+async def register(user_credentials: UserCredentialsRegister, request: Request):
+    ip = request.client.host
     try:
         email = user_credentials.email
         send_register_mail((email, generate_confirmation_url(user_credentials.username)))
@@ -170,8 +178,14 @@ async def register(user_credentials: UserCredentialsRegister):
         data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date(), 'False')
         add_user(data)
     except Exception as e:
+        is_user_ip_blocked(ip, user_credentials.username)
         app_logger.error(f"Error during registration: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+
+
+
 
 
 @app.get("/confirm")
@@ -233,7 +247,8 @@ async def send_test_results(request: Request, test_results: TestResults):
 
 
 @app.post("/restore")
-async def restore(response: Response, restore: Restore):
+async def restore(response: Response, restore: Restore, request: Request):
+    ip = request.client.host
     new_password = generate_password()
     result = restore_password((restore.email, hash_password(new_password)))
     if result == 200:
@@ -241,6 +256,7 @@ async def restore(response: Response, restore: Restore):
         response.delete_cookie(key="refresh_token")
         return 'Пароль изменен'
     else:
+        is_user_ip_blocked(ip, 'username')
         return 404
 
 
@@ -280,7 +296,6 @@ async def get_info_about_profile(transuser: TransactionUser):
 async def send_test_results():
     result = get_users_scores()
     return result
-
 
 
 @app.post("/logout")

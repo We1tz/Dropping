@@ -7,7 +7,6 @@ conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_P
 
 
 def add_user(date):
-
     id = date[0]
     tg = date[1]
     role = date[2]
