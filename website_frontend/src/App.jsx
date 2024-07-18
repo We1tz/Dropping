@@ -32,7 +32,7 @@ function App() {
 }, [])
 
 if (store.isLoading) {
-  return <div>Загрузка...</div>
+  return <div className='text-white'>Загрузка...</div>
 }
   return (
     <div align="center">

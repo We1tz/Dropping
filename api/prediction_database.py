@@ -11,7 +11,7 @@ for res in results:
     count += 1
     pred = str(res).split()[1][0:-2]
     cursor.execute("""
-                INSERT INTO predictions (prediction)
+                INSERT INTO prediction (prediction)
                 VALUES (%s)
             """, (pred,))
     print('Выполнено:', f'{count}/{len(results)}')

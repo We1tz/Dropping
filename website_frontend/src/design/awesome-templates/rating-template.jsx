@@ -47,7 +47,7 @@ function RatingTemplate() {
 </table>
 {
   amm < data.length ? 
-    <><button type="button" className="btn btn-primary" onClick={() => {showmore()}}>Показать еще</button></>
+    <><button type="button" className="btn btn-info" onClick={() => {showmore()}}>Показать еще</button></>
    : ""
 }
 

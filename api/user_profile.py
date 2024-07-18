@@ -22,7 +22,7 @@ def top_agressive_users():
         account_id = agr_users[i][3]
         account_id_out = agr_users[i][4]
 
-        cursor.execute("SELECT * FROM predictions WHERE id = %s", (transaction_id,))
+        cursor.execute("SELECT * FROM prediction WHERE id = %s", (transaction_id,))
         drop_info = str(float(cursor.fetchone()[1]) * 100) + '%'
 
         return {
@@ -44,7 +44,7 @@ def get_information_about_profile_spend(account_id):
 
     for i in range(len(result)):  # общий расход пользователя
         summ_transfer += int(result[i][2])
-        cursor.execute("SELECT * FROM predictions WHERE id = %s", (result[i][0],))
+        cursor.execute("SELECT * FROM prediction WHERE id = %s", (result[i][0],))
         danger = cursor.fetchone()[1]
 
         transfers.append({"date": result[i][1],
@@ -85,7 +85,7 @@ def get_information_about_profile(account_id):
         ammount = float(result[n][2])
         out_acc = result[n][3]
 
-        cursor.execute("SELECT * FROM predictions WHERE id = %s", (id_transaction,))
+        cursor.execute("SELECT * FROM prediction WHERE id = %s", (id_transaction,))
         danger = cursor.fetchone()[1]
 
         transfers.append({"date": date_transaction,
