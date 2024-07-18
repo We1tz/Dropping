@@ -10,6 +10,10 @@ export default class AuthService {
         return $api.post('/register', { email, username, password });
     }
 
+    static async repeatemail(email, username, password){
+        return $api.post('/repeatemail', { email, username, password });
+    }
+
     static async logout(){
         return $api.post('/logout');
     }

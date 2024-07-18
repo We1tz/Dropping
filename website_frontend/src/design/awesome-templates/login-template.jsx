@@ -50,7 +50,7 @@ function LoginTemplate() {
         if(errors.length == 0){
             const g = store.login(username, password).then(function(res){
                 if(res == "nope"){
-                    console.log("ahegao");
+                    console.log("sadovnikov");
                     setErrors(["неверный логин или пароль"]);
                     return;
                 }
