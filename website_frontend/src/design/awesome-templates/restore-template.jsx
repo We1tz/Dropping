@@ -12,7 +12,7 @@ function RestoreTemplate() {
     const { store } = useContext(Context);
     const redirect = useNavigate();
     const approve = () =>{
-        const g = store.restore(code).then(function(res){
+        const g = store.restore(email, code).then(function(res){
             if(res == "nope"){
                 console.log("ahegao");
                 setErrors(["неверный логин или пароль"]);

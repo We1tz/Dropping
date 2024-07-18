@@ -18,8 +18,8 @@ export default class AuthService {
         return $api.post('/logout');
     }
 
-    static async restore(code){
-        return $api.post('/restore', {code});
+    static async restore(email, code){
+        return $api.post('/restore', {email, code});
     }
 
     static async approve(email){

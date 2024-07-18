@@ -3,6 +3,7 @@ import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../API/AuthService';
+import { now } from 'd3';
 
 function RegisterTemplate() {
 
@@ -12,7 +13,8 @@ function RegisterTemplate() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { store } = useContext(Context);
-
+    const [crrdate, setCrrdate] = useState(Date.now());
+    const [cnt, setCnt] = useState(0);
     const [first, setFirst] = useState(false);
     const [errors, setErrors] = useState([]);
     const validateValues = () => {
@@ -76,6 +78,16 @@ function RegisterTemplate() {
         return errors;
     };
 
+    const handlerepeatemail = () => {
+        console.log(crrdate-Date.now());
+        if(crrdate-Date.now() > -30000 && cnt < 4){
+            AuthService.repeatemail(email, username, password);
+            setCrrdate(Date.now());
+            setCnt(cnt+1);
+        }
+        return;
+    };
+
 
     return (
         <div>
@@ -131,11 +143,7 @@ function RegisterTemplate() {
                             Зарегистрироваться
                         </button>
                         <p></p>
-                        {
-                            first  ? 
-                            <button className='btn btn-info' onClick={()=>{AuthService.repeatemail(email, username, password)}}>Прислать еще раз</button>
-                            :""
-                        }
+                        
                     </div>
                     <ul>
                         {errors.map(i => <li>{i}</li>)}
@@ -143,6 +151,11 @@ function RegisterTemplate() {
                         
                     </div>
             </form>
+            {
+                            true  ? 
+                            <button className='btn btn-info' onClick={()=>{handlerepeatemail();}}>Прислать еще раз</button>
+                            :""
+                        }
         </div>
     );
 }
