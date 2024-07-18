@@ -11,12 +11,12 @@ for res in results:
     count += 1
     pred = str(res).split()[1][0:-2]
     cursor.execute("""
-                INSERT INTO predictions (prediction)
-                VALUES (%s)
-            """, (pred,))
+                INSERT INTO prediction (id, predict)
+                VALUES (%s, %s)
+            """, (count, pred,))
     print('Выполнено:', f'{count}/{len(results)}')
     conn.commit()
 conn.commit()
 
-# password3000uLtra!
+
 
