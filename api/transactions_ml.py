@@ -18,7 +18,7 @@ def transactions_model():
     data = fetch_data(conn_params)
     preprocessor = DataPreprocess(data)
     preprocessed_data = preprocessor.handle_data()
-    model = joblib.load('XGB_transaction_model.pkl')
+    model = joblib.load('transaction_model_2.pkl')
 
     predictions = model.predict(preprocessed_data)
     prediction_probabilities = model.predict_proba(preprocessed_data)

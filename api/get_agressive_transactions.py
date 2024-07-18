@@ -8,7 +8,7 @@ cursor = conn.cursor()
 #
 def get_transaction_agressive():
     cursor.execute("""
-        SELECT * FROM predictions
+        SELECT * FROM prediction
         WHERE to_number(prediction, '9999999D9999999') > 0.54;
     """)
 

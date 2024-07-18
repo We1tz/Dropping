@@ -30,7 +30,8 @@ def top_agressive_users():
             "date": date_transation,
             "ammount": ammount,
             "account_id": account_id,
-            "account_out": account_id_out
+            "account_out": account_id_out,
+            "danger": drop_info
         }
 
 
@@ -43,15 +44,22 @@ def get_information_about_profile_spend(account_id):
     transfers_dates = []
 
     for i in range(len(result)):  # общий расход пользователя
+        id = (result[i][0])
         summ_transfer += int(result[i][2])
+<<<<<<< HEAD
         cursor.execute("SELECT * FROM prediction WHERE id = %s", (result[i][0],))
         danger = cursor.fetchone()[1]
+=======
+        cursor.execute("SELECT * FROM prediction WHERE id = %s", (id,))
+        danger = cursor.fetchall()
+        if danger:
+            transfers.append({"date": result[i][1],
+                              "ammount": result[i][2],
+                              "out_account": result[i][-1],
+                              "danger": danger
+                              })
+>>>>>>> 4367864bd1064d94b9d8b3f5ae650eaf8b8c4775
 
-        transfers.append({"date": result[i][1],
-                          "ammount": result[i][2],
-                          "out_account": result[i][-1],
-                          "danger": danger
-                          })
 
     summ_danger = 0
     count = 0
@@ -102,7 +110,7 @@ def get_information_about_profile(account_id):
 
         for d in transfers:
             count += 1
-            summ_danger += float(d['danger'])
+            summ_danger += (d['danger'])
 
         if count == 0:
             sred_danger = float(summ_danger / 1)
@@ -114,5 +122,3 @@ def get_information_about_profile(account_id):
             'midlle_danger': sred_danger
             }
 
-
-print(get_information_about_profile_spend('6955aaef36d8bc7d451bc97a03b4897de761c878365510357d8f0ca6d06e62e9'))
