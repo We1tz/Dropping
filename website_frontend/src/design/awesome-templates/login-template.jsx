@@ -104,10 +104,6 @@ function LoginTemplate() {
                             Войти
                         </button>
                         <br />
-                        <p></p>
-                        <button type="button" class="btn btn-info btn-login-1 " onClick={() => { validateValues()}}>
-                            Войти через телеграмм <i class="fab fa-brands fa-telegram"></i>
-                        </button>
                     </div>
                     <ul>
                         {errors.map(i => <li>{i}</li>)}

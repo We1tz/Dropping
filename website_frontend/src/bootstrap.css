@@ -108,9 +108,9 @@
   --bs-link-hover-color-rgb: 174, 28, 12;
   --bs-code-color: #e83e8c;
   --bs-highlight-bg: #fff3cd;
-  --bs-border-width: 1px;
+  --bs-border-width: 3px;
   --bs-border-style: solid;
-  --bs-border-color: #ccc;
+  --bs-border-color: #ffffff;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
   --bs-border-radius: 0.375rem;
   --bs-border-radius-sm: 0.25rem;
@@ -141,6 +141,10 @@
 .sign-btn{
   width:30% !important;
   margin: auto;
+}
+
+hr.solid {
+  border-top: 3px solid #fdfdfd;
 }
 
 .grad-text{

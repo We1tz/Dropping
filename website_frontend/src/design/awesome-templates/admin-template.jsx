@@ -47,7 +47,7 @@ function AdminTemplate() {
         <td>{i.ammount} руб</td>
         <td>{i.date}</td>
         <td><a href = {'/SusUserPage/' + i.account_id.toString()} /*Не пишите комментарии, эта жопа может принять их за код :D p.s. ГОООООЛ*/ >{i.account_id.substring(0, 10)}...</a></td>
-        <td>{i.account_out.substring(0, 10)}...</td>
+        <td><a href = {'/SusUserPage/' + i.account_out.toString()} /*Не пишите комментарии, эта жопа может принять их за код :D p.s. ГОООООЛ*/ >{i.account_out.substring(0, 10)}...</a></td>
       </tr>)
     }): <h1 className='text-white'>Загрузка...</h1>}
   </tbody>

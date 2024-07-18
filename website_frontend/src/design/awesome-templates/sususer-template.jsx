@@ -103,15 +103,25 @@ export default function SusUserTemplate(props) {
     const [srdang, setSrdang] = useState();
 
     const [diagdata, setDiagdagta] = useState([]);
+    const [total, setTotal] = useState([]);
+
+    const [cnt, setCnt] = useState(0);
     useEffect(() => {
         const a = AnalitService.getaboutprofile(props.id).then(function(res){
             setData(res.data.transfers);
             setSrdang(res.data.midlle_danger);
             console.log(res.data);
-
+            var a = []
+            var totalsum = 0;
             for(let i = 0; i < res.data.transfers.length; i++){
-              setDiagdagta([...diagdata, res.data.transfers[i].ammount]);
+              console.log(res.data.transfers[i].ammount);
+              a = [...a, {"name": res.data.transfers[i].date.substring(0,5), "сумма":res.data.transfers[i].ammount}];
+              console.log(a);
+              totalsum += Number(res.data.transfers[i].ammount);
             }
+            console.log(a);
+            setDiagdagta(a);
+            setTotal(totalsum);
           });
     }, []);
     const showmore = ()=>{
@@ -129,8 +139,8 @@ export default function SusUserTemplate(props) {
   };
   
   const data_pie = [
-    { name: '% опасности', value: srdang, fill:"red" },
-    { name: '% безопасности', value: 1-srdang },
+    { name: '% опасности', value: srdang, fill:"#d94c3f" },
+    { name: '% безопасности', value: 1-srdang, fill:"#49c955"  },
   ];
 
   return (
@@ -139,10 +149,11 @@ export default function SusUserTemplate(props) {
         <div className="row">
             <div className='col'>
             <div class="bg-dark">
+            
             <BarChart
               width={500}
               height={300}
-              data={diagdata.slice(0, amm)}
+              data={diagdata.slice(cnt,cnt+10)}
               margin={{
                 top: 5,
                 right: 30,
@@ -155,10 +166,21 @@ export default function SusUserTemplate(props) {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#5a64ed" activeBar={<Rectangle fill="#cf4cd4" stroke="black" />} />
-              <Bar dataKey="uv" fill="#ed5f42" activeBar={<Rectangle fill="#d4a04c" stroke="black" />} />
+              <Bar dataKey="сумма" fill="#5a64ed" activeBar={<Rectangle fill="#cf4cd4" stroke="black" />} />
             </BarChart>
+            {diagdata.length >= 10 ?
+              <>
+                <button className='btn btn-info' onClick={()=>{if(cnt-10 >= 0){setCnt(cnt-10);}}}>{"<"}</button>
+                <button className='btn btn-info' onClick={()=>{if(cnt+10 <= diagdata.length){setCnt(cnt+10);}}}>{">"}</button>
+              </> 
+              :
+              ""
+            }
+            <h1 className='text-white'>Всего: {total} руб.</h1>
+            <hr class="solid"/>
+            
             <PieChart width={400} height={400}>
+              
           <Pie
             activeIndex={state.activeIndex}
             activeShape={renderActiveShape}
@@ -192,7 +214,7 @@ export default function SusUserTemplate(props) {
       return(      
       <tr key={index}>
         <td >{i.ammount}</td>
-        <td>{i.danger*100}% </td>
+        <td>{String(i.danger*100).substring(0,5)}% </td>
         <td>{i.date}</td>
         <td><a href = {'/SusUserPage/' + i.out_account.toString()} /*Не пишите комментарии, эта жопа может принять их за код :D p.s. ГОООООЛ*/ >{i.out_account.substring(0, 10)}...</a></td>
 

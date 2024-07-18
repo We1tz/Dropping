@@ -11,6 +11,7 @@ function RegisterTemplate() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { store } = useContext(Context);
+    
 
     const [errors, setErrors] = useState([]);
     const validateValues = () => {
