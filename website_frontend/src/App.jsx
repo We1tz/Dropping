@@ -21,6 +21,7 @@ import GraphPage from './design/pages/graphs-page.jsx';
 import NewpassPage from './design/pages/newpass-page.jsx';
 import NFPage from './design/pages/nf-page.jsx';
 import SusUserPage from './design/pages/sususer-page.jsx';
+import SucPage from './design/pages/suc-page.jsx';
 
 function App() {
   const {store }= useContext(Context);
@@ -51,6 +52,7 @@ if (store.isLoading) {
           <Route path="/graph" element={<GraphPage/>} />
           <Route path="/newpass" element={<NewpassPage/>} />
           <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
+          <Route exact path="/success" element={<SucPage/>} />
           <Route path='*' element={<NFPage/>}/>
         </Routes>
       </BrowserRouter>

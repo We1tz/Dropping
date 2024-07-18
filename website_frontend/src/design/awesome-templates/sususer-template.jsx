@@ -175,6 +175,7 @@ export default function SusUserTemplate(props) {
             </div>
             </div>
             <div className='col span-3'>
+              <br />
             <table class="table table-dark">
     <thead>
         <tr>
