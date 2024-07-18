@@ -46,10 +46,6 @@ def get_information_about_profile_spend(account_id):
     for i in range(len(result)):  # общий расход пользователя
         id = (result[i][0])
         summ_transfer += int(result[i][2])
-<<<<<<< HEAD
-        cursor.execute("SELECT * FROM prediction WHERE id = %s", (result[i][0],))
-        danger = cursor.fetchone()[1]
-=======
         cursor.execute("SELECT * FROM prediction WHERE id = %s", (id,))
         danger = cursor.fetchall()
         if danger:
@@ -58,7 +54,6 @@ def get_information_about_profile_spend(account_id):
                               "out_account": result[i][-1],
                               "danger": danger
                               })
->>>>>>> 4367864bd1064d94b9d8b3f5ae650eaf8b8c4775
 
 
     summ_danger = 0
