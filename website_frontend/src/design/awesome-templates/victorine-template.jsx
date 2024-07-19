@@ -84,7 +84,7 @@ function VictorineTemplate() {
                         </div>
                         <div class="col-sm">
                         {over ? <>
-                            <h2 className='text-light'>Время: {date}, Правильных ответов: {rightans}</h2>
+                            <h2 className='text-light'>Время: {date.toString().substring(0, date.toString().length-3)}секунд, {date.toString().substring(date.toString().length-3, date.toString().length)} миллисекунд, Правильных ответов: {rightans}</h2>
                         </>:
                             <>
                             <h1 className='text-start text-light fw-bold'>Вакансия {cnt}</h1>
