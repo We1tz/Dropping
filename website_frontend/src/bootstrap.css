@@ -799,8 +799,8 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background : #001f29;
-  color: #001f29;
+  background : #545454;
+  color: #2d97ba;
   background-size: 100%;
   background-blend-mode: difference;
   -webkit-text-size-adjust: 100%;
@@ -6842,7 +6842,10 @@ textarea.form-control-lg {
   flex: 1 1 auto;
   padding: var(--bs-modal-padding);
 }
-
+footer {
+  bottom:0;
+  position: fixed;
+}
 .modal-footer {
   display: flex;
   flex-shrink: 0;
