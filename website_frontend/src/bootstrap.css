@@ -1339,6 +1339,13 @@ progress {
   margin-bottom: 0;
 }
 
+.opusk{
+  clear: both;
+    position: relative;
+    height: 200px;
+    margin-top: -200px;
+}
+
 .blockquote-footer {
   margin-top: -1rem;
   margin-bottom: 1rem;
@@ -1442,7 +1449,6 @@ progress {
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
-  margin-top: calc(-1 * var(--bs-gutter-y));
   margin-right: calc(-0.5 * var(--bs-gutter-x));
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
@@ -5478,6 +5484,7 @@ textarea.form-control-lg {
 
 .card {
   --bs-card-spacer-y: 1rem;
+   width: 18rem;
   --bs-card-spacer-x: 1rem;
   --bs-card-title-spacer-y: 0.5rem;
   --bs-card-title-color: ;
@@ -5500,6 +5507,7 @@ textarea.form-control-lg {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-top: 10px;
   height: var(--bs-card-height);
   color: var(--bs-body-color);
   word-wrap: break-word;
@@ -5507,6 +5515,27 @@ textarea.form-control-lg {
   background-clip: border-box;
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
   border-radius: var(--bs-card-border-radius);
+}
+
+.block {
+  overflow: hidden;
+  background: #ffff;
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+}
+.block img {
+   width: 75px;
+  height: 75px;
+  float: left;
+  margin: 0 1rem 0 0;
+}
+.block h2 {
+  margin: 0 0 0.5rem 0;
+}
+/*NEW STYLES*/
+.block {
+  display: grid;
+  grid-template-columns: 100px 1fr 100px;
 }
 
 .card > hr {
