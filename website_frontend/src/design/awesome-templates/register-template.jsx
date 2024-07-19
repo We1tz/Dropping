@@ -152,7 +152,7 @@ function RegisterTemplate() {
                     </div>
             </form>
             {
-                            true  ? 
+                            first  ? 
                             <button className='btn btn-info' onClick={()=>{handlerepeatemail();}}>Прислать еще раз</button>
                             :""
                         }

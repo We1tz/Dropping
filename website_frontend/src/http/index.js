@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = `http://localhost:8000`;
+export const API_URL = `http://antidropping.ru/api`;
 
 const $api = axios.create({
     withCredentials: true,

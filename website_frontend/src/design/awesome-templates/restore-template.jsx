@@ -2,6 +2,7 @@ import React, { FC, useContext, useState } from 'react';
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../../API/AuthService';
 
 function RestoreTemplate() {
     
@@ -12,7 +13,7 @@ function RestoreTemplate() {
     const { store } = useContext(Context);
     const redirect = useNavigate();
     const approve = () =>{
-        const g = store.restore(email, code).then(function(res){
+        const g = AuthService.restore(email, code).then(function(res){
             if(res == "nope"){
                 console.log("ahegao");
                 setErrors(["неверный логин или пароль"]);

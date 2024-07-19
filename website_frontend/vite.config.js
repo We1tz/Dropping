@@ -10,4 +10,7 @@ export default defineConfig({
     testMatch: './src/tests/App.test.jsx',
     setupFiles: './setupTests.js',
   },
+  optimizeDeps: {
+    exclude: ['js-big-decimal']
+  },
 })
