@@ -5,18 +5,6 @@
             "id":"antidropping",
             "img": "postsPics/antidropping.jpg",
             "annotation": "Узнайте, что такое дроппинг и как не стать его жертвой"
-        },
-        {
-            "title":"Миньоны",
-            "id":"minions",
-            "img": "postsPics/svo.jpg",
-            "annotation": "Статья о миньонах от чата-гпт"
-        },
-        {
-            "title":"Александр Садовников",
-            "id":"sadovnikov",
-            "img": "postsPics/sadovnikov.jpg",
-            "annotation": "Коллеги, закрываем ноутбуки"
         }
     ]
 }
