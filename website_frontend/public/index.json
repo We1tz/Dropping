@@ -11,6 +11,12 @@
             "id":"minions",
             "img": "postsPics/svo.jpg",
             "annotation": "Статья о миньонах от чата-гпт"
+        },
+        {
+            "title":"Александр Садовников",
+            "id":"sadovnikov",
+            "img": "postsPics/sadovnikov.jpg",
+            "annotation": "Закрываем ноутбуки"
         }
     ]
 }
