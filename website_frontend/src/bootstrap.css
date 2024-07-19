@@ -1334,7 +1334,9 @@ progress {
   margin-bottom: 1rem;
   font-size: 1.25rem;
 }
-
+.marginotop{
+  top: 50%;
+}
 .blockquote > :last-child {
   margin-bottom: 0;
 }

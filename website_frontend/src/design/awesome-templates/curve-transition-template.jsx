@@ -19,19 +19,35 @@ function CurveTransitionTemplate() {
             <div className="list">
                 <div className="row">
                     {posts.map((post) => (
-                        <div class="card bg-dark text-white" >
-                        <img  class="card-img-top" src={post.img}/>
-                        <div class="card-body">
-                          <h5 class="card-title">{post.title}</h5>
-                          <p class="card-text">{post.annotation}</p>
-                          <a href={"/post/"+post.id} class="btn btn-info">Читать</a>
+                        <div class="card bg-dark text-white container d-flex flex-column" >
+                            <img  class="card-img-top" src={post.img}/>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{post.title}</h5>
+                                <p class="card-text">{post.annotation}</p>
+                                    <a href={"/post/"+post.id} class="btn btn-info mt-auto" style={{marginTop:"10px"}}>Читать</a>
+                            </div>
                         </div>
-                      </div>
                     ))}
+                    
                 </div>
+                
             </div>
         </div>
     );
 }
+
+
+/*
+<div class="card bg-dark text-white container d-flex flex-column" >
+                            <img  class="card-img-top" src={post.img}/>
+                            <div class="card-body">
+                                <h5 class="card-title">{post.title}</h5>
+                                <p class="card-text">{post.annotation}</p>
+                                <div className='card-footer'>
+                                    <a href={"/post/"+post.id} class="btn btn-info " style={{marginTop:"10px"}}>Читать</a>
+                                </div>
+                            </div>
+                        </div>
+*/
 
 export default observer(CurveTransitionTemplate);
