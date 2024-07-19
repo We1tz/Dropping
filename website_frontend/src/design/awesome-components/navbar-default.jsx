@@ -34,9 +34,6 @@ function Navbar() {
                                 <li>
                         <a data-testid="home-link" className="nav-link active" href="/victorine">Викторина</a>
                         </li>
-                        <li>
-                        <a data-testid="home-link" className="nav-link active" href="/graph">Аналитика</a>
-                        </li>
                         
                                 </>
                                     :
@@ -44,8 +41,17 @@ function Navbar() {
                             }
                             
                         </ul>
-                        {store.isAuth?
-                                        <a data-testid="home-link" className="nav-link text-light" onClick={() => store.logout()}>Выйти</a>
+                        {store.isAuth? 
+                                        <>
+                                        <ul className="navbar-nav">
+                                            <li>
+                                            <a data-testid="home-link" className="nav-link text-light" href="/profile">Профиль</a>
+                                            </li>
+                                            <li>
+                                            <a data-testid="home-link" className="nav-link text-light" onClick={() => store.logout()}>Выйти</a></li>
+                                        </ul>
+                                            
+                                        </>
                                     :
                                         <a data-testid="home-link" className="nav-link text-light" href="/register">Регистрация</a>
                         }

@@ -25,4 +25,8 @@ export default class AuthService {
     static async approve(email){
         return $api.post('/approve', {email});
     }
+
+    static async changepasswd(prevpass, newpass){
+        return $api.post('/changepasswd', {prevpass, newpass});
+    }
 }
