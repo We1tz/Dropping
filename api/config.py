@@ -30,7 +30,7 @@ DB_PASSWORD = conn_params['password']
 DB_HOST = conn_params['host']
 DB_PORT = conn_params['port']
 
-smtp_server = 'smtp.antidropping.ru'
+smtp_server = 'mail.antidropping.ru'
 smtp_port = 587
 smtp_username = 'admin2281337@antidropping.ru'
 smtp_password = 'r$U3q#V7&fW3x%'

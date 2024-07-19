@@ -14,16 +14,14 @@ from api.config import secret_key, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, BLOCK
     console_handler, log_handler, \
     ALGORITHM, allow_origin
 from api.modules.db import check_user, add_user, update_score, get_users_scores, restore_password, \
-    update_email_valid, check_true_email_verif
-from api.modules.generator import generate_password
+    update_email_valid, check_true_email_verif, send_pin
+from api.modules.generator import generate_password, generate_pin
 from api.modules.get_current_date import get_date
-from api.modules.mail_send import send_password_mail, send_register_mail
+from api.modules.mail_send import send_code_mail, send_register_mail, send_password_mail
 from api.modules.user_profile import top_agressive_users, get_information_about_profile, \
     get_information_about_profile_spend
 
 app = FastAPI()
-
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -74,6 +72,11 @@ class TestResults(BaseModel):
 
 
 class Restore(BaseModel):
+    email: str
+    code: str
+
+
+class PostCode(BaseModel):
     email: str
 
 
@@ -167,12 +170,14 @@ async def receive_data(user_credentials: UserCredentialsLogin, response: Respons
 @app.post("/register")
 async def register(user_credentials: UserCredentialsRegister):
     try:
-        email = user_credentials.email
-        send_register_mail((email, generate_confirmation_url(user_credentials.username)))
-
         hashed_password = hash_password(user_credentials.password)
+        email = user_credentials.email
         data = (user_credentials.username, hashed_password, email, 'None', 0, 'user', get_date(), 'False')
-        add_user(data)
+        status = add_user(data)
+        if status == 200:
+            send_register_mail((email, generate_confirmation_url(user_credentials.username)))
+        else:
+            return 431
     except Exception as e:
         app_logger.error(f"Error during registration: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -209,18 +214,14 @@ async def protected_route(request: Request):
 
 
 @app.post("/approve")
-async def approve(request: Request):
-    refresh_token = request.cookies.get("refresh_token")
-    payload = verify_token(refresh_token)
-    username = payload["sub"]
-    if check_true_email_verif(username) == 200:
-        return {
-            'result': 200,
-            'refresh_token': refresh_token,
-            'username': username
-        }
+async def approve(reset: PostCode):
+    email = reset.email
+    code = generate_pin()
+    if send_pin((email, code)) == 200:
+        send_code_mail((email, code))
+        return 200
     else:
-        return 431
+        return 404
 
 
 @app.post("/sendvect")
@@ -238,14 +239,15 @@ async def send_test_results(request: Request, test_results: TestResults):
 
 @app.post("/restore")
 async def restore(response: Response, restore: Restore):
+    code = restore.code
+    email = restore.email
     new_password = generate_password()
-    result = restore_password((restore.email, hash_password(new_password)))
-    if result == 200:
-        send_password_mail((restore.email, new_password))
-        response.delete_cookie(key="refresh_token")
-        return 'Пароль изменен'
+    status = restore_password((email, new_password, code))
+    if status == 200:
+        send_password_mail((email, new_password))
+        return 431
     else:
-        return 404
+        return 431
 
 
 #@app.get("/transactions")
@@ -284,7 +286,6 @@ async def get_info_about_profile(transuser: TransactionUser):
 async def send_test_results():
     result = get_users_scores()
     return result
-
 
 
 @app.post("/logout")

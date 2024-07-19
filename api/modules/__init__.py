@@ -4,7 +4,7 @@ from api.modules.generator import generate_pin, generate_password
 from api.modules.get_agressive_transactions import get_transaction_agressive
 from api.modules.get_current_date import get_date
 from api.modules.hash import hash_password, verify_password
-from api.modules.mail_send import send_password_mail, send_register_mail
+from api.modules.mail_send import send_code_mail, send_register_mail
 from api.modules.process_data import DataPreprocess
 from api.modules.rating import get_rating
 from api.modules.transactions_ml import transactions_model
@@ -24,7 +24,7 @@ __all__ = [
     "get_date",
     "hash_password",
     "verify_password",
-    "send_password_mail",
+    "send_code_mail",
     "send_register_mail",
     "DataPreprocess",
     "get_rating",

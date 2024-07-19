@@ -17,18 +17,19 @@ def add_user(data):
     last_login = data[6]
 
     with conn.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM userssite WHERE login = %s", (data[0],))
-        if cursor.fetchone()[0] > 0:
+        cursor.execute("SELECT * FROM userssite WHERE login = %s OR email = %s", (data[0], data[2]))
+        if cursor.fetchone():
             conn.commit()
             return 433
-        else:
 
+        else:
             cursor.execute(
                 "INSERT INTO userssite (login, password, telegram, rating, roles, last_login, email, emailvalid) VALUES (%s, %s, "
                 "%s, %s, %s, %s, %s, %s)",
                 (login, password, telegram, rating, role, last_login, email, 'False'))
             conn.commit()
             return 200
+
 
 
 def check_user(data):
@@ -82,15 +83,18 @@ def get_users_scores():
 
 
 def restore_password(data):
+
     email = data[0]
     password = data[1]
+    code = data[2]
+
 
     with conn.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s", (email,))
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s AND code = %s", (email, code,))
         if cursor.fetchone()[0] > 0:
             cursor.execute(
-                "UPDATE userssite SET password = %s WHERE login = %s",
-                (password, email)
+                "UPDATE userssite SET password = %s WHERE email = %s",
+                (password, code, email)
             )
             conn.commit()
             return 200
@@ -120,3 +124,20 @@ def check_true_email_verif(username):
             return 200
         else:
             return 431
+
+
+def send_pin(data):
+    email = data[0]
+    code = data[1]
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s", (email,))
+        if cursor.fetchone()[0] > 0:
+            cursor.execute(
+                "UPDATE userssite SET last_code = %s WHERE email = %s",
+                (code, email,)
+            )
+            conn.commit()
+            return 200
+        else:
+            return 404
+
