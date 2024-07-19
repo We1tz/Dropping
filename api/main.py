@@ -99,7 +99,7 @@ def generate_confirmation_url(email: str):
     expiration = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=24)
     payload = {"sub": email, "exp": expiration}
     confirmation_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    confirmation_url = f"http://antidropping.ru/confirm?token={confirmation_token}"
+    confirmation_url = f"http://antidropping.ru/api/confirm?token={confirmation_token}"
     return confirmation_url
 
 
@@ -195,7 +195,7 @@ async def confirm_registration(token: str, response: Response, ):
                 access_token = create_access_token({"sub": username})
                 refresh_token = create_refresh_token({"sub": username})
                 response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
-                return RedirectResponse(url="localhost", status_code=301)
+                return RedirectResponse(url="redirect", status_code=301)
             else:
                 return Exception
         else:
@@ -245,7 +245,7 @@ async def restore(response: Response, restore: Restore):
     status = restore_password((email, new_password, code))
     if status == 200:
         send_password_mail((email, new_password))
-        return 431
+        return RedirectResponse(url="redirect", status_code=301)
     else:
         return 431
 

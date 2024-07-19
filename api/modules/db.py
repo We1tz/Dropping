@@ -3,6 +3,7 @@ import psycopg2
 from api.config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
 from api.modules.hash import verify_password
 from api.modules.rating import get_rating
+from api.modules.hash import hash_password
 
 conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
 
@@ -84,17 +85,17 @@ def get_users_scores():
 
 def restore_password(data):
 
-    email = data[0]
-    password = data[1]
-    code = data[2]
+    email = str(data[0])
+    password = hash_password(str(data[1]))
+    code = str(data[2])
 
 
     with conn.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s AND code = %s", (email, code,))
+        cursor.execute("SELECT COUNT(*) FROM userssite WHERE email = %s AND last_code = %s", (email, code,))
         if cursor.fetchone()[0] > 0:
             cursor.execute(
                 "UPDATE userssite SET password = %s WHERE email = %s",
-                (password, code, email)
+                (password, email,)
             )
             conn.commit()
             return 200
