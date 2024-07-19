@@ -99,12 +99,9 @@ class Parser():
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         if "hh.ru" in url:
-            text = soup.find("h1", "bloko-header-section-1").text
-
-            salary = soup.find("div","magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-paragraph-2-regular___VO638_3-0-9")
-            if str(type(salary)) == "<class 'NoneType'>":
-                salary = soup.find("span", "magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-label-1-regular___pi3R-_3-0-9")
-            text += " " + salary.text
+            results = soup.find_all('div', "vacancy-title")
+            for temp in results:
+                text += " " + temp.text
 
             regex = re.compile('.*description.*')
             results = soup.find_all('p', {'class': regex})
