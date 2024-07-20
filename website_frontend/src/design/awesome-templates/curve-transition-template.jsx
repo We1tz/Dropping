@@ -38,20 +38,6 @@ function CurveTransitionTemplate() {
     return (
         <div class="text-light grad-article">
             <div className="list">
-                <Carousel swipeable={false}
-  draggable={false}
-  showDots={true}
-  responsive={responsive}
-  ssr={true} 
-  infinite={true}
-  autoPlaySpeed={1000}
-  keyBoardControl={true}
-  customTransition="all .5"
-  transitionDuration={500}
-  containerClass="carousel-container"
-  removeArrowOnDeviceType={["tablet", "mobile"]}
-  dotListClass="custom-dot-list-style"
-  itemClass="carousel-item-padding-40-px">
                     {posts.map((post) => (
                         <div class="card bg-dark text-white container d-flex flex-column" >
                             <img  class="card-img-top" src={post.img}/>
@@ -62,8 +48,6 @@ function CurveTransitionTemplate() {
                             </div>
                         </div>
                     ))}
-                </Carousel>
-                
             </div>
         </div>
     );
