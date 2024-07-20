@@ -20,7 +20,10 @@ function RatingTemplate() {
     setAmm(amm+10);
   }
     return (
-        <div class="text-dark grad-article">
+        
+        <div>
+          
+        <div class="text-dark grad-article span-3">
             
             <section class=" section-article section-fullwindow">
                 <h1 className='display-4 text-sm-start text-light'>Рейтинг</h1>
@@ -54,7 +57,12 @@ function RatingTemplate() {
                     </div>
                 
             </section>
-
+            
+        </div>
+          <br />
+        <br />
+        <br />
+        <br /><p></p>
         </div>
     );
 }

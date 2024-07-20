@@ -790,6 +790,10 @@ hr.solid {
     scroll-behavior: smooth;
   }
 }
+.scrollmenu {
+  overflow: auto;
+  white-space: nowrap;
+}
 
 body {
   margin: 0;

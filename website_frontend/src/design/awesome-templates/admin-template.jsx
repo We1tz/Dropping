@@ -23,7 +23,7 @@ function AdminTemplate() {
   }
 
   return (
-    <div className='constainer grad-article'>
+    <div className='constainer scrollmenu grad-article'>
       <section className='section-article section-fullwindow'>
       <table class="table table-dark">
     <thead>
