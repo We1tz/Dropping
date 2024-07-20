@@ -53,7 +53,7 @@ function ProfilePage() {
         }
         if(errors.length == 0){
             const g = AuthService.changepasswd(prevpassword, newpassword).then(function(res){
-                if(res.data.result == "200"){
+                if(res.data.status == "200"){
                     redirect('/')
                     alert('Пароль успешно изменен');
                     return;

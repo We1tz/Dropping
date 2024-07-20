@@ -79,11 +79,11 @@ function RegisterTemplate() {
     };
 
     const handlerepeatemail = () => {
-        console.log(crrdate-Date.now());
+        console.log(10000 - (crrdate-Date.now()));
         if(crrdate-Date.now() > -30000 && cnt < 4){
             AuthService.repeatemail(email, username, password);
             setCrrdate(Date.now());
-            setCnt(cnt+1);
+            setCnt(cnt+1);l
         }
         return;
     };

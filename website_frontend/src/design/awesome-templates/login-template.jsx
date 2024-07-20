@@ -15,7 +15,7 @@ function LoginTemplate() {
 ""
     const validateValues = () => {
         setErrors([]);
-        console.log("jopa");
+        console.log("J0P4");
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         const symbols = /[^A-Za-z0-9]/g;
@@ -46,7 +46,7 @@ function LoginTemplate() {
             setErrors(["Пароль должен содержать строчные буквы"]);
             return;
         }
-        console.log("jopa2");
+        console.log("J0P4");
         if(errors.length == 0){
             const g = store.login(username, password).then(function(res){
                 if(res == "nope"){

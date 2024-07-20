@@ -3,7 +3,8 @@ import React from 'react';
 function HomeFooter() {
     return (
         <div>
-            
+            <br />
+            <br /><br />
             <footer class="text-center bg-dark text-lg-start text-light footer">
                 <div
                     class="d-flex justify-content-between p-4 bg-dark"

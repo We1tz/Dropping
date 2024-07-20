@@ -14,7 +14,7 @@ function RestoreTemplate() {
     const redirect = useNavigate();
     const approve = () =>{
         const g = AuthService.restore(email, code).then(function(res){
-            if(res == "nope"){
+            if(res.data.result != 200){
                 console.log("ahegao");
                 setErrors(["неверный логин или пароль"]);
                 return;
