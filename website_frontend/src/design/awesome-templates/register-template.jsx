@@ -85,7 +85,9 @@ function RegisterTemplate() {
             setCrrdate(Date.now());
             setCnt(cnt+1);l
         }else {
-            setErrors(["Подождите " + String(30000 + (crrdate-Date.now())).substring(0,2)+" секунд"]);
+            if ((30000 + (crrdate-Date.now())) > 0){
+                setErrors(["Подождите " + String(30000 + (crrdate-Date.now())).substring(0,2)+" секунд"]);
+            }
         }
         return;
     };
