@@ -49,6 +49,7 @@ function CurveTransitionTemplate() {
                         </div>
                     ))}
             </div>
+            <br /><br /><br />
         </div>
     );
 }
