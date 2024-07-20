@@ -125,7 +125,8 @@ class Parser():
 
             salary = soup.find("span", "style-price-value-main-TIg6u")
             if str(type(salary)) == "<class 'NoneType'>":
-                salary = soup.find("span","magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-label-1-regular___pi3R-_3-0-9")
+                salary = soup.find("span",
+                                   "magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-label-1-regular___pi3R-_3-0-9")
             text += " " + salary.text
 
             regex = re.compile('.*params-paramsWrapper_oneColumn-uhGJ9.*')
@@ -157,7 +158,8 @@ class Parser():
                 text += " " + str(temp)
 
         elif "zarplata.ru" in url:
-            text = soup.find("h1", "bloko-header-section-1").text + " " + soup.find("div","magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-paragraph-2-regular___VO638_3-0-9").text
+            text = soup.find("h1", "bloko-header-section-1").text + " " + soup.find("div",
+                                                                                    "magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-paragraph-2-regular___VO638_3-0-9").text
 
             regex = re.compile('.*description.*')
             results = soup.find_all('p', {'class': regex})
