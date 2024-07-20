@@ -44,7 +44,7 @@ if (store.isLoading) {
         <Routes>
           <Route path="/" element={<HomePage/>} />
           <Route path="/rating" element={<RatingPage/>} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/changepassw" element={<ProfilePage />} />
           <Route path="/login" element={<LoginFormPage />} />
           <Route path="/restorepass" element={<RestorePage />} />
           <Route path="/admin" element={<AdminPage />} />

@@ -45,7 +45,7 @@ function Navbar() {
                                         <>
                                         <ul className="navbar-nav">
                                             <li>
-                                            <a data-testid="home-link" className="nav-link text-light" href="/profile">Профиль</a>
+                                            <a data-testid="home-link" className="nav-link text-light" href="/changepassw">Сменить пароль</a>
                                             </li>
                                             <li>
                                             <a data-testid="home-link" className="nav-link text-light" onClick={() => store.logout()}>Выйти</a></li>
