@@ -13,7 +13,7 @@ export default function Post() {
     const [content, setContent] = useState("");
     
     async function fetchData() {
-        fetch("../../../../public/posts/"+id+".md")
+        fetch("/posts/"+id+".md")
                     .then(res => res.text())
                     .then(res =>  setContent(res))
                     .catch(err => console.log(err));
