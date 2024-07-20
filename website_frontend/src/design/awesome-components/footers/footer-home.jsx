@@ -9,7 +9,7 @@ function HomeFooter() {
                 <div
                     class="d-flex justify-content-between p-4 bg-dark"
                 >
-                    <div class="me-5 text-light">
+                    <div class=" text-light">
                         <span>Наши социальные сети:</span>
                     </div>
                     <div>

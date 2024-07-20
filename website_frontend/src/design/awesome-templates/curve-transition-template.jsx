@@ -37,11 +37,11 @@ function CurveTransitionTemplate() {
     });
     return (
         <div class="text-light grad-article">
-            <div className="list">
+            <div className="">
                     {posts.map((post) => (
                         <div class="card bg-dark text-white container d-flex flex-column" >
                             <img  class="card-img-top" src={post.img}/>
-                            <div class="card-body d-flex flex-column">
+                            <div class="card-body  flex-">
                                 <h5 class="card-title">{post.title}</h5>
                                 <p class="card-text">{post.annotation}</p>
                                     <a href={"/post/"+post.id} class="btn btn-info mt-auto" style={{marginTop:"10px"}}>Читать</a>

@@ -5,6 +5,36 @@
             "id":"antidropping",
             "img": "postsPics/antidropping.jpg",
             "annotation": "Узнайте, что такое дроппинг и как не стать его жертвой"
+        },
+        {
+            "title":"Схемы вовлечения в дропперскую деятельность",
+            "id":"schemes",
+            "img": "postsPics/antidropping.jpg",
+            "annotation": "Узнайте, что такое дроппинг и как не стать его жертвой"
+        },
+        {
+            "title":"Кто такие дропперы и как их вовлекают в преступную схему?",
+            "id":"crime",
+            "img": "postsPics/antidropping.jpg",
+            "annotation": "Узнайте, что такое дроппинг и как не стать его жертвой"
+        },
+        {
+            "title":"Почему опасно работать дропом и как обезопасить себя?",
+            "id":"work",
+            "img": "postsPics/antidropping.jpg",
+            "annotation": "Узнайте, что такое дроппинг и как не стать его жертвой"
+        },
+        {
+            "title":"Зачем мошенники скупают банковские карты",
+            "id":"card",
+            "img": "postsPics/antidropping.jpg",
+            "annotation": "Для чего мошенникам пустые карты?"
+        },
+        {
+            "title":"Bug Bounty",
+            "id":"bugbounty",
+            "img": "postsPics/bugbounty.jpg",
+            "annotation": "Ищите баги и зарабатывайте карму"
         }
     ]
 }
