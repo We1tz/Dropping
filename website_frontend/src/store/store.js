@@ -38,7 +38,7 @@ export default class Store {
         try {
             const response = await AuthService.login(username, password);
             console.log(response.data.result);
-            if(response.data.result == 200){
+            if(response.data.result != 431){
                 console.log("you are in")
                 localStorage.setItem('token', response.data.access_token);
                 this.setAuth(true);
@@ -57,7 +57,7 @@ export default class Store {
     async registration(email,username, password) {
         try {
             const response = await AuthService.registration(email, username, password);
-            if (response.data.result == 200){
+            if (response.data.result != 431){
                 console.log(response)
                 localStorage.setItem('token', response.data.access_token);
                 this.setAuth(true);
@@ -117,14 +117,11 @@ export default class Store {
     async checkAuth() {
         this.setLoading(true);
         try {
-            const response = await axios.get(`${API_URL}/refresh`, { withCredentials: true })
-            ;
-            if(response.data.result == 200){
+            const response = await axios.get(`${API_URL}/refresh`, { withCredentials: true });
                 console.log(response);
                 localStorage.setItem('token', response.data.access_token);
                 this.setAuth(true);
                 this.setUser(response.data.user);
-            }
         } catch (e) {
             console.log(e.response?.data?.message);
         } finally {

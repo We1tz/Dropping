@@ -28,7 +28,7 @@ import Post from './design/pages/cms/post.jsx';
 function App() {
   const {store }= useContext(Context);
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
         store.checkAuth()
     }
 }, [])
