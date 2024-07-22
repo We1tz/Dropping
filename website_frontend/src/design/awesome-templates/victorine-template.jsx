@@ -59,12 +59,10 @@ function VictorineTemplate() {
             setOver(true);
             setDate(Date.now()-date);
             console.log(store.user.username);
-            if (store.user.username != undefined){
-                await VictorineService.Sendres(store.user.username, rightans, date);
-            }else if(id != undefined){
+            if(id != undefined){
                 await VictorineService.Sendres(id, rightans, date);
             }else{
-                console.log("P1ZD4"); // в этом случае всему пиздец
+                await VictorineService.Sendres("no id :D", rightans, date);
             }
         }
         if(yes == answers[picnum]){

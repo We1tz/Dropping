@@ -4,7 +4,7 @@ export default class VictorineService {
     static async Sendres(username, score, t){
         const type = t.toString();
         console.log({ score, t });
-        return $api.post('/sendvect', { score, type });
+        return $api.post('/sendvect', { username, score, type });
     }
 
     /*
