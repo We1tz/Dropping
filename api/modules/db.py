@@ -1,9 +1,9 @@
 import psycopg2
 
-from api.config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
-from api.modules.hash import verify_password
-from api.modules.rating import get_rating
-from api.modules.hash import hash_password
+from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST
+from modules.hash import verify_password
+from modules.rating import get_rating
+from modules.hash import hash_password
 
 conn = psycopg2.connect(dbname=f"{DB_NAME}", user=f"{DB_USER}", password=f"{DB_PASSWORD}", host=f"{DB_HOST}")
 
@@ -30,6 +30,24 @@ def add_user(data):
                 (login, password, telegram, rating, role, last_login, email, 'False'))
             conn.commit()
             return 200
+
+def changepasswd(data):
+
+    username = data[0]
+    new_password = data[1]
+    last_password = data[2]
+
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT password FROM userssite WHERE login = %s", (username, ))
+        result = cursor.fetchone()
+        conn.commit()
+        if verify_password(last_password, result[0]):
+            cursor.execute("UPDATE userssite SET password = %s WHERE login = %s", (hash_password(new_password), username,))
+            conn.commit()
+            return 200
+        else:
+            return 431
+
 
 
 
@@ -68,12 +86,12 @@ def update_score(username, score, time):
             }
         else:
             return 404
-
+#
 
 def get_users_scores():
     try:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT login, rating FROM userssite ORDER BY rating DESC")
+            cursor.execute("SELECT login, rating FROM userssite WHERE emailvalid = %s ORDER BY rating DESC", ('True',))
             results = cursor.fetchall()
             users_scores = [{"username": row[0], "score": row[1]} for row in results]
             conn.commit()
