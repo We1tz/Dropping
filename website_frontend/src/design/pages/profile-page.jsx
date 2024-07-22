@@ -69,8 +69,9 @@ function ProfilePage() {
     return (
         <div className="text-white">
             <HomeTemplate>
-            <div class="text-light grad-article login-jumbotron">
-            <section class=" section-article section-fullwindow">
+            
+            <section class=" section-transition section-fullwindow">
+            <div class="text-light login-jumbotron">
                 <h1>Сменить пароль</h1>
                 <form>
                     <div align="center" class="row">
@@ -116,8 +117,9 @@ function ProfilePage() {
                         
                     </div>
             </form>
-            </section>
             </div>
+            
+            </section>
             </HomeTemplate>
             <HomeFooter />
             

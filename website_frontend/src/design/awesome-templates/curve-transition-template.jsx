@@ -37,7 +37,7 @@ function CurveTransitionTemplate() {
     });
     return (
         <div class="text-light grad-article">
-            <div className="">
+            <div className="padding-bottom">
                     {posts.map((post) => (
                         <div class="card bg-dark text-white container d-flex flex-column" >
                             <img  class="card-img-top" src={post.img}/>
