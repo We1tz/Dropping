@@ -17,6 +17,7 @@ function RegisterTemplate() {
     const [cnt, setCnt] = useState(0);
     const [first, setFirst] = useState(false);
     const [errors, setErrors] = useState([]);
+    
     const validateValues = () => {
         setErrors([]);
         const lowerCaseLetters = /[a-z]/g;
@@ -63,6 +64,7 @@ function RegisterTemplate() {
                     console.log("sadovnikov");
                     setErrors(["Подтвердите почту"]);
                     setFirst(true);
+                    setCrrdate(Date.now());
                     return;
                 }
             })
@@ -80,13 +82,19 @@ function RegisterTemplate() {
 
     const handlerepeatemail = () => {
         console.log(30000 + (crrdate-Date.now()));
-        if(crrdate-Date.now() > -30000 && cnt < 4){
+        if(crrdate-Date.now() < -30000){
             AuthService.repeatemail(email, username, password);
             setCrrdate(Date.now());
-            setCnt(cnt+1);l
+            setCnt(cnt+1);
         }else {
             if ((30000 + (crrdate-Date.now())) > 0){
-                setErrors(["Подождите " + String(30000 + (crrdate-Date.now())).substring(0,2)+" секунд"]);
+                if(String(30000 + (crrdate-Date.now())).length == 5)    {
+                    setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 2)+" секунд"]);
+                }
+                else{
+                    setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 1)+" секунд"]);
+                }
+                
             }
         }
         return;
