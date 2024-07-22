@@ -34,7 +34,7 @@ function CurveTransitionTemplate() {
                     .then(res => res.json().then((result) =>{
                         setPosts(result.files);
                     }));
-    });
+    }, []);
     return (
         <div class="text-light grad-article">
             <div className="padding-bottom">
