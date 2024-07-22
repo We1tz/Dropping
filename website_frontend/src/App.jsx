@@ -54,9 +54,10 @@ if (store.isLoading) {
           
           <Route exact path="/success" element={<SucPage/>} />
           <Route path='/post/:id' element={<Post/>}/>
+          
+          <Route path="/victorine" element={<VictorinePage/>} />
           {store.isAuth ? 
           <>
-            <Route path="/victorine" element={<VictorinePage/>} />
             <Route path="/changepassw" element={<ProfilePage />} />
             <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
           </>

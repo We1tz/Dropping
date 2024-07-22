@@ -67,22 +67,10 @@ function VictorineTemplate() {
 
     return (
         <div class="text-dark">
-            <section class="light section-transition section-fullwindow">
+            <section class="section-transition section-fullwindow">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm">
-                            {over ? 
-                                <img className='victorine-pic' src="fox.png" alt="" />
-                            : <>
-
-                                {picnum <=6 ?
-                                <img className='victorine-pic' src={"Вакансии викторины/Вакансия"+ picnum + ".png"} alt="" />
-                            :
-                                <img className='victorine-pic' src={"Вакансии викторины/Вакансия"+ picnum + ".jpg"} alt="" />
-                            }
-                            </>}
-                        </div>
-                        <div class="col-sm">
+                    <div class="col-sm">
                         {over ? <>
                             <h2 className='text-light'>Время: {date.toString().substring(0, date.toString().length-3)} секунд, Правильных ответов: {rightans}</h2>
                             <br />
@@ -111,6 +99,20 @@ function VictorineTemplate() {
                             </>
                         }
                         </div>
+                        <div class="col-sm">
+                            {over ? 
+                                <img className='victorine-pic' src="fox.png" alt="" />
+                            : <>
+
+                                {picnum <=6 ?
+                                <img className='victorine-pic' height={"100px"} src={"Вакансии викторины/Вакансия"+ picnum + ".png"} alt="" />
+                            :
+                                <img className='victorine-pic' src={"Вакансии викторины/Вакансия"+ picnum + ".jpg"} alt="" />
+                            }
+                            </>
+                            }
+                        </div>
+                        
                     </div>
                 </div>
             </section>
