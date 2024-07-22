@@ -28,7 +28,6 @@ function AdminTemplate() {
       <table class="table table-dark">
     <thead>
         <tr>
-        <th scope="col">Вердикт</th>
         <th scope="col">ID пользователя</th>
         <th scope="col">Сумма перевода</th>
         <th scope="col">Время перевода</th>
@@ -43,7 +42,6 @@ function AdminTemplate() {
       return(      
       <tr key={index}>
         <th scope="row">{index+1}</th>
-        <td >{i.id}</td>
         <td>{i.ammount} руб</td>
         <td>{i.date}</td>
         <td><a href = {'/SusUserPage/' + i.account_id.toString()} /*Не пишите комментарии, эта жопа может принять их за код :D p.s. ГОООООЛ*/ >{i.account_id.substring(0, 10)}...</a></td>
