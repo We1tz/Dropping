@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import VictorineService from '../../API/VictorineService';
 import { useContext } from 'react';
 import {Context} from "../../main";
+import { useParams } from 'react-router-dom';
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -15,6 +16,7 @@ function getRandomInt(min, max) {
 
 
 function VictorineTemplate() {
+    const {id} = useParams();
 
     const {store} = useContext(Context);
 
@@ -25,7 +27,7 @@ function VictorineTemplate() {
     const [date, setDate] = useState(Date.now());
     
     const [cnt, setcnt] = useState(1);
-
+    
     const answers = {
         1: true,
         2: true,
@@ -56,7 +58,14 @@ function VictorineTemplate() {
             //
             setOver(true);
             setDate(Date.now()-date);
-            await VictorineService.Sendres(store.user.username, rightans, date);
+            console.log(store.user.username);
+            if (store.user.username != undefined){
+                await VictorineService.Sendres(store.user.username, rightans, date);
+            }else if(id != undefined){
+                await VictorineService.Sendres(id, rightans, date);
+            }else{
+                console.log("P1ZD4"); // в этом случае всему пиздец
+            }
         }
         if(yes == answers[picnum]){
             setRightans(rightans+1);

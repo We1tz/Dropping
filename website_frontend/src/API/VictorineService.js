@@ -21,4 +21,5 @@ export default class VictorineService {
     static async Getres(){
         return $api.get('/getvect');
     }
+
 }

@@ -14,6 +14,10 @@ function ProfilePage() {
 
     const [errors, setErrors] = useState([]);
 
+    const [crrdate, setCrrdate] = useState(Date.now());
+    const [cnt, setCnt] = useState(0);
+    const [first, setFirst] = useState(false);
+
     const validateValues = () => {
         setErrors([]);
         console.log("jopa");
@@ -51,13 +55,27 @@ function ProfilePage() {
             setErrors(["пароль не совпадает с подтверждением пароля"]);
             return;
         }
+        if ((30000 + (crrdate-Date.now())) < 0){
+            if(String(30000 + (crrdate-Date.now())).length == 5)    {
+                setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 2)+" секунд"]);
+                return
+            }
+            else{
+                setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 1)+" секунд"]);
+                return
+            }
+        }
         if(errors.length == 0){
             const g = AuthService.changepasswd(prevpassword, newpassword).then(function(res){
                 if(res.data.status == "200"){
+                    setCrrdate(Date.now());
+                    setCnt(cnt+1);
                     redirect('/')
                     alert('Пароль успешно изменен');
                     return;
                 }
+                setCrrdate(Date.now());
+                    setCnt(cnt+1);
                 setErrors(["Что-то пошло не так. Попробуйте снова."]);
                 ;
             });
@@ -105,9 +123,7 @@ function ProfilePage() {
                         />
                         <p></p>
                         <br />
-                        <button type="button" class="btn btn-login-1 text-dark" onClick={() => validateValues()}>
-                            Сменить пароль
-                        </button>
+                        
                         <p></p>
                         
                     </div>
@@ -117,6 +133,9 @@ function ProfilePage() {
                         
                     </div>
             </form>
+                        <button type="button" class="btn btn-login-1 text-dark" onClick={() => validateValues()}>
+                            Сменить пароль
+                        </button>
             </div>
             
             </section>

@@ -24,6 +24,7 @@ import SusUserPage from './design/pages/sususer-page.jsx';
 import SucPage from './design/pages/suc-page.jsx';
 import Post from './design/pages/cms/post.jsx';
 
+
 function App() {
   const {store }= useContext(Context);
   useEffect(() => {
@@ -56,10 +57,14 @@ if (store.isLoading) {
           <Route path='/post/:id' element={<Post/>}/>
           
           <Route path="/victorine" element={<VictorinePage/>} />
+          <Route path="/victorine/:id" element={<VictorinePage/>} />
+          
+          <Route path="/changepassw" element={<ProfilePage />} />
+          
+          <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
           {store.isAuth ? 
           <>
-            <Route path="/changepassw" element={<ProfilePage />} />
-            <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
+          <Route path="/victorine" element={<VictorinePage/>} />
           </>
           : ""}
           <Route path='*' element={<NFPage/>}/>
