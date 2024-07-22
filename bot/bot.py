@@ -18,8 +18,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import ContentType
-from modules.text import hello, drop_vacancy, good_vacancy
+from modules.text import *
 from modules.database import add_user, select_from_base
+from modules.parser import Parser
 
 allow_site = ['avito', 'hh', 'superjob', 'zarplata']
 logging.basicConfig(level=logging.INFO)
@@ -37,6 +38,7 @@ def top():
     sorted_data = sorted(uinf, key=lambda x: x[1], reverse=True)
     return sorted_data
 
+
 def is_correct_name(name):
     alf = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" + string.ascii_lowercase
     if len(name) < 3:
@@ -48,8 +50,11 @@ def is_correct_name(name):
 
 
 def is_url(text):
-    pattern = r'^(http|https):\/\/([\w.-]+)(\.[\w.-]+)+([\/\w\.-]*)*\/?$'
-    return bool(re.match(pattern, text))
+    try:
+        text = Parser.get_vacancy_text(text)
+        return text
+    except:
+        return "Не ссылка"
 
 
 class NameForm(StatesGroup):
@@ -93,10 +98,12 @@ async def check_vacancy(message: types.Message, state: FSMContext):
 
 @dp.message(VacancyForm.waiting_for_vacancy)
 async def process_vacancy(message: types.Message, state: FSMContext):
-    if message.content_type == ContentType.TEXT or message.content_type == ContentType.PHOTO or is_url(message.text):
+    if message.content_type == ContentType.TEXT or message.content_type == ContentType.PHOTO:
+        await message.answer('Подожди, идёт проверка вакансии...')
         if message.content_type == ContentType.TEXT:
-            if is_url(message.text):
-                if message.text in allow_site:
+            t = is_url(message.text)
+            if t != "Не ссылка":
+                if t != "":
                     if check_url_vacancy(message.text) == 0:
                         await message.answer(good_vacancy)
                     else:
@@ -114,7 +121,6 @@ async def process_vacancy(message: types.Message, state: FSMContext):
                 message.photo[-1],
                 destination=f"photo/{message.photo[-1].file_id}.jpg"
             )
-            await message.answer('Подожди, идёт проверка вакансии...')
             current_dir = os.path.dirname(__file__)
             photo_dir = os.path.join(current_dir, 'photo')
             file_path = os.path.join(photo_dir, f"{message.photo[-1].file_id}.jpg")
@@ -135,6 +141,7 @@ async def process_vacancy(message: types.Message, state: FSMContext):
         builder = ReplyKeyboardBuilder()
         builder.row(types.KeyboardButton(text="Викторина"))
         builder.row(types.KeyboardButton(text="Полезная информация"))
+        await message.answer(suggestion, reply_markup=builder.as_markup(resize_keyboard=True))
     else:
         await message.answer('Пожалуйста, отправьте вакансию в виде текста, фото или ссылки')
 
@@ -151,9 +158,15 @@ async def handle_button1(callback_query: types.CallbackQuery):
                            reply_markup=webapp_kb)
 
     await callback_query.answer()
-    builder = ReplyKeyboardBuilder()#
+
+
+@dp.message(content_types=types.ContentType.WEB_APP_DATA)
+async def web_app_data_handler(message: types.Message):
+    data = message.web_app_data.data  # данные, переданные из веб-приложения
+    builder = ReplyKeyboardBuilder()
     builder.row(types.KeyboardButton(text="Рейтинг"))
     builder.row(types.KeyboardButton(text="Полезная информация"))
+    await message.answer(f"Ваш результат прохождения викторины: {data}" + victorine_result, reply_markup=builder.as_markup(resize_keyboard=True))
 
 
 @dp.message(Command("dk"))
