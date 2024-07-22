@@ -16,7 +16,7 @@ function HomeFooter() {
                         <a href="https://t.me/antidropping_bot" class="text-white me-4">
                             <i class="fab fa-brands fa-telegram"></i>
                         </a>
-                        <i class="fas fa-envelope mr-3"/> <a href="mailto:support@antidropping.ru"></a>
+                         <a href="mailto:support@antidropping.ru" class="text-white me-4"><i class="fas fa-envelope mr-3"/></a>
                     </div>
                 </div>
             </footer>
