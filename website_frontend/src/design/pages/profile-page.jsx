@@ -20,7 +20,7 @@ function ProfilePage() {
 
     const validateValues = () => {
         setErrors([]);
-        console.log("jopa");
+        console.log("J0P4");
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         const symbols = /[^A-Za-z0-9]/g;
@@ -30,7 +30,7 @@ function ProfilePage() {
           setErrors(["Название почты слишком короткое"]);
           return
         }
-          */
+        */
         if (newpassword.length < 8) {
             setErrors(["Минимальная длина пароля - 5 символов"]);
             return;
@@ -55,17 +55,19 @@ function ProfilePage() {
             setErrors(["пароль не совпадает с подтверждением пароля"]);
             return;
         }
-        if ((30000 + (crrdate-Date.now())) < 0){
+        if ((30000 + (crrdate-Date.now())) > 0){
             if(String(30000 + (crrdate-Date.now())).length == 5)    {
-                setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 2)+" секунд"]);
+                setErrors(["Подождите " + String(30000 + (crrdate-Date.now())).substring(0, 2) + " секунд"]);
                 return
             }
             else{
-                setErrors(["Подождите " +String(30000 + (crrdate-Date.now())).substring(0, 1)+" секунд"]);
+                setErrors(["Подождите " + String(30000 + (crrdate-Date.now())).substring(0,1) +" секунд"]);
                 return
             }
         }
         if(errors.length == 0){
+            setCrrdate(Date.now());
+            console.log((30000 + (crrdate-Date.now())));
             const g = AuthService.changepasswd(prevpassword, newpassword).then(function(res){
                 if(res.data.status == "200"){
                     setCrrdate(Date.now());
@@ -74,8 +76,8 @@ function ProfilePage() {
                     alert('Пароль успешно изменен');
                     return;
                 }
-                setCrrdate(Date.now());
-                    setCnt(cnt+1);
+                
+                setCnt(cnt+1);
                 setErrors(["Что-то пошло не так. Попробуйте снова."]);
                 ;
             });
