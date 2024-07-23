@@ -62,7 +62,7 @@ function VictorineTemplate() {
             if(id != undefined){
                 await VictorineService.Sendres(id, rightans, date);
             }else{
-                await VictorineService.Sendres("no id :D", rightans, date);
+                await VictorineService.Sendres(NaN, rightans, date);
             }
         }
         if(yes == answers[picnum]){
@@ -79,7 +79,7 @@ function VictorineTemplate() {
                     <div class="row">
                     <div class="col-sm">
                         {over ? <>
-                            <h2 className='text-light'>Время: {date.toString().substring(0, date.toString().length-3)} секунд, Правильных ответов: {rightans}</h2>
+                            <h2 className='text-light'>Время: {date.toString().substring(0, date.toString().length-3)} секунд, Правильных ответов: {rightans} из 10</h2>
                             <br />
                             <br />
                             <br />
