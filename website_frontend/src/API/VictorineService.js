@@ -3,7 +3,7 @@ import $api from "../http";
 export default class VictorineService {
     static async Sendres(username, score, t){
         const type = t.toString();
-        console.log({ score, t });
+        console.log({username,  score, t });
         return $api.post('/sendvect', { username, score, type });
     }
 
