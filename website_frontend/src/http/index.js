@@ -20,8 +20,10 @@ $api.interceptors.response.use((config) => {
         originalRequest._isRetry = true;
         try {
             const response = await axios.get(`${API_URL}/refresh`, { withCredentials: true })
-            localStorage.setItem('token', response.data.accessToken);
-            return $api.request(originalRequest);
+            if(responce.data.result == 200){
+                localStorage.setItem('token', response.data.accessToken);
+                return $api.request(originalRequest);
+            }
         } catch (e) {
             console.log('НЕ АВТОРИЗОВАН');
             return "Not authorized";
