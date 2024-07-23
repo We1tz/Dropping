@@ -62,7 +62,7 @@ function VictorineTemplate() {
             if(id != undefined){
                 await VictorineService.Sendres(id, rightans, date);
             }else{
-                await VictorineService.Sendres(NaN, rightans, date);
+                await VictorineService.Sendres("asd", rightans, date);
             }
         }
         if(yes == answers[picnum]){
