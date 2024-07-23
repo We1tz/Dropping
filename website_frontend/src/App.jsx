@@ -51,20 +51,22 @@ if (store.isLoading) {
           <Route path="/register" element={<RegisterFormPage/>} />
           
           {/*<Route path="/graph" element={<GraphPage/>} />*/}
-          <Route path="/newpass" element={<NewpassPage/>} />
           
           <Route exact path="/success" element={<SucPage/>} />
           <Route path='/post/:id' element={<Post/>}/>
           
           <Route path="/victorine/:id" element={<VictorinePage/>} />
           
-          <Route path="/changepassw" element={<ProfilePage />} />
-          
           <Route exact path="/SusUserPage/:id" element={<SusUserPage/>} />
           
-          <Route path="/victorine" element={<VictorinePage/>} />
           {store.isAuth ? 
           <>
+            <Route path="/victorine" element={<VictorinePage/>} />
+            
+          <Route path="/changepassw" element={<ProfilePage />} />
+          
+          <Route path="/newpass" element={<NewpassPage/>} />
+          
           </>
           : ""}
           <Route path='*' element={<NFPage/>}/>
