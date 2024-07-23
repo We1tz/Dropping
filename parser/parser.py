@@ -1,4 +1,3 @@
-import pandas as pd
 import pymorphy3
 from nltk.corpus import stopwords
 import re
@@ -120,7 +119,7 @@ class Parser():
                 for temp in results:
                     text += " " + str(temp)
 
-        elif "avito.ru" in url and ("vakansii" in url or "dropshipping" in url):
+        elif "avito.ru" in url and "vakansii" in url:
             text = soup.find("div", "style-titleWrapper-Hmr_5").text
 
             salary = soup.find("span", "style-price-value-main-TIg6u")
@@ -158,8 +157,10 @@ class Parser():
                 text += " " + str(temp)
 
         elif "zarplata.ru" in url:
-            text = soup.find("h1", "bloko-header-section-1").text + " " + soup.find("div",
-                                                                                    "magritte-text___pbpft_3-0-9 magritte-text_style-primary___AQ7MW_3-0-9 magritte-text_typography-paragraph-2-regular___VO638_3-0-9").text
+            regex = re.compile('.*vacancy-title.*')
+            results = soup.find_all(["h1", "div"], {'class': regex})
+            for temp in results:
+                text += " " + temp.text
 
             regex = re.compile('.*description.*')
             results = soup.find_all('p', {'class': regex})
